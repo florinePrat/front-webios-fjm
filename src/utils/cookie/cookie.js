@@ -1,3 +1,12 @@
+export function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
 
 export function getCookie(c_name) {
 
@@ -14,12 +23,11 @@ export function getCookie(c_name) {
         }
         c_value = unescape(c_value.substring(c_start,c_end));
     }
-    console.log(c_value);
     return c_value;
 }
 
 
-/*
 export function eraseCookie(name) {
     document.cookie = name+'=; Max-Age=-99999999;';
-}*/
+}
+

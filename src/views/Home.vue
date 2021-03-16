@@ -1,11 +1,16 @@
 <template>
     <div>
+        <Navbar v-if="!user"/>
+        <UserNavbar v-else/>
         <SideBar/>
-        <div class="ml-6">
-            <h1 class="title m-6">
+        <br>
+        <br>
+        <br>
+        <vs-row>
+            <vs-col offset="2" w="8">
                 Festival du jeu
-            </h1>
-        </div>
+            </vs-col>
+        </vs-row>
 
     </div>
 
@@ -13,10 +18,24 @@
 
 <script>
     import SideBar from "@/components/SideBar";
+    import Navbar from "@/components/Navbar";
+    import {getCookie} from "../utils/cookie/cookie";
+    import UserNavbar from "../components/UserNavbar";
     export default {
         name: 'Home',
         components : {
-            SideBar
+            UserNavbar,
+            SideBar,
+            Navbar
+        },
+        data:() => ({
+            user : false,
+        }),
+
+        beforeMount() {
+            if(getCookie('token')){
+                this.user = true
+            }
         }
     }
 </script>

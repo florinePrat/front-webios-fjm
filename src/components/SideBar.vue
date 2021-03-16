@@ -8,7 +8,7 @@
         >
             <template #logo>
                 <img
-                        src="../../public/logo.png"
+                        src="../../public/logoFJM.png"
                         alt=""
                 >
             </template>
@@ -19,28 +19,42 @@
                 Home
             </vs-sidebar-item>
 
-
             <template #footer>
                 <vs-row justify="space-between">
                     <vs-avatar history primary>
                         <template #text>
-                            {{name}}
+                            {{admin ? name : 'Invit'}}
                         </template>
                     </vs-avatar>
                 </vs-row>
 
             </template>
         </vs-sidebar>
+
     </div>
 </template>
 <script>
+
+    import {getCookie} from "../utils/cookie/cookie";
 
     export default {
         data:() => ({
             projects : [],
             actives: 'home',
-            name:''
+            admin : false,
+            name:'',
+            active: false,
+            input1: '',
+            input2: '',
+            checkbox1: false
         }),
+
+        beforeMount() {
+            if(getCookie('admin') && getCookie('name')){
+                this.admin = getCookie('admin');
+                this.name = getCookie('name')
+            }
+        },
 
         methods : {
             isActive(id){

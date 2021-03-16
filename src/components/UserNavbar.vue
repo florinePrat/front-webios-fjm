@@ -1,0 +1,132 @@
+
+<template>
+    <div class="center examplex">
+        <vs-navbar text-white :color="active" center-collapsed v-model="active">
+            <template #right>
+                <vs-navbar-item :active="active == 'primary'" id="primary">
+                    Primary
+                </vs-navbar-item>
+
+                <vs-button v-if="admin"
+                        color="rgb(23, 201, 100)"
+                        @click="signup=!signup"
+                >
+                    <i class="bx bxs-log-in-circle"/> Add collaborator
+                </vs-button>
+
+                <vs-button
+                        color="rgb(23, 201, 100)"
+                        gradient
+                        @click="logout()"
+                >
+                    <i class="bx bxs-log-in-circle"/> Logout
+                </vs-button>
+                <div class="center">
+                    <vs-dialog blur v-model="signup">
+                        <template #header>
+                            <h4 class="not-margin">
+                                Welcome to <b>FJM</b>
+                            </h4>
+                        </template>
+
+                        <div class="is-center">
+                            <vs-row justify="center">
+                                <vs-col w="8">
+
+                                    <vs-input border warn type="email" v-model="email" label-placeholder="Email">
+                                        <template #icon>
+                                            @
+                                        </template>
+                                    </vs-input>
+                                    <br>
+                                    <vs-input color="#7d33ff" border warn type="password" v-model="password" label-placeholder="Password">
+                                        <template #icon>
+                                            <i class='bx bx-lock-open-alt'/>
+                                        </template>
+                                    </vs-input>
+
+                                    <br>
+                                    <div class="flex">
+                                        <vs-checkbox v-model="adminCreation">Admin account ?</vs-checkbox>
+                                    </div>
+                                </vs-col>
+                            </vs-row>
+
+                        </div>
+
+
+                        <template #footer>
+                            <div class="footer-dialog">
+                                <vs-button block gradient @click="log()">
+                                    Create account
+                                </vs-button>
+                            </div>
+                        </template>
+                    </vs-dialog>
+                </div>
+
+            </template>
+        </vs-navbar>
+    </div>
+</template>
+<script>
+    import {signup} from '../utils/admin/signup'
+    import {eraseCookie, getCookie} from "../utils/cookie/cookie";
+    export default {
+
+        data:() => ({
+            active: 'primary',
+            signup: false,
+            email: '',
+            password: '',
+            admin : false,
+            adminCreation : false
+        }),
+        beforeMount() {
+            if(getCookie('admin')){
+                this.admin = getCookie('admin')
+            }
+        },
+
+        methods : {
+            logout(){
+              eraseCookie('token');
+              eraseCookie('admin');
+              eraseCookie('name');
+              window.location.reload()
+            },
+            log(){
+                signup(this.email, this.password, this.adminCreation).then(res =>{
+                    console.log(res.data);
+                    console.log("this account is created");
+                    this.signup=false;
+                    this.succes();
+                }).catch(e =>{
+                    console.log(e);
+                    this.signup=false;
+                    this.failure();
+                })
+            },
+            succes() {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bx-badge-check' ></i>`,
+                    color : 'primary',
+                    position : 'top-center',
+                    title: 'Utilisateur crée avec succes',
+                })
+            },
+            failure() {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bxs-user-x' ></i>`,
+                    color : 'danger',
+                    position : 'top-center',
+                    title: 'Erreur lors de l\'enregistrement de cet utilisateur',
+                })
+            }
+        }
+    }
+</script>
+
+

@@ -1,16 +1,18 @@
 import axios from "axios";
-import {getCookie} from "../cookie/cookie";
 
-export function createProject(name) {
+
+export function login(email, password) {
     let burl = process.env.VUE_APP_API;
     console.log(burl);
     return axios({
         method: 'post',
-        url: burl + '/api/project/create',
-        data : {'name': name},
+        url: burl + '/api/login/',
+        data : {
+            email,
+            password
+        },
         headers : {
             'Content-Type': 'application/json',
-            'Authorization' : 'Bearer ' + getCookie("token")
         }
     })
 }

@@ -10,7 +10,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 Vue.use(Vuesax, {
   colors: {
-    primary:'#39c8d0',
+    primary:'#3b822d',
     success:'rgb(23, 201, 100)',
     danger:'rgb(242, 19, 93)',
     warning:'rgb(255, 130, 0)',
