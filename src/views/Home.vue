@@ -1,14 +1,14 @@
 <template>
     <div>
         <Navbar v-if="!user"/>
-        <UserNavbar v-else/>
-        <SideBar/>
+        <UserNavbar active="home" v-else/>
+        <!--<SideBar/>-->
         <br>
         <br>
         <br>
         <vs-row>
             <vs-col offset="2" w="8">
-                Festival du jeu
+                {{currentFestival.name}}
             </vs-col>
         </vs-row>
 
@@ -17,25 +17,31 @@
 </template>
 
 <script>
-    import SideBar from "@/components/SideBar";
+    /*import SideBar from "@/components/SideBar";*/
     import Navbar from "@/components/Navbar";
     import {getCookie} from "../utils/cookie/cookie";
     import UserNavbar from "../components/UserNavbar";
+    import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
     export default {
         name: 'Home',
         components : {
             UserNavbar,
-            SideBar,
+            /*SideBar,*/
             Navbar
         },
         data:() => ({
             user : false,
+            currentFestival : {}
         }),
 
         beforeMount() {
             if(getCookie('token')){
                 this.user = true
             }
+            getCurrentFestival().then(res=>{
+                console.log(res.data);
+                this.currentFestival = res.data;
+            })
         }
 
 

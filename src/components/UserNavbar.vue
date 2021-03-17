@@ -1,10 +1,20 @@
 
 <template>
     <div class="center examplex">
-        <vs-navbar text-white :color="active" center-collapsed v-model="active">
+        <vs-navbar text-white color='primary' center-collapsed v-model="active">
+            <template #left>
+                <img src="../../public/logoFJM.png" width="60" alt="" class="pr-3">
+                FJM
+            </template>
             <template #right>
-                <vs-navbar-item :active="active == 'primary'" id="primary">
-                    Primary
+                <vs-navbar-item :active="active == 'home'" to="/" id="home">
+                    Home
+                </vs-navbar-item>
+                <vs-navbar-item v-if="user" :active="active == 'festival'" id="festival" to="/festival" >
+                    Festivals
+                </vs-navbar-item>
+                <vs-navbar-item v-if="user" :active="active == 'exhibitor'" id="exhibitor" to="/exhibitor" >
+                    Exhibitors
                 </vs-navbar-item>
 
                 <vs-button v-if="admin"
@@ -73,18 +83,23 @@
     import {signup} from '../utils/admin/signup'
     import {eraseCookie, getCookie} from "../utils/cookie/cookie";
     export default {
-
+        props:{
+            active: String
+        },
         data:() => ({
-            active: 'primary',
             signup: false,
             email: '',
             password: '',
             admin : false,
-            adminCreation : false
+            adminCreation : false,
+            user : false
         }),
         beforeMount() {
             if(getCookie('admin')){
                 this.admin = getCookie('admin')
+            }
+            if(getCookie('token')){
+                this.user = true
             }
         },
 

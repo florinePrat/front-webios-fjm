@@ -2,9 +2,12 @@
 <template>
     <div class="center examplex">
         <vs-navbar text-white :color="active" center-collapsed v-model="active">
+            <template #left>
+                <img src="../../public/logoFJM.png" alt="">
+            </template>
             <template #right>
-                <vs-navbar-item :active="active == 'primary'" id="primary">
-                    Primary
+                <vs-navbar-item :active="active == 'home'" id="home">
+                    Home
                 </vs-navbar-item>
 
                 <vs-button
@@ -65,7 +68,7 @@
     export default {
 
         data:() => ({
-            active: 'primary',
+            active: 'home',
             login: false,
             email: '',
             password: '',

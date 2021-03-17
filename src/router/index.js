@@ -9,6 +9,22 @@ const routes = [
             title: 'FJM | Accueil',
         },
     },
+    {
+        path: '/festival',
+        name: 'Festival',
+        component: () => import('../views/Festivals.vue'),
+        meta: {
+            title: 'FJM | Festival',
+        },
+    },
+    {
+        path: '/exhibitor',
+        name: 'Exhibitor',
+        component: () => import('../views/Exhibitors.vue'),
+        meta: {
+            title: 'FJM | Exhibitor',
+        },
+    },
 
 ];
 
