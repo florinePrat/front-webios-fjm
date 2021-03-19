@@ -1,9 +1,9 @@
 
 <template>
     <div class="center examplex">
-        <vs-navbar text-white :color="active" center-collapsed v-model="active">
+        <vs-navbar text-white color="primary" center-collapsed v-model="active">
             <template #left>
-                <img src="../../public/logoFJM.png" alt="">
+                <img src="../../public/logoFJM.png" width="50" alt="">
             </template>
             <template #right>
                 <vs-navbar-item :active="active == 'home'" id="home">

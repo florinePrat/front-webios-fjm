@@ -2,11 +2,11 @@
     <div>
         <Navbar v-if="!user"/>
         <UserNavbar active="festival" v-else/>
-        <SideBar/>
+        <!--<SideBar/>-->
         <br>
         <br>
         <br>
-        <div class="is-half p-6 ml-6">
+        <div class="is-half ml-6 mr-6">
 
             <vs-row>
                 <vs-col w="8">
@@ -116,7 +116,6 @@
 </template>
 
 <script>
-    import SideBar from "@/components/SideBar";
     import Navbar from "@/components/Navbar";
     import {getCookie} from "../utils/cookie/cookie";
     import UserNavbar from "../components/UserNavbar";
@@ -127,7 +126,6 @@
         name: 'Festival',
         components: {
             UserNavbar,
-            SideBar,
             Navbar
         },
         data: () => ({

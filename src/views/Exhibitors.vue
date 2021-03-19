@@ -2,11 +2,11 @@
     <div>
         <Navbar v-if="!user"/>
         <UserNavbar active="exhibitor" v-else/>
-        <SideBar/>
+        <!--<SideBar/>-->
         <br>
         <br>
         <br>
-        <div class="is-half p-6 ml-6">
+        <div class="is-half mr-6 ml-6">
 
             <vs-row>
                 <vs-col w="8">
@@ -16,7 +16,7 @@
             <br/>
 
             <div class="center">
-                <vs-table>
+                <vs-table  v-model="selected">
                     <template #header>
                         <vs-input v-model="search" border placeholder="Search" />
                     </template>
@@ -31,16 +31,16 @@
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'name')">
                                 Name
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors.mainContact, 'email')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'email')">
                                 Email MC
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors.mainContact, 'tel')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'tel')">
                                 Tel MC
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors.suiviId, 'statusTracking')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'statusTracking')">
                                 Status
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors.suiviId, 'present')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'present')">
                                 Present
                             </vs-th>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
@@ -53,18 +53,19 @@
                                 :key="i"
                                 v-for="(exhibitor, i) in $vs.getSearch(exhibitors, search)"
                                 :data="exhibitor"
+                                :is-selected="!!selected.includes(exhibitor)"
                         >
                             <vs-td>
                                 {{ exhibitor.name }}
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.mainContact.email }}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : 'no email'}}
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.mainContact.telMobile }}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'no tel mobile'}}
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.suiviId.statusTracking }}
+                                {{ exhibitor.suiviId.statusTraking }}
                             </vs-td>
                             <vs-td>
                                 <i class='bx bx-x-circle' v-if="!exhibitor.suiviId.present" />
@@ -80,27 +81,26 @@
                                     <vs-row>
                                         <vs-col w="2">
                                             <vs-avatar>
-                                                <i class='bx bxs-show' @click="activecontact = !activecontact"/>
+                                                <i class='bx bx-plus' @click="activecontact = !activecontact"/>
                                             </vs-avatar>
                                         </vs-col>
                                         <vs-col w="3">
                                             <i class='bx bx-phone-call mr-1'/>Tel fixe :
-                                            {{ exhibitor.mainContact.telFixe }}
+                                            {{ exhibitor.mainContact ? exhibitor.mainContact.telFixe : 'no data yet' }}
                                         </vs-col>
                                         <vs-col w="4">
                                             <i class='bx bx-map-pin mr-1'/>Addresse :
-                                            {{ exhibitor.mainContact.address }}
+                                            {{ exhibitor.mainContact ? exhibitor.mainContact.address : 'no data yet'}}
                                         </vs-col>
                                         <vs-col w="3">
                                             <i class='bx bx-briefcase-alt-2 mr-1'/>Work :
-                                            {{ exhibitor.mainContact.work }}
+                                            {{ exhibitor.mainContact ? exhibitor.mainContact.work : 'no data yet' }}
                                         </vs-col>
                                     </vs-row>
                                 </div>
                                 Booking :
-                                <div class="box con-content">
-
-                                    <vs-table>
+                                <div class="box con-content" v-if="exhibitor.booking.length > 0">
+                                    <vs-table >
                                         <template #thead>
                                             <vs-tr>
                                                 <vs-th>
@@ -178,6 +178,12 @@
                                     </vs-table>
 
                                 </div>
+                                <div v-else>
+                                    <vs-button gradient block>
+                                        Add booking
+                                    </vs-button>
+                                </div>
+                                Game :
                                 <vs-button gradient block>
                                     View games
                                 </vs-button>
@@ -223,7 +229,7 @@
                                             </template>
                                             <template #tbody>
                                                 <vs-tr
-                                                        v-for="contact in exhibitor.contacts" :key="contact._id"
+                                                        v-for="contact in selected[0].contacts" :key="contact._id"
                                                 >
                                                     <vs-td>
                                                         {{ contact.firstName }}
@@ -253,13 +259,82 @@
 
                                     <template #footer>
                                         <div class="footer-dialog">
-                                            <vs-button gradient block @click="addFestival">
+                                            <vs-button gradient block @click="activeCreateContact = !activeCreateContact">
+                                                Create new
+                                            </vs-button>
+
+                                        </div>
+                                    </template>
+                                </vs-dialog>
+
+                                <vs-dialog overflow-hidden v-model="activeCreateContact">
+                                    <template #header>
+                                        <h4 class="not-margin">
+                                            Add <b>Contact</b>
+                                        </h4>
+                                    </template>
+
+
+                                    <div class="con-form ml-6 pl-6">
+                                        <vs-input v-model="firstName" placeholder="First Name">
+                                            <template #icon>
+                                                <i class='bx bx-game'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="lastName" placeholder="Last Name">
+                                            <template #icon>
+                                                <i class='bx bx-ghost'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="email" placeholder="Email">
+                                            <template #icon>
+                                                @
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="address" placeholder="Address">
+                                            <template #icon>
+                                                <i class='bx bx-map-pin'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="telMobile" placeholder="Tel Mobile">
+                                            <template #icon>
+                                                <i class='bx bxs-phone'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="telFixe" placeholder="Tel Fixe">
+                                            <template #icon>
+                                                <i class='bx bx-calculator'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <vs-input v-model="work" placeholder="Work">
+                                            <template #icon>
+                                                <i class='bx bx-wallet-alt'/>
+                                            </template>
+                                        </vs-input>
+                                        <br/>
+                                        <div class="flex" v-if="selected[0] && selected[0].mainContact">
+                                            <vs-checkbox v-model="isMainContact">Main contact ?</vs-checkbox>
+                                        </div>
+                                    </div>
+
+
+                                    <template #footer>
+                                        <div class="footer-dialog">
+                                            <vs-button block @click="addContact(selected[0]._id, selected[0].mainContact)">
                                                 Create
                                             </vs-button>
 
                                         </div>
                                     </template>
                                 </vs-dialog>
+
+
                             </div>
                         </vs-tr>
 
@@ -271,63 +346,37 @@
 
 
             <br/>
-            <!--<div class="ml-6">
-                <vs-row>
-                    <vs-col w="4" vs-type="flex" vs-justify="center" vs-align="center">
-                        <vs-card @click="active=!active">
-                            <template #img>
-                                <img src="../assets/card.png" alt="">
-                            </template>
-                        </vs-card>
-                    </vs-col>
-                    <vs-col w="4" v-for="festival in festivals" :key="festival._id" vs-type="flex" vs-justify="center"
-                            vs-align="center">
-                        <vs-card @click="$router.push('/festival/' + festival._id)">
-                            <template #title>
-                                <b-taglist>
-                                    <b-tag type="is-primary is-light"><i class='bx bx-game'/>
-                                        <span class="span">
-                                    {{festival && festival.gameBookedList ? festival.gameBookedList.length > 1 ? festival.gameBookedList.length + ' jeux' : festival.gameBookedList.length + ' jeu' : '0 jeu'}}
-                                  </span></b-tag>
-                                    <br>
-                                    <b-tag type="is-primary is-light"><i class='bx bx-male'/>
-                                        <span class="span">
-                                    {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exhibitors' : festival.exhibitors.length + ' exhibitor' : '0 exhibitor'}}
-                                  </span></b-tag>
-                                </b-taglist>
-                            </template>
-                            <template #img>
-                                <img src="../assets/headerCard3.png" alt="">
-                            </template>
-                            <template #text>
-                                In this festival
-                            </template>
-                            <template #interactions>
-                                <vs-button class="btn-chat" primary v-if="festival.current">
-                                    &lt;!&ndash;@click="changeName(festival._id, festival.name)"&ndash;&gt;
-                                    current
-                                </vs-button>
-                                <vs-button class="btn-chat" shadow primary>
-                                    &lt;!&ndash;@click="changeName(festival._id, festival.name)"&ndash;&gt;
-                                    <i class='bx bx-cube-alt'/>
-                                    {{festival.name}}
-                                </vs-button>
-                                <b-tooltip label="Delete search" type="is-primary is-light" position="is-top">
-                                    <vs-button
-                                            icon
-                                            color="rgb(198, 35, 35)"
-                                            gradient
-                                    >
-                                        &lt;!&ndash;@click.stop="deleteFestival(festival._id)"&ndash;&gt;
-                                        <i class='bx bxs-trash'/>
-                                    </vs-button>
-                                </b-tooltip>
-                            </template>
-                        </vs-card>
-                        <br/>
-                    </vs-col>
-                </vs-row>
-            </div>-->
+
+
+            <vs-dialog blur v-model="active">
+                <template #header>
+                    <h4 class="not-margin">
+                        Add <b>Exhibitor</b>
+                    </h4>
+                </template>
+
+
+                <div class="con-form">
+                    <vs-input v-model="exhibitorName" placeholder="Name">
+                        <template #icon>
+                            <i class='bx bx-note'/>
+                        </template>
+                    </vs-input>
+                    <div class="flex">
+                        <vs-checkbox v-model="publisherOnly">Publisher only ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="addExhibitor()">
+                            Create
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
+
 
 
 
@@ -339,22 +388,23 @@
 </template>
 
 <script>
-    import SideBar from "@/components/SideBar";
     import Navbar from "@/components/Navbar";
     import {getCookie} from "../utils/cookie/cookie";
     import UserNavbar from "../components/UserNavbar";
-    import {addFestival} from "../utils/admin/festivals/addFestival";
-    import {getAllFestivals} from "../utils/user/festivals/getAllFestivals";
+    import {addExhibitor} from "../utils/admin/Exhibitor/addExhibitor";
+    import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
+    import {getExhibitorsByCurrentFestival} from "../utils/admin/Exhibitor/getExhibitorByCurrentFestival";
+    import {addContact} from "../utils/admin/contact/addContact";
 
     export default {
         name: 'Exhibitor',
         components: {
             UserNavbar,
-            SideBar,
             Navbar
         },
         data: () => ({
             editActive: false,
+            activeCreateContact : false,
             edit: null,
             editProp: '',
             allCheck: false,
@@ -364,150 +414,65 @@
             user: false,
             classPresent : "",
             active: false,
+            exhibitorName : "",
+            publisherOnly : false,
             activecontact: false,
-            exhibitors: [
-                {
-                    "_id": 1,
-                    "mainContact" : {
-                        "email" : "Sincere@april.biz",
-                        "telMobile": "000000 0000 0000",
-                        "telFixe": "000000 0000 0000",
-                        "address" : "tettetetefvczge rue 3694 nvielae",
-                        "work" : "dev"
-                    },
-                    "contacts" : [
-                        {
-                            "_id" : "2",
-                            "firstName" : "Oui",
-                            "lastName" : "Oui",
-                            "email" : "Sincere@april.biz",
-                            "telMobile": "000000 0000 0000",
-                            "telFixe": "000000 0000 0000",
-                            "address" : "tettetetefvczge",
-                            "work" : "dev"
-                        },
-                        {
-                            "_id" : "3",
-                            "firstName" : "Non",
-                            "lastName" : "Non",
-                            "email" : "Sincere@april.biz",
-                            "telMobile": "000000 0000 0000",
-                            "telFixe": "000000 0000 0000",
-                            "address" : "tettetetefvczge",
-                            "work" : "dev"
-                        },
-                    ],
-                    "name": "Leanne Graham",
-                    "suiviId" : {
-                        "statusTracking": "en cours",
-                        "present": true,
-                        "datContact1" : Date.now(),
-                        "datContact2" : Date.now(),
-                    },
-                    "publisherOnly": true,
-                    "booking" : {
-                        "_id" : "3",
-                        "nbTableSpace1" : 5,
-                        "nbTableSpace2" : 5,
-                        "nbTableSpace3" : 5,
-                        "nbM2Space1" : 5,
-                        "nbM2Space2" : 5,
-                        "nbM2Space3" : 5,
-                        "animatorNeeded" : true,
-                        "crSended" : false,
-                        "invoiceSended" : false,
-                        "paymentOk" : false,
-                        "putOnPlan" : false,
-
-                    },
-                    "games" : {
-                        "name" : 'tonton flingueur'
-                    },
-                },
-                {
-                    "_id": 2,
-                    "mainContact" : {
-                        "email" : "Sinbgrspril.biz",
-                        "telMobile": "00111 0000 0000",
-                        "telFixe": "000000 01111000",
-                        "address" : "ooooooooooooooooooooooo",
-                        "work" : "deffffv"
-                    },
-                    "contacts" : [
-                        {
-                            "_id" : "5",
-                            "firstName" : "Non",
-                            "lastName" : "Non",
-                            "email" : "Sincere@april.biz",
-                            "telMobile": "000000 0000 0000",
-                            "telFixe": "000000 0000 0000",
-                            "address" : "tettetetefvczge",
-                            "work" : "dev"
-                        },
-                        {
-                            "_id" : "8",
-                            "firstName" : "Non",
-                            "lastName" : "Non",
-                            "email" : "Sincere@april.biz",
-                            "telMobile": "000000 0000 0000",
-                            "telFixe": "000000 0000 0000",
-                            "address" : "tettetetefvczge",
-                            "work" : "dev"
-                        },
-                    ],
-                    "name": "Ganine Graham",
-                    "suiviId" : {
-                        "statusTracking": "en cours",
-                        "present": false,
-                        "datContact1" : Date.now(),
-                        "datContact2" : Date.now(),
-                    },
-                    "publisherOnly": true,
-                    "booking" : {
-                        "_id" : "4",
-                        "nbTableSpace1" : 5,
-                        "nbTableSpace2" : 5,
-                        "nbTableSpace3" : 5,
-                        "nbM2Space1" : 5,
-                        "nbM2Space2" : 5,
-                        "nbM2Space3" : 5,
-                        "animatorNeeded" : true,
-                        "crSended" : false,
-                        "invoiceSended" : false,
-                        "paymentOk" : false,
-                        "putOnPlan" : false,
-
-                    },
-                    "games" : {
-                        "name" : 'tonton flingueur'
-                    },
-                },
-            ],
+            festival : null,
+            exhibitors: [],
             search: '',
+            firstName : '',
+            lastName : '',
+            email : '',
+            address : '',
+            telMobile : '',
+            telFixe : '',
+            work : '',
+            isMainContact : false
         }),
 
         beforeMount() {
             if (getCookie('token')) {
                 this.user = true
             }
-            getAllFestivals().then(res => {
+            getCurrentFestival().then(res => {
                 console.log(res.data);
-                this.festivals = res.data
-            })
+                this.festival = res.data;
+                getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
+                    console.log(res.data);
+                    this.exhibitors = res.data
+                })
+            });
+
         },
 
         methods: {
-            addFestival() {
-                if(this.name){
-                    addFestival(this.name).then(res => {
+            addExhibitor() {
+                if(this.exhibitorName){
+                    addExhibitor(this.exhibitorName, this.publisherOnly, this.festival._id).then(res => {
                         console.log(res.data);
-                        this.festivals.push(res.data)
+                        this.exhibitors.push(res.data);
                         this.active = false
                     })
                 }
+            },
+            addContact(publisherId, mainContact){
+                console.log(publisherId, mainContact);
+                if(!mainContact || this.isMainContact){
+                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, true).then(res =>{
+                    console.log(res.data)
+                })
+                }else{
+                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, false).then(res =>{
+                    console.log(res.data)
+                })
+                }
+                this.activeCreateContact = false;
+                this.activecontact = false;
+                window.location.reload()
             }
         }
 
 
     }
 </script>
+

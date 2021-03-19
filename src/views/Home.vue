@@ -22,6 +22,7 @@
     import {getCookie} from "../utils/cookie/cookie";
     import UserNavbar from "../components/UserNavbar";
     import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
+    import {getAllGames} from "../utils/user/gameBooking/getAllGames";
     export default {
         name: 'Home',
         components : {
@@ -41,6 +42,10 @@
             getCurrentFestival().then(res=>{
                 console.log(res.data);
                 this.currentFestival = res.data;
+            });
+
+            getAllGames().then(res=>{
+                console.log(res.data)
             })
         }
 
