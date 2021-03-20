@@ -26,7 +26,7 @@
                     </vs-col>
                     <vs-col w="4" v-for="festival in festivals" :key="festival._id" vs-type="flex" vs-justify="center"
                             vs-align="center">
-                        <vs-card @click="$router.push('/festival/' + festival._id)">
+                        <vs-card>
                             <template #title>
                                 <b-taglist>
                                     <b-tag type="is-primary is-light"><i class='bx bx-game'/>
@@ -147,10 +147,24 @@
 
         methods: {
             addFestival() {
-                addFestival(this.name).then(res => {
-                    console.log(res.data);
-                    this.festivals.push(res.data)
-                    this.active = false
+               if (this.name !== ''){
+                   addFestival(this.name).then(res => {
+                       console.log(res.data);
+                       this.festivals.push(res.data);
+                       this.active = false
+                   })
+               } else{
+                    this.failure()
+               }
+
+            },
+            failure() {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bxs-user-x' ></i>`,
+                    color : 'danger',
+                    position : 'top-center',
+                    title: 'Vous ne pouvez pas créer un festival sans nom...',
                 })
             }
         }

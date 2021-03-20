@@ -125,7 +125,7 @@
             succes() {
                 this.$vs.notification({
                     progress: 'auto',
-                    icon : `<i class='bx bx-badge-check' ></i>`,
+                    icon : `<i class='bx bx-badge-check' />`,
                     color : 'primary',
                     position : 'top-center',
                     title: 'Utilisateur crée avec succes',
@@ -134,7 +134,7 @@
             failure() {
                 this.$vs.notification({
                     progress: 'auto',
-                    icon : `<i class='bx bxs-user-x' ></i>`,
+                    icon : `<i class='bx bxs-user-x' />`,
                     color : 'danger',
                     position : 'top-center',
                     title: 'Erreur lors de l\'enregistrement de cet utilisateur',
