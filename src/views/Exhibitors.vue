@@ -141,37 +141,37 @@
                                         <template #tbody>
                                             <vs-tr>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbTableSpace1 }}
+                                                    {{ exhibitor.booking[0].nbTableSpace1 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbTableSpace2 }}
+                                                    {{ exhibitor.booking[0].nbTableSpace2 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbTableSpace3 }}
+                                                    {{ exhibitor.booking[0].nbTableSpace3 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbM2Space1 }}
+                                                    {{ exhibitor.booking[0].nbM2Space1 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbM2Space2 }}
+                                                    {{ exhibitor.booking[0].nbM2Space2 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.nbM2Space3 }}
+                                                    {{ exhibitor.booking[0].nbM2Space3 }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.animatorNeeded }}
+                                                    {{ exhibitor.booking[0].animatorNeeded }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.crSended }}
+                                                    {{ exhibitor.booking[0].crSended }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.invoiceSended }}
+                                                    {{ exhibitor.booking[0].invoiceSended }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.paymentOk }}
+                                                    {{ exhibitor.booking[0].paymentOk }}
                                                 </vs-td>
                                                 <vs-td>
-                                                    {{ exhibitor.booking.putOnPlan }}
+                                                    {{ exhibitor.booking[0].putOnPlan }}
                                                 </vs-td>
                                             </vs-tr>
                                         </template>
@@ -179,7 +179,7 @@
 
                                 </div>
                                 <div v-else>
-                                    <vs-button gradient block>
+                                    <vs-button gradient block @click="activeBooking=!activeBooking">
                                         Add booking
                                     </vs-button>
                                 </div>
@@ -258,7 +258,7 @@
                                     </div>
 
                                     <template #footer>
-                                        <div class="footer-dialog">
+                                        <div class="footer-dialog" v-if="admin">
                                             <vs-button gradient block @click="activeCreateContact = !activeCreateContact">
                                                 Create new
                                             </vs-button>
@@ -347,7 +347,7 @@
 
             <br/>
 
-
+            <!--ADD EXHIBITOR POPUP-->
             <vs-dialog blur v-model="active">
                 <template #header>
                     <h4 class="not-margin">
@@ -378,6 +378,108 @@
             </vs-dialog>
 
 
+            <!--BOOKING POPUP-->
+            <vs-dialog blur v-model="activeBooking">
+                <template #header>
+                    <h4 class="not-margin">
+                        Add <b>Booking </b> to <i>{{selected[0].name}}</i>
+                    </h4>
+                </template>
+
+
+                <div class="con-form">
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables for space 1">
+                                <template #icon>
+                                    <i class='bx bx-dice-1'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables for space 2">
+                                <template #icon>
+                                    <i class='bx bx-dice-2'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables for space 3">
+                                <template #icon>
+                                    <i class='bx bx-dice-3'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 for space 1">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 for space 2">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 for space 3">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <div class="flex">
+                        <vs-checkbox v-model="animatorNeeded">Need animator ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="addBooking(selected[0]._id)">
+                            Add
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
+
+
+           <!-- <vs-dialog v-model="editActive">
+                <template #header>
+                    Change Prop {{ editProp }}
+                </template>
+                <vs-select @change="editActive = false" block v-if="editProp == 'statusTraking'" placeholder="Select" v-model="edit[editProp]">
+                    <vs-option label="pas de réponse" value="pas de réponse">
+                        pas de réponse
+                    </vs-option>
+                    <vs-option label="en discussion" value="en discussion">
+                        en discussion
+                    </vs-option>
+                    <vs-option label="présent " value="présent ">
+                        présent
+                    </vs-option>
+                    <vs-option disabled label="liste de jeux demandée" value="liste de jeux demandée">
+                        liste de jeux demandée
+                    </vs-option>
+                    <vs-option label="liste de jeux reçue" value="liste de jeux reçue">
+                        liste de jeux reçue
+                    </vs-option>
+                    <vs-option label="absent " value="absent ">
+                        absent
+                    </vs-option>
+                </vs-select>
+            </vs-dialog>-->
 
 
         </div>
@@ -395,6 +497,7 @@
     import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
     import {getExhibitorsByCurrentFestival} from "../utils/admin/Exhibitor/getExhibitorByCurrentFestival";
     import {addContact} from "../utils/admin/contact/addContact";
+    import {addBooking} from "../utils/admin/booking/addBooking";
 
     export default {
         name: 'Exhibitor',
@@ -403,20 +506,22 @@
             Navbar
         },
         data: () => ({
-            editActive: false,
             activeCreateContact : false,
+            editActive: false,
             edit: null,
-            editProp: '',
+            editProp: {},
             allCheck: false,
             page: 1,
             max: 3,
             selected: [],
             user: false,
+            admin: false,
             classPresent : "",
             active: false,
             exhibitorName : "",
             publisherOnly : false,
             activecontact: false,
+            activeBooking: false,
             festival : null,
             exhibitors: [],
             search: '',
@@ -427,12 +532,22 @@
             telMobile : '',
             telFixe : '',
             work : '',
-            isMainContact : false
+            isMainContact : false,
+            nbTableSpace1 : null,
+            nbTableSpace2 : null,
+            nbTableSpace3 : null,
+            nbM2Space1 : null,
+            nbM2Space2 : null,
+            nbM2Space3 : null,
+            animatorNeeded : false
         }),
 
         beforeMount() {
             if (getCookie('token')) {
                 this.user = true
+            }
+            if (getCookie('admin')===true) {
+                this.admin = true
             }
             getCurrentFestival().then(res => {
                 console.log(res.data);
@@ -469,6 +584,18 @@
                 this.activeCreateContact = false;
                 this.activecontact = false;
                 window.location.reload()
+            },
+            addBooking(exhibitorId){
+                if(this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3){
+                    addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
+                        console.log(res.data);
+                        getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
+                            console.log(res.data);
+                            this.exhibitors = res.data
+                        })
+                    });
+                    this.activeBooking = false
+                }
             }
         }
 
