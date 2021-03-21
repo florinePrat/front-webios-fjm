@@ -26,7 +26,7 @@
                     </vs-col>
                     <vs-col w="4" v-for="festival in festivals" :key="festival._id" vs-type="flex" vs-justify="center"
                             vs-align="center">
-                        <vs-card>
+                        <vs-card @click="$router.push('/festival/'+festival._id)">
                             <template #title>
                                 <b-taglist>
                                     <b-tag type="is-primary is-light"><i class='bx bx-game'/>

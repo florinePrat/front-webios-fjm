@@ -18,6 +18,14 @@ const routes = [
         },
     },
     {
+        path: '/festival/:festivalId',
+        name: 'Festival Overview',
+        component: () => import('../views/FestivalOverview.vue'),
+        meta: {
+            title: 'FJM | Festival Overview',
+        },
+    },
+    {
         path: '/exhibitor',
         name: 'Exhibitor',
         component: () => import('../views/Exhibitors.vue'),
