@@ -555,8 +555,12 @@
                 getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
                     console.log(res.data);
                     this.exhibitors = res.data.reverse()
+                }).catch(e =>{
+                    console.log(e);
                 })
-            });
+            }).catch(e =>{
+                    console.log(e);
+                });
 
         },
 
@@ -592,7 +596,9 @@
                         getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
                             console.log(res.data);
                             this.exhibitors = res.data
-                        })
+                        }).catch(e =>{
+                    console.log(e);
+                })
                     });
                     this.activeBooking = false
                 }

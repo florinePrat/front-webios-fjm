@@ -142,7 +142,9 @@
             getAllFestivals().then(res => {
                 console.log(res.data);
                 this.festivals = res.data.reverse()
-            })
+            }).catch(e =>{
+                    console.log(e);
+                })
         },
 
         methods: {

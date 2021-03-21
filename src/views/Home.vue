@@ -116,11 +116,15 @@
             getCurrentFestival().then(res=>{
                 console.log(res.data);
                 this.currentFestival = res.data;
-            });
+            }).catch(e =>{
+                    console.log(e);
+                });
 
             getAllGames().then(res=>{
                 console.log(res.data)
-            })
+            }).catch(e =>{
+                    console.log(e);
+                })
         }
 
 

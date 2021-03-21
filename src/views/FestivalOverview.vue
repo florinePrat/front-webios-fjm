@@ -155,13 +155,19 @@
                 console.log(res.data);
                 this.festival = res.data;
                 this.space = res.data.space
-            })
+            }).catch(e =>{
+                    console.log(e);
+                })
         },
 
         methods : {
             addSpaceToFestival(){
-                addSpace(this.name, this.$route.params.festivalId, this.numberOfTable1, this.unitPriceOfTable1, this.m2Price1, this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3, this.m2Price3).then(res =>{
+                addSpace(this.name, this.$route.params.festivalId, this.numberOfTable1, this.unitPriceOfTable1, this.m2Price1,
+                 this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3,
+                  this.m2Price3).then(res =>{
                     console.log(res.data)
+                }).catch(e =>{
+                    console.log(e);
                 })
             }
         }
