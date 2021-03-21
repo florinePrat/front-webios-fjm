@@ -141,7 +141,7 @@
             }
             getAllFestivals().then(res => {
                 console.log(res.data);
-                this.festivals = res.data
+                this.festivals = res.data.reverse()
             })
         },
 
@@ -150,7 +150,7 @@
                if (this.name !== ''){
                    addFestival(this.name).then(res => {
                        console.log(res.data);
-                       this.festivals.push(res.data);
+                       this.festivals.unshift(res.data);
                        this.active = false
                    })
                } else{

@@ -15,13 +15,6 @@
         <br/>
         <div class="ml-6">
             <vs-row>
-                <vs-col w="4" vs-type="flex" vs-justify="center" vs-align="center">
-                    <vs-card @click="active=!active">
-                        <template #img>
-                            <img src="../assets/headerCardGame.png" alt="">
-                        </template>
-                    </vs-card>
-                </vs-col>
                 <vs-col w="4" v-for="game in games" :key="game._id" vs-type="flex" vs-justify="center"
                         vs-align="center">
                     <vs-card>
@@ -45,6 +38,11 @@
                                 <b-tag type="is-primary is-light"><i class='bx bx-cube-alt'/>
                                     <span class="span">
                                    {{game.gameId && game.gameId.category}}
+                                  </span></b-tag>
+                                <br/>
+                                <b-tag type="is-primary is-light"><i class='bx bx-book-reader'/>
+                                    <span class="span">
+                                   {{game.exhibitorId && game.exhibitorId.name}}
                                   </span></b-tag>
                             </b-taglist>
                         </template>

@@ -554,7 +554,7 @@
                 this.festival = res.data;
                 getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
                     console.log(res.data);
-                    this.exhibitors = res.data
+                    this.exhibitors = res.data.reverse()
                 })
             });
 
