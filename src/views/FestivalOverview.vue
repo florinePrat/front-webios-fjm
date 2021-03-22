@@ -17,6 +17,12 @@
             Spaces :
             <br/>
             <br/>
+            <div v-if="space">
+                <h3>Here's the space named <b>{{space.name}}</b></h3>
+                <h5> Number of table of the first zone : {{space.numberOfTable1}} <br> 
+                Je te laisse trouver un template je vais me coucher, bonne nuit x)</h5>
+            </div>
+
             <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space">
                 Add Space
             </vs-button>
@@ -163,16 +169,19 @@
 
         methods : {
             addSpaceToFestival(){
-                addSpace(this.name, this.$route.params.festivalId, this.numberOfTable1, this.unitPriceOfTable1, this.m2Price1,
-                 this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3,
-                  this.m2Price3).then(res =>{
-                    console.log(res.data)
-                    this.notificationSucces('Space créé avec succès')
-                }).catch(e =>{
-                    console.log(e);
-                    this.notificationErreur(e.response.data.error)
-
-                })
+                if (this.name !== ''){
+                    addSpace(this.name, this.$route.params.festivalId, this.numberOfTable1, this.unitPriceOfTable1, this.m2Price1,
+                    this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3,
+                    this.m2Price3).then(res =>{
+                        console.log(res.data)
+                        this.notificationSucces('Space créé avec succès')
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
+                }else{
+                    this.notificationErreur('Vous ne pouvez pas créer une zone sans nom...')
+               }
             },
             notificationErreur(title) {
                 this.$vs.notification({
