@@ -99,7 +99,7 @@
                         "nbPlayersMin": 2,
                         "nbPlayersMax": 15,
                         "category" : 'Ma super categorie',
-                        "description" : "Le best jeu ever, forni en unique exemplaire dans le monde",
+                        "description" : "Le best jeu ever, fourni en unique exemplaire dans le monde",
                         "prototypeGame" : true
                         },
                 'exhibitorId': {'name' : 'Mon exhibitor 1'},
@@ -117,13 +117,15 @@
                 console.log(res.data);
                 this.currentFestival = res.data;
             }).catch(e =>{
-                    console.log(e);
+                console.log(e);
+                this.notificationErreur(e.response.data.error)
                 });
 
             getAllGames().then(res=>{
                 console.log(res.data)
             }).catch(e =>{
-                    console.log(e);
+                console.log(e);
+                this.notificationErreur(e.response.data.error)
                 })
         }
 

@@ -155,12 +155,15 @@
                        console.log(res.data);
                        this.festivals.unshift(res.data);
                        this.active = false;
-                       this.notificationSucces('Festival crée avec succès')
-                   })
+                       this.notificationSucces('Festival créé avec succès')
+                   }).catch(e =>{
+                    console.log(e);
+                    this.notificationErreur(e.response.data.error)
+
+                })
                } else{
                     this.notificationErreur('Vous ne pouvez pas créer un festival sans nom...')
                }
-
             },
             notificationErreur(title) {
                 this.$vs.notification({

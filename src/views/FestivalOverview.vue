@@ -156,7 +156,8 @@
                 this.festival = res.data;
                 this.space = res.data.space
             }).catch(e =>{
-                    console.log(e);
+                console.log(e);
+                this.notificationErreur(e.response.data.error)
                 })
         },
 
@@ -166,10 +167,31 @@
                  this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3,
                   this.m2Price3).then(res =>{
                     console.log(res.data)
+                    this.notificationSucces('Space créé avec succès')
                 }).catch(e =>{
                     console.log(e);
+                    this.notificationErreur(e.response.data.error)
+
                 })
-            }
+            },
+            notificationErreur(title) {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bxs-user-x'/>`,
+                    color : 'danger',
+                    position : 'top-center',
+                    title: title,
+                })
+            },
+            notificationSucces(title) {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bx-badge-check' />`,
+                    color : 'primary',
+                    position : 'top-center',
+                    title: title,
+                })
+            },
         }
 
 
