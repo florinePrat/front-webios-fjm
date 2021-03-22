@@ -15,6 +15,17 @@
             </vs-row>
             <br/>
 
+            <div class="center con-switch">
+            <vs-switch v-model="active3" @click="changeGetExhibitor()">
+                <template #off>
+                    Exhibitors for all festivals
+                </template>
+                <template #on>
+                    Exhibitors for current festival
+                </template>
+            </vs-switch>
+            </div>
+
             <div class="center">
                 <vs-table  v-model="selected">
                     <template #header>
@@ -495,9 +506,10 @@
     import UserNavbar from "../components/UserNavbar";
     import {addExhibitor} from "../utils/admin/Exhibitor/addExhibitor";
     import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
-    import {getExhibitorsByCurrentFestival} from "../utils/admin/Exhibitor/getExhibitorByCurrentFestival";
+    import {getAllExhibitors} from "../utils/admin/Exhibitor/getAllExhibitors";
     import {addContact} from "../utils/admin/contact/addContact";
     import {addBooking} from "../utils/admin/booking/addBooking";
+    import {getExhibitorsByfestivaId} from "../utils/admin/Exhibitor/getExhibitorsByFestivalId";
 
     export default {
         name: 'Exhibitor',
@@ -539,7 +551,8 @@
             nbM2Space1 : null,
             nbM2Space2 : null,
             nbM2Space3 : null,
-            animatorNeeded : false
+            animatorNeeded : false,
+            active3 : true
         }),
 
         beforeMount() {
@@ -552,17 +565,26 @@
             getCurrentFestival().then(res => {
                 console.log(res.data);
                 this.festival = res.data;
-                getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
+               /* getAllExhibitors().then(res =>{
                     console.log(res.data);
                     this.exhibitors = res.data.reverse()
                 }).catch(e =>{
                     console.log(e);
+                });
+*/
+                getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                    console.log(res.data.exhibitors);
+                    this.exhibitors = res.data.exhibitors.reverse()
+                }).catch(e =>{
+                    console.log(e);
                 })
+
             }).catch(e =>{
                     console.log(e);
                 });
 
         },
+
 
         methods: {
             addExhibitor() {
@@ -593,16 +615,39 @@
                 if(this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3){
                     addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
                         console.log(res.data);
-                        getExhibitorsByCurrentFestival(this.festival._id).then(res =>{
+                        /*getAllExhibitors().then(res =>{
                             console.log(res.data);
                             this.exhibitors = res.data
                         }).catch(e =>{
-                    console.log(e);
-                })
+                            console.log(e);
+                        });*/
+                        getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                            console.log(res.data.exhibitors);
+                            this.exhibitors = res.data.exhibitors
+                        }).catch(e =>{
+                            console.log(e);
+                        })
                     });
                     this.activeBooking = false
                 }
-            }
+            },
+            changeGetExhibitor() {
+                if(!this.active3){
+                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        console.log(res.data.exhibitors);
+                        this.exhibitors = res.data.exhibitors
+                    }).catch(e =>{
+                        console.log(e);
+                    })
+                }else{
+                    getAllExhibitors().then(res =>{
+                        console.log(res.data);
+                        this.exhibitors = res.data
+                    }).catch(e =>{
+                        console.log(e);
+                    });
+                }
+            },
         }
 
 
