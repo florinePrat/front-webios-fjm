@@ -18,9 +18,99 @@
             <br/>
             <br/>
             <div v-if="space">
-                <h3>Here's the space named <b>{{space.name}}</b></h3>
-                <h5> Number of table of the first zone : {{space.numberOfTable1}} <br> 
-                Je te laisse trouver un template je vais me coucher, bonne nuit x)</h5>
+                <vs-input
+                        disabled
+                        primary
+                        v-model="space.name"
+                        state="primary"
+                        label="name" />
+                <br/>
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        Premium
+                        <br/>
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.numberOfTable1"
+                                state="primary"
+                                label="Number of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.unitPriceOfTable1"
+                                state="primary"
+                                label="Unit price of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.m2Price1"
+                                state="primary"
+                                label="Price of m2" />
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        Medium
+                        <br/>
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.numberOfTable2"
+                                state="primary"
+                                label="Number of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.unitPriceOfTable2"
+                                state="primary"
+                                label="Unit price of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.m2Price2"
+                                state="primary"
+                                label="Price of m2" />
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        Standard
+                        <br/>
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.numberOfTable3"
+                                state="primary"
+                                label="Number of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.unitPriceOfTable3"
+                                state="primary"
+                                label="Unit price of table" />
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="space.m2Price3"
+                                state="primary"
+                                label="Price of m2" />
+                    </vs-col>
+                </vs-row>
             </div>
 
             <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space">
