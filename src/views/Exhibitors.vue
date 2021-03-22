@@ -546,7 +546,7 @@
             if (getCookie('token')) {
                 this.user = true
             }
-            if (getCookie('admin')===true) {
+            if (getCookie('admin')) {
                 this.admin = true
             }
             getCurrentFestival().then(res => {

@@ -143,8 +143,9 @@
                 console.log(res.data);
                 this.festivals = res.data.reverse()
             }).catch(e =>{
-                    console.log(e);
-                })
+                console.log(e);
+                this.notificationErreur(e.response.data.error)
+            })
         },
 
         methods: {
@@ -153,22 +154,32 @@
                    addFestival(this.name).then(res => {
                        console.log(res.data);
                        this.festivals.unshift(res.data);
-                       this.active = false
+                       this.active = false;
+                       this.notificationSucces('Festival crée avec succès')
                    })
                } else{
-                    this.failure()
+                    this.notificationErreur('Vous ne pouvez pas créer un festival sans nom...')
                }
 
             },
-            failure() {
+            notificationErreur(title) {
                 this.$vs.notification({
                     progress: 'auto',
-                    icon : `<i class='bx bxs-user-x' ></i>`,
+                    icon : `<i class='bx bxs-user-x'/>`,
                     color : 'danger',
                     position : 'top-center',
-                    title: 'Vous ne pouvez pas créer un festival sans nom...',
+                    title: title,
                 })
-            }
+            },
+            notificationSucces(title) {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bx-badge-check' />`,
+                    color : 'primary',
+                    position : 'top-center',
+                    title: title,
+                })
+            },
         }
 
 
