@@ -210,11 +210,11 @@
             Zones :
             <br/>
             <br/>
-            <div v-if="zone">
+            <div v-if="zones">
                 <vs-input
                         disabled
                         primary
-                        v-model="zone.name"
+                        v-model="zones.name"
                         state="primary"
                         label="name" />
                 <br/>
