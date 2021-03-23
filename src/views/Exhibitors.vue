@@ -57,12 +57,15 @@
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
                                 Publisher Only
                             </vs-th>
+                            <vs-th v-if="!active3">
+                                Add to current
+                            </vs-th>
                         </vs-tr>
                     </template>
                     <template #tbody>
                         <vs-tr
                                 :key="i"
-                                v-for="(exhibitor, i) in $vs.getSearch(exhibitors, search)"
+                                v-for="(exhibitor, i) in $vs.getSearch(active3 ? exhibitors : Allexhibitors, search)"
                                 :data="exhibitor"
                                 :is-selected="!!selected.includes(exhibitor)"
                         >
@@ -84,6 +87,11 @@
                             </vs-td>
                             <vs-td>
                                 {{ exhibitor.publisherOnly ? 'yes' : 'no' }}
+                            </vs-td>
+                            <vs-td v-if="!active3" >
+                                <div class="center">
+                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">Add </vs-button>
+                                </div>
                             </vs-td>
 
                             <template #expand>
@@ -510,6 +518,7 @@
     import {addContact} from "../utils/admin/contact/addContact";
     import {addBooking} from "../utils/admin/booking/addBooking";
     import {getExhibitorsByfestivaId} from "../utils/admin/Exhibitor/getExhibitorsByFestivalId";
+    import {addExistingExhibitor} from "../utils/admin/Exhibitor/addExistingExhibitorToCurrentFestival";
 
     export default {
         name: 'Exhibitor',
@@ -536,6 +545,7 @@
             activeBooking: false,
             festival : null,
             exhibitors: [],
+            Allexhibitors: [],
             search: '',
             firstName : '',
             lastName : '',
@@ -552,7 +562,7 @@
             nbM2Space2 : null,
             nbM2Space3 : null,
             animatorNeeded : false,
-            active3 : true
+            active3 : true,
         }),
 
         beforeMount() {
@@ -565,13 +575,12 @@
             getCurrentFestival().then(res => {
                 console.log(res.data);
                 this.festival = res.data;
-               /* getAllExhibitors().then(res =>{
+                getAllExhibitors().then(res =>{
                     console.log(res.data);
-                    this.exhibitors = res.data.reverse()
+                    this.Allexhibitors = res.data.reverse()
                 }).catch(e =>{
                     console.log(e);
                 });
-*/
                 getExhibitorsByfestivaId(this.festival._id).then(res =>{
                     console.log(res.data.exhibitors);
                     this.exhibitors = res.data.exhibitors.reverse()
@@ -615,12 +624,6 @@
                 if(this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3){
                     addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
                         console.log(res.data);
-                        /*getAllExhibitors().then(res =>{
-                            console.log(res.data);
-                            this.exhibitors = res.data
-                        }).catch(e =>{
-                            console.log(e);
-                        });*/
                         getExhibitorsByfestivaId(this.festival._id).then(res =>{
                             console.log(res.data.exhibitors);
                             this.exhibitors = res.data.exhibitors
@@ -635,18 +638,44 @@
                 if(!this.active3){
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
-                        this.exhibitors = res.data.exhibitors
+                        this.exhibitors = res.data.exhibitors.reverse()
                     }).catch(e =>{
                         console.log(e);
                     })
                 }else{
                     getAllExhibitors().then(res =>{
                         console.log(res.data);
-                        this.exhibitors = res.data
+                        this.Allexhibitors = res.data.reverse()
                     }).catch(e =>{
                         console.log(e);
                     });
                 }
+            },
+            addToCurrentFestival(exhibitorId){
+                addExistingExhibitor(this.festival._id, exhibitorId).then(res=>{
+                    console.log(res.data);
+                    this.notificationSucces('Bien ajouté au festival courant')
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
+            },
+            notificationErreur(title) {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bxs-user-x'/>`,
+                    color : 'danger',
+                    position : 'top-center',
+                    title: title,
+                })
+            },
+            notificationSucces(title) {
+                this.$vs.notification({
+                    progress: 'auto',
+                    icon : `<i class='bx bx-badge-check' />`,
+                    color : 'primary',
+                    position : 'top-center',
+                    title: title,
+                })
             },
         }
 
