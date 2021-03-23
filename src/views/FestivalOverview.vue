@@ -207,10 +207,13 @@
 
         <!-- ZONE -->
         <div class="ml-6 pl-6">
+            <br/>
+            <br/>
             Zones :
             <br/>
             <br/>
             <div v-if="zones">
+                <vs-row>
                 <vs-col w="4" v-for="zone in zones" :key="zone._id" vs-type="flex" vs-justify="center"
                             vs-align="center">
                 <vs-input
@@ -218,8 +221,10 @@
                         primary
                         v-model="zone.name"
                         state="primary"
-                        label="name" />
+                        label="Zone : " />
+                        <br/>
                 </vs-col>
+                </vs-row>
                 <br/>
             </div>
 
@@ -258,6 +263,7 @@
     import {getFestivalById} from "../utils/user/festivals/getFestivalById";
     import {addSpace} from "../utils/admin/space/addSpace";
     import {addZone} from "../utils/admin/zone/addZone";
+
     export default {
         name: 'Home',
         components : {
@@ -306,8 +312,12 @@
                     this.numberOfTable2, this.unitPriceOfTable2, this.m2Price2, this.numberOfTable3, this.unitPriceOfTable3,
                     this.m2Price3).then(res =>{
                         console.log(res.data);
-                        this.space = res.data.space;
-                        this.$router.go() 
+                        //this.space = res.data.space;
+                        /*
+                        getFestivalById(this.$route.params.festivalId).then(res =>{
+                            this.space = res.data.space;
+                        })*/
+                        //this.$router.go() 
                         this.notificationSucces('Space créé avec succès')
                     }).catch(e =>{
                         console.log(e);
@@ -320,7 +330,12 @@
             addZoneToFestival(){
                 if (this.nameZone !== ''){
                     addZone(this.nameZone, this.$route.params.festivalId).then(res =>{
+                        
+                        getFestivalById(this.$route.params.festivalId).then(res =>{
+                            this.zones = res.data.zoneId;
+                        })
                         console.log(res.data)
+
                         this.notificationSucces('Zone créé avec succès')
                     }).catch(e =>{
                         console.log(e);
