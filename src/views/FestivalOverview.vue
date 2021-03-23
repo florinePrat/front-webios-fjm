@@ -113,7 +113,7 @@
                 </vs-row>
             </div>
 
-            <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space">
+            <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space" >
                 Add Space
             </vs-button>
 
@@ -211,12 +211,15 @@
             <br/>
             <br/>
             <div v-if="zones">
+                <vs-col w="4" v-for="zone in zones" :key="zone._id" vs-type="flex" vs-justify="center"
+                            vs-align="center">
                 <vs-input
                         disabled
                         primary
-                        v-model="zones.name"
+                        v-model="zone.name"
                         state="primary"
                         label="name" />
+                </vs-col>
                 <br/>
             </div>
 
@@ -288,7 +291,8 @@
             getFestivalById(this.$route.params.festivalId).then(res =>{
                 console.log(res.data);
                 this.festival = res.data;
-                this.space = res.data.space
+                this.space = res.data.space;
+                this.zones = res.data.zoneId;
             }).catch(e =>{
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
@@ -303,6 +307,7 @@
                     this.m2Price3).then(res =>{
                         console.log(res.data);
                         this.space = res.data.space;
+                        this.$router.go() 
                         this.notificationSucces('Space créé avec succès')
                     }).catch(e =>{
                         console.log(e);
@@ -313,8 +318,8 @@
                }
             },
             addZoneToFestival(){
-                if (this.name !== ''){
-                    addZone(this.name, this.$route.params.festivalId).then(res =>{
+                if (this.nameZone !== ''){
+                    addZone(this.nameZone, this.$route.params.festivalId).then(res =>{
                         console.log(res.data)
                         this.notificationSucces('Zone créé avec succès')
                     }).catch(e =>{
