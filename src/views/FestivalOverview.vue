@@ -205,6 +205,42 @@
 
         </div>
 
+        <!-- ZONE -->
+        <div class="ml-6 pl-6">
+            Zones :
+            <br/>
+            <br/>
+            <div v-if="zone">
+                <vs-input
+                        disabled
+                        primary
+                        v-model="zone.name"
+                        state="primary"
+                        label="name" />
+                <br/>
+            </div>
+
+            <vs-button @click="activeAddZone=!activeAddZone">
+                Add Zone
+            </vs-button>
+
+            <div class="center content-inputs" v-if="activeAddZone">
+                <br/>
+                <vs-input
+                        primary
+                        v-model="nameZone"
+                        state="primary"
+                        placeholder="Name of zone" />
+                <br/>
+
+                <br/>
+                <vs-button @click="addZoneToFestival()">
+                    Add
+                </vs-button>
+            </div>
+
+        </div>
+
 
 
     </div>
@@ -218,6 +254,7 @@
     import UserNavbar from "../components/UserNavbar";
     import {getFestivalById} from "../utils/user/festivals/getFestivalById";
     import {addSpace} from "../utils/admin/space/addSpace";
+    import {addZone} from "../utils/admin/zone/addZone";
     export default {
         name: 'Home',
         components : {
@@ -240,7 +277,8 @@
             numberOfTable3 : '',
             unitPriceOfTable3 : '',
             m2Price3 : '',
-            activeAddSpace : false
+            activeAddSpace : false,
+            activeAddZone : false
         }),
 
         beforeMount() {
@@ -265,6 +303,19 @@
                     this.m2Price3).then(res =>{
                         console.log(res.data)
                         this.notificationSucces('Space créé avec succès')
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
+                }else{
+                    this.notificationErreur('Vous ne pouvez pas créer un espace sans nom...')
+               }
+            },
+            addZoneToFestival(){
+                if (this.name !== ''){
+                    addZone(this.name, this.$route.params.festivalId).then(res =>{
+                        console.log(res.data)
+                        this.notificationSucces('Zone créé avec succès')
                     }).catch(e =>{
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
