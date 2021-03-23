@@ -56,16 +56,6 @@
                                     <i class='bx bx-cube-alt'/>
                                     {{festival.name}}
                                 </vs-button>
-                                <b-tooltip label="Delete search" type="is-primary is-light" position="is-top">
-                                    <vs-button
-                                            icon
-                                            color="rgb(198, 35, 35)"
-                                            gradient
-                                    >
-                                        <!--@click.stop="deleteFestival(festival._id)"-->
-                                        <i class='bx bxs-trash'/>
-                                    </vs-button>
-                                </b-tooltip>
                             </template>
                         </vs-card>
                         <br/>

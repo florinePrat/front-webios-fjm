@@ -198,13 +198,13 @@
 
                                 </div>
                                 <div v-else>
-                                    <vs-button gradient block @click="activeBooking=!activeBooking">
+                                    <vs-button gradient block v-if="active3" @click="activeBooking=!activeBooking">
                                         Add booking
                                     </vs-button>
                                 </div>
                                 Game :
-                                <vs-button gradient block>
-                                    View games
+                                <vs-button gradient block  @click="activeBookingGame=!activeBookingGame">
+                                    Add games
                                 </vs-button>
                             </template>
 
@@ -405,7 +405,7 @@
                     </h4>
                 </template>
 
-
+                <br/>
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
@@ -473,6 +473,172 @@
                 </template>
             </vs-dialog>
 
+            <!--BOOKING GAME POPUP-->
+            <vs-dialog blur v-model="activeBookingGame">
+                <template #header>
+                    <h4 class="not-margin">
+                        Add <b>Game </b> to <i>{{selected[0].name}}</i>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        <vs-input shadow warn icon-after v-model="name" label-placeholder="name">
+                            <template #icon>
+                                <i class='bx bx-rename'/>
+                            </template>
+                        </vs-input>
+                    </vs-col>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="ageMin" label-placeholder="age min">
+                                <template #icon>
+                                    <i class='bx bxs-baby-carriage'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn icon-after v-model="notice" label-placeholder="link of notice">
+                                <template #icon>
+                                    <i class='bx bx-link-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="duration" label-placeholder="duration">
+                                <template #icon>
+                                    <i class='bx bx-time'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMin" label-placeholder="nb player min">
+                                <template #icon>
+                                    <i class='bx bx-user-minus'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMax" label-placeholder="nb player max">
+                                <template #icon>
+                                    <i class='bx bxs-user-plus'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn icon-after v-model="category" label-placeholder="category">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        <vs-input shadow warn icon-after v-model="description" label-placeholder="description">
+                            <template #icon>
+                                <i class='bx bx-align-left'/>
+                            </template>
+                        </vs-input>
+                    </vs-col>
+                    <br/>
+                    <div class="flex">
+                        <vs-checkbox v-model="prototypeGame">Prototype ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="activeBookingGamePart2=!activeBookingGamePart2">
+                            Next
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
+
+            <!--BOOKING GAME PART 2 POPUP-->
+            <vs-dialog blur v-model="activeBookingGamePart2">
+                <template #header>
+                    <h4 class="not-margin">
+                        Add <b>Booking </b> to <i>{{name}}</i>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        Zone :
+                        <select v-model="zoneBooking"
+                                   placeholder="Select zone">
+                            <option v-for="(zone, i) in festival.zoneId"
+                                       :key="i">
+                                {{zone.name}}
+                            </option>
+                        </select>
+                    </vs-col>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="qtExhib" label-placeholder="Quantité exposé">
+                                <template #icon>
+                                    <i class='bx bxs-baby-carriage'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="qtSend" label-placeholder="Quantité envoyé">
+                                <template #icon>
+                                    <i class='bx bx-link-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-checkbox v-model="tombola">Tombola ?</vs-checkbox>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-checkbox v-model="dotation">Donnation ?</vs-checkbox>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-checkbox v-model="putOnPlan">Placé ?</vs-checkbox>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-checkbox v-model="bringByExhibitor">Apporté par l'exposant ?</vs-checkbox>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        <vs-input shadow warn icon-after v-model="comment" label-placeholder="Commentaire">
+                            <template #icon>
+                                <i class='bx bx-align-left'/>
+                            </template>
+                        </vs-input>
+                    </vs-col>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="sendBookingGame()">
+                            Valider
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
 
            <!-- <vs-dialog v-model="editActive">
                 <template #header>
@@ -543,6 +709,8 @@
             publisherOnly : false,
             activecontact: false,
             activeBooking: false,
+            activeBookingGame: false,
+            activeBookingGamePart2: false,
             festival : null,
             exhibitors: [],
             Allexhibitors: [],
@@ -563,6 +731,23 @@
             nbM2Space3 : null,
             animatorNeeded : false,
             active3 : true,
+            name : '',
+            ageMin : '',
+            notice : '',
+            duration : '',
+            nbPlayersMin : '',
+            nbPlayersMax : false,
+            category : '',
+            description : '',
+            prototypeGame : '',
+            zoneBooking : '',
+            qtExhib : '',
+            qtSend : '',
+            tombola :false,
+            dotation :false,
+            putOnPlan :false,
+            bringByExhibitor :false,
+            comment : '',
         }),
 
         beforeMount() {
@@ -658,6 +843,25 @@
                 }).catch(e=>{
                     this.notificationErreur(e.response.data.error)
                 })
+            },
+            sendBookingGame(){
+                console.log(this.name,
+                this.ageMin,
+                this.notice,
+                this.duration,
+                this.nbPlayersMin,
+                this.nbPlayersMax,
+                this.category,
+                this.description,
+                this.prototypeGame,
+                this.zoneBooking,
+                this.qtExhib,
+                this.qtSend,
+                this.tombola,
+                this.dotation,
+                this.putOnPlan,
+                this.bringByExhibitor,
+                this.comment)
             },
             notificationErreur(title) {
                 this.$vs.notification({
