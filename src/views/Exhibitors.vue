@@ -198,12 +198,12 @@
 
                                 </div>
                                 <div v-else>
-                                    <vs-button gradient block v-if="active3" @click="activeBooking=!activeBooking">
+                                    <vs-button gradient block v-if="active3" @click="openBookingPopup()">
                                         Add booking
                                     </vs-button>
                                 </div>
                                 Game :
-                                <vs-button gradient block  @click="activeBookingGame=!activeBookingGame">
+                                <vs-button gradient block  @click="openBookingGamePopup()">
                                     Add games
                                 </vs-button>
                             </template>
@@ -409,16 +409,16 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables for space 1">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables for Premium">
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables for space 2">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 for Premium">
                                 <template #icon>
-                                    <i class='bx bx-dice-2'/>
+                                    <i class='bx bx-grid-alt'/>
                                 </template>
                             </vs-input>
                         </vs-col>
@@ -426,31 +426,31 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables for space 3">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables for Medium">
+                                <template #icon>
+                                    <i class='bx bx-dice-2'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 for Medium">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables for Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 for space 1">
-                                <template #icon>
-                                    <i class='bx bx-grid-alt'/>
-                                </template>
-                            </vs-input>
-                        </vs-col>
-                    </vs-row>
-                    <br/>
-                    <vs-row>
-                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 for space 2">
-                                <template #icon>
-                                    <i class='bx bx-grid-alt'/>
-                                </template>
-                            </vs-input>
-                        </vs-col>
-                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 for space 3">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 for Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -576,14 +576,17 @@
                 <br/>
                 <div class="con-form">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        Zone :
-                        <select v-model="zoneBooking"
-                                   placeholder="Select zone">
-                            <option v-for="(zone, i) in festival.zoneId"
-                                       :key="i">
-                                {{zone.name}}
-                            </option>
-                        </select>
+                        <b-field >
+                            <b-select
+                                    placeholder="Select zone"
+                                    icon="user"
+                                    icon-pack="fas"
+                                    v-model="zoneId"
+                            >
+                                <option v-for="zone in festival.zoneId"
+                                        :key="zone._id" :value="zone._id">{{zone.name}}</option>
+                            </b-select>
+                        </b-field>
                     </vs-col>
                     <br/>
                     <vs-row>
@@ -632,7 +635,7 @@
 
                 <template #footer>
                     <div class="footer-dialog">
-                        <vs-button block @click="sendBookingGame()">
+                        <vs-button block @click="sendBookingGame(selected[0]._id, selected[0].booking[0]._id)">
                             Valider
                         </vs-button>
 
@@ -685,6 +688,7 @@
     import {addBooking} from "../utils/admin/booking/addBooking";
     import {getExhibitorsByfestivaId} from "../utils/admin/Exhibitor/getExhibitorsByFestivalId";
     import {addExistingExhibitor} from "../utils/admin/Exhibitor/addExistingExhibitorToCurrentFestival";
+    import {addBookingGame} from "../utils/admin/bookingGame/addBookingGame";
 
     export default {
         name: 'Exhibitor',
@@ -736,10 +740,10 @@
             notice : '',
             duration : '',
             nbPlayersMin : '',
-            nbPlayersMax : false,
+            nbPlayersMax : '',
             category : '',
             description : '',
-            prototypeGame : '',
+            prototypeGame : false,
             zoneBooking : '',
             qtExhib : '',
             qtSend : '',
@@ -747,6 +751,7 @@
             dotation :false,
             putOnPlan :false,
             bringByExhibitor :false,
+            zoneId : '',
             comment : '',
         }),
 
@@ -844,24 +849,37 @@
                     this.notificationErreur(e.response.data.error)
                 })
             },
-            sendBookingGame(){
-                console.log(this.name,
-                this.ageMin,
-                this.notice,
-                this.duration,
-                this.nbPlayersMin,
-                this.nbPlayersMax,
-                this.category,
-                this.description,
-                this.prototypeGame,
-                this.zoneBooking,
-                this.qtExhib,
-                this.qtSend,
-                this.tombola,
-                this.dotation,
-                this.putOnPlan,
-                this.bringByExhibitor,
-                this.comment)
+            sendBookingGame(exhibitorId, bookingId){
+                console.log(this.name, this.ageMin, this.duration, this.category, this.notice, this.prototypeGame, this.nbPlayersMin,
+                    this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
+                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor);
+                addBookingGame(this.name, this.ageMin, this.duration, this.category, this.notice, this.prototypeGame, this.nbPlayersMin,
+                    this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
+                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor).then(res =>{
+                        console.log(res.data);
+                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        console.log(res.data.exhibitors);
+                        this.exhibitors = res.data.exhibitors.reverse()
+                    }).catch(e =>{
+                        console.log(e);
+                    })
+                })
+            },
+            openBookingPopup(){
+                if(this.festival.space){
+                    this.activeBooking=!this.activeBooking;
+                }else{
+                    this.notificationErreur('Ajoutez d abord une space au festival');
+                    this.$router.push('/festival/' + this.festival._id)
+                }
+            },
+            openBookingGamePopup(){
+                if(this.festival.zoneId){
+                    this.activeBookingGame=!this.activeBookingGame
+                }else{
+                    this.notificationErreur('Ajoutez d abord une zone au festival');
+                    this.$router.push('/festival/' + this.festival._id)
+                }
             },
             notificationErreur(title) {
                 this.$vs.notification({
