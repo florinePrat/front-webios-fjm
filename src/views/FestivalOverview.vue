@@ -305,6 +305,7 @@
                 this.notificationErreur(e.response.data.error)
                 })
             getAllBookingByFestival(this.$route.params.festivalId).then(res =>{
+                console.log("all bookings ");
                 console.log(res.data);
             })
             
