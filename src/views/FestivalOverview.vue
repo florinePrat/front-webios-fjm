@@ -317,7 +317,7 @@
                         getFestivalById(this.$route.params.festivalId).then(res =>{
                             this.space = res.data.space;
                         })*/
-                        //this.$router.go() 
+                        this.$router.go() 
                         this.notificationSucces('Space créé avec succès')
                     }).catch(e =>{
                         console.log(e);
