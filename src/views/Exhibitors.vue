@@ -870,12 +870,17 @@
                     this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
                     this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor).then(res =>{
                         console.log(res.data);
+                        this.activeBookingGame = false;
+                    this.activeBookingGamePart2 = false;
+                    this.notificationSucces('reservation crée avec succes');
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors.reverse()
                     }).catch(e =>{
                         console.log(e);
                     })
+                }).catch(e=>{
+                    this.notificationErreur('error : ', e)
                 })
             },
             openBookingPopup(){
