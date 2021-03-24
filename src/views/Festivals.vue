@@ -50,7 +50,7 @@
                                     <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i class='bx bx-show-alt'/>
                                     </vs-button>
                                     <br>
-                                <vs-button class="btn-chat" shadow primary  @click="activeChangeName=!activeChangeName;keepId = festival._id">
+                                <vs-button class="btn-chat" shadow primary  @click="activeChangeName=!activeChangeName;keepId = festival._id;keepName = festival.name">
                                     <!--@click="changeName(festival._id, festival.name)"-->
                                     <i class='bx bx-cube-alt'/>
                                     {{festival.name}}
@@ -118,7 +118,7 @@
                     <div class="con-form">
                         <br/>
                         <vs-input
-                                label-placeholder="New festival's name"
+                                :label-placeholder="keepName"
                                 v-model="name"
                         >
                             <template #icon>
@@ -167,7 +167,8 @@
             activeChangeName: false,
             festivals: [],
             name: '',
-            keepId: ''
+            keepId: '',
+            keepName:''
         }),
 
         beforeMount() {
