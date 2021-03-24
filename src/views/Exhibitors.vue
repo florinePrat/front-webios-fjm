@@ -203,9 +203,22 @@
                                     </vs-button>
                                 </div>
                                 Game :
-                                <vs-button gradient block  @click="openBookingGamePopup()">
-                                    Add games
-                                </vs-button>
+                                <vs-row>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                                        <vs-button block v-if="exhibitor.gameBookedList.length> 0" @click="$router.push('/games/' + exhibitor._id)">
+                                            <i class='bx bx-show-alt'/>
+                                            View games
+                                        </vs-button>
+                                    </vs-col>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                                        <vs-button gradient block  @click="openBookingGamePopup()">
+                                            <i class='bx bx-plus'/>
+                                            Add games
+                                        </vs-button>
+                                    </vs-col>
+
+                                </vs-row>
+
                             </template>
 
                             <!--DIALOG !!-->
