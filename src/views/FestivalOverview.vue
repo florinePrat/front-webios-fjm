@@ -263,6 +263,7 @@
     import {getFestivalById} from "../utils/user/festivals/getFestivalById";
     import {addSpace} from "../utils/admin/space/addSpace";
     import {addZone} from "../utils/admin/zone/addZone";
+    import {getAllBookingByFestival} from "../utils/admin/booking/getAllBookingByFestival";
 
     export default {
         name: 'Home',
@@ -303,6 +304,10 @@
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
                 })
+            getAllBookingByFestival(this.$route.params.festivalId).then(res =>{
+                console.log(res.data);
+            })
+            
         },
 
         methods : {
