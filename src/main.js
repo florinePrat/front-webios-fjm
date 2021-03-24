@@ -3,7 +3,11 @@ import App from './App.vue'
 import router from './router'
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
-import VueRouter from "vue-router";
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
+import VueRouter from "vue-router"
+
+Vue.use(Buefy);
 
 
 //Vuesax styles
