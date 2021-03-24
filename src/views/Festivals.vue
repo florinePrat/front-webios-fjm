@@ -26,7 +26,7 @@
                     </vs-col>
                     <vs-col w="4" v-for="festival in festivals" :key="festival._id" vs-type="flex" vs-justify="center"
                             vs-align="center">
-                        <vs-card @click="$router.push('/festival/'+festival._id)">
+                        <vs-card>
                             <template #title>
                                 <b-taglist>
                                     <b-tag type="is-primary is-light"><i class='bx bx-game'/>
@@ -47,6 +47,14 @@
                                 In this festival
                             </template>
                             <template #interactions>
+                                    <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i class='bx bx-show-alt'/>
+                                    </vs-button>
+                                    <br>
+                                <vs-button class="btn-chat" shadow primary v-if="!festival.current">
+                                    <div @click="updateFestival(festival._id)">
+                                    {{"set current"}}
+                                    </div>
+                                </vs-button>
                                 <vs-button class="btn-chat" primary v-if="festival.current">
                                     <!--@click="changeName(festival._id, festival.name)"-->
                                     current
@@ -111,6 +119,7 @@
     import UserNavbar from "../components/UserNavbar";
     import {addFestival} from "../utils/admin/festivals/addFestival";
     import {getAllFestivals} from "../utils/user/festivals/getAllFestivals";
+    import {updateCurrentFestival} from "../utils/admin/festivals/updateCurrentFestival"
 
     export default {
         name: 'Festival',
@@ -154,6 +163,19 @@
                } else{
                     this.notificationErreur('Vous ne pouvez pas créer un festival sans nom...')
                }
+            },
+            updateFestival(id) {
+                console.log(id)
+                   updateCurrentFestival(id, true).then(res => {
+                       console.log(res.data);
+                    getAllFestivals().then(res => {
+                        this.festivals = res.data.reverse()
+                        })
+                       this.notificationSucces('Festival courant changé avec succès')
+                   }).catch(e =>{
+                    console.log(e);
+                    this.notificationErreur(e.response.data.error)
+                })
             },
             notificationErreur(title) {
                 this.$vs.notification({
