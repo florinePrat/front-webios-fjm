@@ -118,7 +118,10 @@
                                     </vs-row>
                                 </div>
                                 Booking :
-                                <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="activeUpdateBooking =!activeUpdateBooking">
+                                <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
+                                exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
+                                exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
+                                exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan)">
                                     <vs-table>
                                         <template #thead>
                                             <vs-tr>
@@ -498,14 +501,14 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label="nb tables for Premium" :placeholder="getNbTableSpace1()">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1" label-placeholder="nb tables for Premium" >
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 for Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1" label-placeholder="nb m2 for Premium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -515,14 +518,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2" label-placeholder="nb tables for Medium">
                                 <template #icon>
                                     <i class='bx bx-dice-2'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2" label-placeholder="nb m2 for Medium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -532,14 +535,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3" label-placeholder="nb tables for Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3" label-placeholder="nb m2 for Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -547,15 +550,41 @@
                         </vs-col>
                     </vs-row>
                     <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDatecrSended">CR envoyé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDateinvoiceSended">Facture envoyé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDatepaymentOk">Payment ok ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDateputOnPlan">Placé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
                     <div class="flex">
-                        <vs-checkbox v-model="animatorNeeded">Need animator ?</vs-checkbox>
+                        <vs-checkbox v-model="upDateanimatorNeeded">Need animator ?</vs-checkbox>
                     </div>
                 </div>
 
                 <template #footer>
                     <div class="footer-dialog">
-                        <vs-button block @click="addBooking(selected[0]._id)">
-                            Add
+                        <vs-button block @click="sendUpdateBooking(selected[0]._id)">
+                            Update
                         </vs-button>
 
                     </div>
@@ -769,6 +798,7 @@
     import {getExhibitorsByfestivaId} from "../utils/admin/Exhibitor/getExhibitorsByFestivalId";
     import {addExistingExhibitor} from "../utils/admin/Exhibitor/addExistingExhibitorToCurrentFestival";
     import {addBookingGame} from "../utils/admin/bookingGame/addBookingGame";
+    import {updateBooking} from "../utils/admin/booking/updateBooking";
 
     export default {
         name: 'Exhibitor',
@@ -834,6 +864,18 @@
             bringByExhibitor :false,
             zoneId : '',
             comment : '',
+            upDatenbTableSpace1 : '',
+            upDatenbTableSpace2 : '',
+            upDatenbTableSpace3 : '',
+            upDatenbM2Space1 : '',
+            upDatenbM2Space2 : '',
+            upDatenbM2Space3 : '',
+            upDateanimatorNeeded : '',
+            upDatecrSended : '',
+            upDateinvoiceSended : '',
+            upDatepaymentOk : '',
+            upDateputOnPlan : '',
+            upDatedBookingId : ''
         }),
 
         beforeMount() {
@@ -948,7 +990,7 @@
                         console.log(e);
                     })
                 }).catch(e=>{
-                    this.notificationErreur('error : ', e)
+                    this.notificationErreur('error : ', e.response.data.error)
                 })
             },
             openBookingPopup(){
@@ -967,25 +1009,37 @@
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },
-            getNbTableSpace1(){
+            updateBooking(updatedBookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan){
+                if(this.admin){
+                    this.upDatenbTableSpace1 = nbTableSpace1;
+                    this.upDatenbTableSpace2 = nbTableSpace2;
+                    this.upDatenbTableSpace3 = nbTableSpace3;
+                    this.upDatenbM2Space1 = nbM2Space1;
+                    this.upDatenbM2Space2 = nbM2Space2;
+                    this.upDatenbM2Space3 = nbM2Space3;
+                    this.upDateanimatorNeeded = animatorNeeded;
+                    this.upDatecrSended = crSended;
+                    this.upDateinvoiceSended = invoiceSended;
+                    this.upDatepaymentOk = paymentOk;
+                    this.upDateputOnPlan = putOnPlan;
+                    this.upDatedBookingId = updatedBookingId;
 
-                /*this.$root.log = function log() {
-                    for (let i = 0; i < arguments.length; i += 1) {
-                        if (typeof (arguments[i]) === 'object') {
-                            try {
-                                arguments[i] = JSON.parse(JSON.stringify(arguments[i]));
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        }
-                    }
-                    console.log(...arguments);
-                };
+                    this.activeUpdateBooking =!this.activeUpdateBooking;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
 
+            },
 
-                let obj = this.$root.log(this.selected[0]);
-                console.log(obj);*/
-                return true
+            sendUpdateBooking(){
+                updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
+                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
+                    console.log(res.data);
+                    this.activeUpdateBooking = false;
+                    window.location.reload()
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
             },
             notificationErreur(title) {
                 this.$vs.notification({
