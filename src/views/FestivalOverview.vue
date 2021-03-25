@@ -314,6 +314,7 @@
             zones : [],
             space : {},
             name : '',
+            nameZone : '',
             numberOfTable1 : '',
             unitPriceOfTable1 : '',
             m2Price1 : '',
@@ -393,6 +394,7 @@
                }
             },
             addZoneToFestival(){
+                console.log(this.nameZone)
                 if (this.nameZone !== ''){
                     addZone(this.nameZone, this.$route.params.festivalId).then(res =>{
                         
