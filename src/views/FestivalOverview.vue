@@ -29,6 +29,41 @@
                 <br/>
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number" 
+                                v-model="TotalNbTableSpace1"
+                                state="primary"
+                                label="Nombre de tables réservés" />
+                        <br/>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="TotalNbTableSpace2"
+                                state="primary"
+                                label="Nombre de tables réservés" />
+                        <br/>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <br/>
+                        <vs-input
+                                disabled
+                                primary
+                                type="number"
+                                v-model="TotalNbTableSpace3"
+                                state="primary"
+                                label="Nombre de tables réservés" />
+                        <br/>
+                    </vs-col>
+                </vs-row>    
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Premium
                         <br/>
                         <br/>
@@ -290,7 +325,10 @@
             unitPriceOfTable3 : '',
             m2Price3 : '',
             activeAddSpace : false,
-            activeAddZone : false
+            activeAddZone : false,
+            TotalNbTableSpace1 : '',
+            TotalNbTableSpace2 : '',
+            TotalNbTableSpace3 : ''
         }),
 
         beforeMount() {
@@ -302,14 +340,33 @@
                 this.festival = res.data;
                 this.space = res.data.space;
                 this.zones = res.data.zoneId;
+                if(res.data.space){
+                    getAllBookingByFestival(this.$route.params.festivalId).then(res =>{
+                        var totalBookings = new Map()
+                        totalBookings.set("NbTableSpace1", 0)
+                        totalBookings.set("NbTableSpace2", 0)
+                        totalBookings.set("NbTableSpace3", 0)
+                        totalBookings.set("nbM2Space1", 0)
+                        totalBookings.set("nbM2Space2", 0)
+                        totalBookings.set("nbM2Space3", 0)
+                        res.data.forEach(booking => {
+                            totalBookings.set("NbTableSpace1", totalBookings.get("NbTableSpace1") + booking.nbTableSpace1 )
+                            totalBookings.set("NbTableSpace2", totalBookings.get("NbTableSpace2") + booking.nbTableSpace2 )
+                            totalBookings.set("NbTableSpace3", totalBookings.get("NbTableSpace3") + booking.nbTableSpace3 )
+                            totalBookings.set("nbM2Space1", totalBookings.get("nbM2Space1") + booking.nbM2Space1 )
+                            totalBookings.set("nbM2Space2", totalBookings.get("nbM2Space2") + booking.nbM2Space2 )
+                            totalBookings.set("nbM2Space3", totalBookings.get("nbM2Space3") + booking.nbM2Space3 )
+                        });
+                        this.TotalNbTableSpace1 = totalBookings.get("NbTableSpace1")
+                        this.TotalNbTableSpace2 = totalBookings.get("NbTableSpace2")
+                        this.TotalNbTableSpace3 = totalBookings.get("NbTableSpace3")
+            })
+            }
             }).catch(e =>{
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
                 })
-            getAllBookingByFestival(this.$route.params.festivalId).then(res =>{
-                console.log("all bookings ");
-                console.log(res.data);
-            })
+            console.log(this.festival);
             
         },
 
