@@ -236,7 +236,8 @@
             <br/>
             <br/>
             Zones : 
-            
+            <vs-button v-if="!zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
+            <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
             
             
             <br/>
@@ -247,13 +248,11 @@
                             vs-align="center">
                 <vs-row>
                 <vs-input
-                        disabled
+                        :disabled = "!zoneEditMode"
                         primary
                         v-model="zone.name"
                         state="primary"
                         label="Zone : " />
-                        <vs-button v-if="!zoneEditMode" shadow primary @click="idZoneEditMode=zone._id; editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
-                        <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
                         <vs-button shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
                 </vs-row>     
                         <br/>
@@ -330,8 +329,7 @@
             TotalNbTableSpace1 : '',
             TotalNbTableSpace2 : '',
             TotalNbTableSpace3 : '',
-            zoneEditMode : false,
-            idZoneEditMode : ''
+            zoneEditMode : false
         }),
 
         beforeMount() {
