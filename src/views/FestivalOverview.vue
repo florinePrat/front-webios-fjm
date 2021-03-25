@@ -29,43 +29,16 @@
                 <br/>
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
-                        <br/>
-                        <vs-input
-                                disabled
-                                primary
-                                type="number" 
-                                v-model="TotalNbTableSpace1"
-                                state="primary"
-                                label="Nombre de tables réservés" />
-                        <br/>
-                    </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
-                        <br/>
-                        <vs-input
-                                disabled
-                                primary
-                                type="number"
-                                v-model="TotalNbTableSpace2"
-                                state="primary"
-                                label="Nombre de tables réservés" />
-                        <br/>
-                    </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
-                        <br/>
-                        <vs-input
-                                disabled
-                                primary
-                                type="number"
-                                v-model="TotalNbTableSpace3"
-                                state="primary"
-                                label="Nombre de tables réservés" />
-                        <br/>
-                    </vs-col>
-                </vs-row>    
-                <vs-row>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Premium
                         <br/>
+                        <br/>
+                        <vs-input
+                                disabled
+                                dark
+                                type="number"
+                                v-model="TotalNbTableSpace1"
+                                state="dark"
+                                label="Nombre de tables réservés" />
                         <br/>
                         <vs-input
                                 disabled
@@ -73,7 +46,7 @@
                                 type="number"
                                 v-model="space.numberOfTable1"
                                 state="primary"
-                                label="Number of table" />
+                                label="Number of table disponibles" />
                         <br/>
                         <vs-input
                                 disabled
@@ -97,11 +70,19 @@
                         <br/>
                         <vs-input
                                 disabled
+                                dark
+                                type="number"
+                                v-model="TotalNbTableSpace2"
+                                state="dark"
+                                label="Nombre de tables réservés" />
+                        <br/>
+                        <vs-input
+                                disabled
                                 primary
                                 type="number"
                                 v-model="space.numberOfTable2"
                                 state="primary"
-                                label="Number of table" />
+                                label="Number of table disponibles" />
                         <br/>
                         <vs-input
                                 disabled
@@ -125,11 +106,19 @@
                         <br/>
                         <vs-input
                                 disabled
+                                dark
+                                type="number"
+                                v-model="TotalNbTableSpace3"
+                                state="dark"
+                                label="Nombre de tables réservés" />
+                        <br/>
+                        <vs-input
+                                disabled
                                 primary
                                 type="number"
                                 v-model="space.numberOfTable3"
                                 state="primary"
-                                label="Number of table" />
+                                label="Number of table disponibles" />
                         <br/>
                         <vs-input
                                 disabled
