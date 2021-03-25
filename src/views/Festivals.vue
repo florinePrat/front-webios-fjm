@@ -47,7 +47,7 @@
                                 In this festival
                             </template>
                             <template #interactions>
-                                    <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i class='bx bx-show-alt'/>
+                                    <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i style="font-size:16px" class='bx bx-show-alt'/>
                                     </vs-button>
                                     <br>
                                 <vs-button class="btn-chat" shadow primary  @click="activeChangeName=!activeChangeName;
