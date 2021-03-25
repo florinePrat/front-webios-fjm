@@ -17,11 +17,13 @@
         <br/>
         <div class="ml-6 pl-6">
             Spaces :
+            <vs-button v-if="!spaceEditMode && space !== null" shadow primary @click="editModeSpace()"><i class="fas fa-paint-brush"></i> </vs-button>
+            <vs-button v-if="spaceEditMode" shadow primary @click="editModeSpace(); updateSpaceToFestival()"><i class="fas fa-check"></i> </vs-button>
             <br/>
             <br/>
             <div v-if="space">
                 <vs-input
-                        disabled
+                        :disabled = "!spaceEditMode"
                         primary
                         v-model="space.name"
                         state="primary"
@@ -38,10 +40,10 @@
                                 type="number"
                                 v-model="TotalNbTableSpace1"
                                 state="dark"
-                                label="Nombre de tables réservés" />
+                                label="Nombre de tables réservées" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.numberOfTable1"
@@ -49,7 +51,7 @@
                                 label="Number of table disponibles" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.unitPriceOfTable1"
@@ -57,7 +59,7 @@
                                 label="Unit price of table" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.m2Price1"
@@ -74,10 +76,10 @@
                                 type="number"
                                 v-model="TotalNbTableSpace2"
                                 state="dark"
-                                label="Nombre de tables réservés" />
+                                label="Nombre de tables réservées" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.numberOfTable2"
@@ -85,7 +87,7 @@
                                 label="Number of table disponibles" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.unitPriceOfTable2"
@@ -93,7 +95,7 @@
                                 label="Unit price of table" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.m2Price2"
@@ -110,10 +112,10 @@
                                 type="number"
                                 v-model="TotalNbTableSpace3"
                                 state="dark"
-                                label="Nombre de tables réservés" />
+                                label="Nombre de tables réservées" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.numberOfTable3"
@@ -121,7 +123,7 @@
                                 label="Number of table disponibles" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.unitPriceOfTable3"
@@ -129,7 +131,7 @@
                                 label="Unit price of table" />
                         <br/>
                         <vs-input
-                                disabled
+                                :disabled = "!spaceEditMode"
                                 primary
                                 type="number"
                                 v-model="space.m2Price3"
@@ -236,10 +238,8 @@
             <br/>
             <br/>
             Zones : 
-            <vs-button v-if="!zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
+            <vs-button v-if="!zoneEditMode && zones.length>0" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
             <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
-            
-            
             <br/>
             <br/>
             <div v-if="zones">
@@ -297,6 +297,7 @@
     import UserNavbar from "../components/UserNavbar";
     import {getFestivalById} from "../utils/user/festivals/getFestivalById";
     import {addSpace} from "../utils/admin/space/addSpace";
+    import {updateSpace} from "../utils/admin/space/updateSpace";
     import {addZone} from "../utils/admin/zone/addZone";
     import {deleteZone} from "../utils/admin/zone/deleteZone";
     import {getAllBookingByFestival} from "../utils/admin/booking/getAllBookingByFestival";
@@ -329,7 +330,8 @@
             TotalNbTableSpace1 : '',
             TotalNbTableSpace2 : '',
             TotalNbTableSpace3 : '',
-            zoneEditMode : false
+            zoneEditMode : false,
+            spaceEditMode : false
         }),
 
         beforeMount() {
@@ -341,6 +343,7 @@
                 this.festival = res.data;
                 this.space = res.data.space;
                 this.zones = res.data.zoneId;
+
                 if(res.data.space){
                     getAllBookingByFestival(this.$route.params.festivalId).then(res =>{
                         var totalBookings = new Map()
@@ -367,7 +370,7 @@
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
                 })
-            console.log(this.festival);
+            
             
         },
 
@@ -385,6 +388,22 @@
                         })*/
                         this.$router.go() 
                         this.notificationSucces('Space créé avec succès')
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
+                }else{
+                    this.notificationErreur('Vous ne pouvez pas créer un espace sans nom...')
+               }
+            },
+            updateSpaceToFestival(){
+                if (this.space.name !== ''){
+                    updateSpace(this.space.name, this.space.numberOfTable1, this.space.unitPriceOfTable1, this.space.m2Price1,
+                    this.space.numberOfTable2, this.space.unitPriceOfTable2, this.space.m2Price2, this.space.numberOfTable3, this.space.unitPriceOfTable3,
+                    this.space.m2Price3, this.space._id).then(res =>{
+                        console.log(res.data);
+
+                        this.notificationSucces('Space modifié avec succès')
                     }).catch(e =>{
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
@@ -450,8 +469,15 @@
             } else {
                 this.zoneEditMode = true;
             }
-            console.log(this.zoneEditMode)
         },
+        editModeSpace(){
+            if(this.spaceEditMode){
+                this.spaceEditMode = false;
+            } else {
+                this.spaceEditMode = true;
+            }
+        },
+
         }
 
 
