@@ -252,7 +252,7 @@
                         v-model="zone.name"
                         state="primary"
                         label="Zone : " />
-                        <vs-button v-if="!zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
+                        <vs-button v-if="!zoneEditMode" shadow primary @click="idZoneEditMode=zone._id; editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
                         <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
                         <vs-button shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
                 </vs-row>     
@@ -263,24 +263,25 @@
                 <br/>
             </div>
 
+            
             <vs-button @click="activeAddZone=!activeAddZone">
                 Add Zone
             </vs-button>
-
+            <br/>
             <div class="center content-inputs" v-if="activeAddZone">
-                <br/>
+               <vs-row>
                 <vs-input
                         primary
                         v-model="nameZone"
                         state="primary"
                         placeholder="Name of zone" />
-                <br/>
 
-                <br/>
                 <vs-button @click="addZoneToFestival()">
                     Add
                 </vs-button>
+                </vs-row>
             </div>
+            
 
         </div>
 
@@ -329,7 +330,8 @@
             TotalNbTableSpace1 : '',
             TotalNbTableSpace2 : '',
             TotalNbTableSpace3 : '',
-            zoneEditMode : false
+            zoneEditMode : false,
+            idZoneEditMode : ''
         }),
 
         beforeMount() {
@@ -424,6 +426,7 @@
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
                     })
+                    // VERIFIER AUCUN JEU DANS LA ZONE
             },
             notificationErreur(title) {
                 this.$vs.notification({
