@@ -235,21 +235,30 @@
         <div class="ml-6 pl-6">
             <br/>
             <br/>
-            Zones :
+            Zones : 
+            
+            
+            
             <br/>
             <br/>
             <div v-if="zones">
                 <vs-row>
                 <vs-col w="4" v-for="zone in zones" :key="zone._id" vs-type="flex" vs-justify="center"
                             vs-align="center">
+                <vs-row>
                 <vs-input
                         disabled
                         primary
                         v-model="zone.name"
                         state="primary"
                         label="Zone : " />
+                        <vs-button v-if="!zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
+                        <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
+                        <vs-button shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
+                </vs-row>     
                         <br/>
                 </vs-col>
+                
                 </vs-row>
                 <br/>
             </div>
@@ -289,6 +298,7 @@
     import {getFestivalById} from "../utils/user/festivals/getFestivalById";
     import {addSpace} from "../utils/admin/space/addSpace";
     import {addZone} from "../utils/admin/zone/addZone";
+    import {deleteZone} from "../utils/admin/zone/deleteZone";
     import {getAllBookingByFestival} from "../utils/admin/booking/getAllBookingByFestival";
 
     export default {
@@ -317,7 +327,8 @@
             activeAddZone : false,
             TotalNbTableSpace1 : '',
             TotalNbTableSpace2 : '',
-            TotalNbTableSpace3 : ''
+            TotalNbTableSpace3 : '',
+            zoneEditMode : false
         }),
 
         beforeMount() {
@@ -398,6 +409,19 @@
                 }else{
                     this.notificationErreur('Vous ne pouvez pas créer une zone sans nom...')
                }
+            }, deleteZoneToFestival(id){
+                    deleteZone(id).then(res =>{
+
+                        getFestivalById(this.$route.params.festivalId).then(res =>{
+                            this.zones = res.data.zoneId;
+                        })
+                        console.log(res.data)
+
+                        this.notificationSucces('Zone supprimé avec succès')
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
             },
             notificationErreur(title) {
                 this.$vs.notification({
@@ -417,6 +441,14 @@
                     title: title,
                 })
             },
+            editModeZone(){
+            if(this.zoneEditMode){
+                this.zoneEditMode = false;
+            } else {
+                this.zoneEditMode = true;
+            }
+            console.log(this.zoneEditMode)
+        },
         }
 
 
