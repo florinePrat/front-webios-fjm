@@ -33,6 +33,14 @@ const routes = [
             title: 'FJM | Exhibitor',
         },
     },
+    {
+        path: '/games/:exhibitorId',
+        name: 'Games of exhibitor',
+        component: () => import('../views/Games.vue'),
+        meta: {
+            title: 'FJM | Games',
+        },
+    },
 
 ];
 

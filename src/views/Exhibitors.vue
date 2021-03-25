@@ -118,8 +118,11 @@
                                     </vs-row>
                                 </div>
                                 Booking :
-                                <div class="box con-content" v-if="exhibitor.booking.length > 0">
-                                    <vs-table >
+                                <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
+                                exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
+                                exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
+                                exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan)">
+                                    <vs-table>
                                         <template #thead>
                                             <vs-tr>
                                                 <vs-th>
@@ -203,9 +206,22 @@
                                     </vs-button>
                                 </div>
                                 Game :
-                                <vs-button gradient block  @click="openBookingGamePopup()">
-                                    Add games
-                                </vs-button>
+                                <vs-row>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                                        <vs-button block v-if="exhibitor.gameBookedList.length> 0" @click="$router.push('/games/' + exhibitor._id)">
+                                            <i class='bx bx-show-alt'/>
+                                            View games
+                                        </vs-button>
+                                    </vs-col>
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                                        <vs-button gradient block  @click="openBookingGamePopup()">
+                                            <i class='bx bx-plus'/>
+                                            Add games
+                                        </vs-button>
+                                    </vs-col>
+
+                                </vs-row>
+
                             </template>
 
                             <!--DIALOG !!-->
@@ -473,6 +489,109 @@
                 </template>
             </vs-dialog>
 
+            <!--UPDATE BOOKING POPUP-->
+            <vs-dialog blur v-model="activeUpdateBooking">
+                <template #header>
+                    <h4 class="not-margin">
+                        Update <b>Booking </b>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1" label-placeholder="nb tables for Premium" >
+                                <template #icon>
+                                    <i class='bx bx-dice-1'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1" label-placeholder="nb m2 for Premium">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2" label-placeholder="nb tables for Medium">
+                                <template #icon>
+                                    <i class='bx bx-dice-2'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2" label-placeholder="nb m2 for Medium">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3" label-placeholder="nb tables for Standard">
+                                <template #icon>
+                                    <i class='bx bx-dice-3'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3" label-placeholder="nb m2 for Standard">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDatecrSended">CR envoyé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDateinvoiceSended">Facture envoyé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDatepaymentOk">Payment ok ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="upDateputOnPlan">Placé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <div class="flex">
+                        <vs-checkbox v-model="upDateanimatorNeeded">Need animator ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="sendUpdateBooking(selected[0]._id)">
+                            Update
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
+
+
             <!--BOOKING GAME POPUP-->
             <vs-dialog blur v-model="activeBookingGame">
                 <template #header>
@@ -643,31 +762,21 @@
                 </template>
             </vs-dialog>
 
-           <!-- <vs-dialog v-model="editActive">
-                <template #header>
-                    Change Prop {{ editProp }}
-                </template>
-                <vs-select @change="editActive = false" block v-if="editProp == 'statusTraking'" placeholder="Select" v-model="edit[editProp]">
-                    <vs-option label="pas de réponse" value="pas de réponse">
+           <!--
+               'statusTraking'"
+
                         pas de réponse
-                    </vs-option>
-                    <vs-option label="en discussion" value="en discussion">
+
                         en discussion
-                    </vs-option>
-                    <vs-option label="présent " value="présent ">
+
                         présent
-                    </vs-option>
-                    <vs-option disabled label="liste de jeux demandée" value="liste de jeux demandée">
+
                         liste de jeux demandée
-                    </vs-option>
-                    <vs-option label="liste de jeux reçue" value="liste de jeux reçue">
+
                         liste de jeux reçue
-                    </vs-option>
-                    <vs-option label="absent " value="absent ">
+
                         absent
-                    </vs-option>
-                </vs-select>
-            </vs-dialog>-->
+             -->
 
 
         </div>
@@ -689,6 +798,7 @@
     import {getExhibitorsByfestivaId} from "../utils/admin/Exhibitor/getExhibitorsByFestivalId";
     import {addExistingExhibitor} from "../utils/admin/Exhibitor/addExistingExhibitorToCurrentFestival";
     import {addBookingGame} from "../utils/admin/bookingGame/addBookingGame";
+    import {updateBooking} from "../utils/admin/booking/updateBooking";
 
     export default {
         name: 'Exhibitor',
@@ -715,6 +825,7 @@
             activeBooking: false,
             activeBookingGame: false,
             activeBookingGamePart2: false,
+            activeUpdateBooking: false,
             festival : null,
             exhibitors: [],
             Allexhibitors: [],
@@ -753,6 +864,18 @@
             bringByExhibitor :false,
             zoneId : '',
             comment : '',
+            upDatenbTableSpace1 : '',
+            upDatenbTableSpace2 : '',
+            upDatenbTableSpace3 : '',
+            upDatenbM2Space1 : '',
+            upDatenbM2Space2 : '',
+            upDatenbM2Space3 : '',
+            upDateanimatorNeeded : '',
+            upDatecrSended : '',
+            upDateinvoiceSended : '',
+            upDatepaymentOk : '',
+            upDateputOnPlan : '',
+            upDatedBookingId : ''
         }),
 
         beforeMount() {
@@ -857,12 +980,17 @@
                     this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
                     this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor).then(res =>{
                         console.log(res.data);
+                        this.activeBookingGame = false;
+                    this.activeBookingGamePart2 = false;
+                    this.notificationSucces('reservation crée avec succes');
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors.reverse()
                     }).catch(e =>{
                         console.log(e);
                     })
+                }).catch(e=>{
+                    this.notificationErreur('error : ', e.response.data.error)
                 })
             },
             openBookingPopup(){
@@ -880,6 +1008,38 @@
                     this.notificationErreur('Ajoutez d abord une zone au festival');
                     this.$router.push('/festival/' + this.festival._id)
                 }
+            },
+            updateBooking(updatedBookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan){
+                if(this.admin){
+                    this.upDatenbTableSpace1 = nbTableSpace1;
+                    this.upDatenbTableSpace2 = nbTableSpace2;
+                    this.upDatenbTableSpace3 = nbTableSpace3;
+                    this.upDatenbM2Space1 = nbM2Space1;
+                    this.upDatenbM2Space2 = nbM2Space2;
+                    this.upDatenbM2Space3 = nbM2Space3;
+                    this.upDateanimatorNeeded = animatorNeeded;
+                    this.upDatecrSended = crSended;
+                    this.upDateinvoiceSended = invoiceSended;
+                    this.upDatepaymentOk = paymentOk;
+                    this.upDateputOnPlan = putOnPlan;
+                    this.upDatedBookingId = updatedBookingId;
+
+                    this.activeUpdateBooking =!this.activeUpdateBooking;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
+
+            },
+
+            sendUpdateBooking(){
+                updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
+                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
+                    console.log(res.data);
+                    this.activeUpdateBooking = false;
+                    window.location.reload()
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
             },
             notificationErreur(title) {
                 this.$vs.notification({
