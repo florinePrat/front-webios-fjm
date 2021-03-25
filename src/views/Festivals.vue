@@ -50,12 +50,13 @@
                                     <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i class='bx bx-show-alt'/>
                                     </vs-button>
                                     <br>
-                                <vs-button class="btn-chat" shadow primary  @click="activeChangeName=!activeChangeName;keepId = festival._id;keepName = festival.name">
+                                <vs-button class="btn-chat" shadow primary  @click="activeChangeName=!activeChangeName;
+                                keepId = festival._id;keepName = festival.name">
                                     <!--@click="changeName(festival._id, festival.name)"-->
                                     <i class='bx bx-cube-alt'/>
                                     {{festival.name}}
                                 </vs-button>
-                                    <vs-button class="btn-chat" shadow primary v-if="!festival.current">
+                                    <vs-button class="btn-chat" shadow primary v-if="!festival.current && admin">
                                     <div @click="updateCurrentFestival(festival._id)">
                                     {{"set current"}}
                                     </div>
@@ -107,7 +108,7 @@
 
             <!--DIALOG modifyName !!-->
             <div class="center">
-                <vs-dialog blur v-model="activeChangeName">
+                <vs-dialog blur v-model="activeChangeName" v-if="admin">
                     <template #header>
                         <h4 class="not-margin">
                             Change <b>name</b>
@@ -163,6 +164,7 @@
         },
         data: () => ({
             user: false,
+            admin : false,
             active: false,
             activeChangeName: false,
             festivals: [],
@@ -174,6 +176,9 @@
         beforeMount() {
             if (getCookie('token')) {
                 this.user = true
+            }
+            if (getCookie('admin')) {
+                this.admin = true
             }
             getAllFestivals().then(res => {
                 console.log(res.data);
