@@ -34,6 +34,14 @@ const routes = [
         },
     },
     {
+        path: '/facturation',
+        name: 'Facturation',
+        component: () => import('../views/facturation.vue'),
+        meta: {
+            title: 'FJM | Facturation',
+        },
+    },
+    {
         path: '/games/:exhibitorId',
         name: 'Games of exhibitor',
         component: () => import('../views/Games.vue'),

@@ -16,6 +16,9 @@
                 <vs-navbar-item v-if="user" :active="active == 'exhibitor'" id="exhibitor" to="/exhibitor" >
                     Exhibitors
                 </vs-navbar-item>
+                <vs-navbar-item v-if="user" :active="active == 'facturation'" id="facturation" to="/facturation" >
+                    Facturation
+                </vs-navbar-item>
 
                 <vs-button v-if="admin"
                         color="rgb(23, 201, 100)"
