@@ -300,6 +300,7 @@
     import {updateSpace} from "../utils/admin/space/updateSpace";
     import {addZone} from "../utils/admin/zone/addZone";
     import {deleteZone} from "../utils/admin/zone/deleteZone";
+    import {getZoneById} from "../utils/admin/zone/getZoneById";
     import {getAllBookingByFestival} from "../utils/admin/booking/getAllBookingByFestival";
 
     export default {
@@ -431,6 +432,11 @@
                     this.notificationErreur('Vous ne pouvez pas créer une zone sans nom...')
                }
             }, deleteZoneToFestival(id){
+
+                getZoneById(id).then(res =>{
+
+                    if(res.data.gamesId.length == 0){
+                    
                     deleteZone(id).then(res =>{
 
                         getFestivalById(this.$route.params.festivalId).then(res =>{
@@ -443,7 +449,15 @@
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
                     })
-                    // VERIFIER AUCUN JEU DANS LA ZONE
+                    }
+                    else {
+                        this.notificationErreur("La zone ne doit pas contenir de jeux pour être supprimé")
+                    }
+
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
             },
             notificationErreur(title) {
                 this.$vs.notification({
