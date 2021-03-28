@@ -946,6 +946,7 @@
                     });
                     this.activeBooking = false
                 }
+                this.$router.go() // à enlever 
             },
             changeGetExhibitor() {
                 if(!this.active3){
