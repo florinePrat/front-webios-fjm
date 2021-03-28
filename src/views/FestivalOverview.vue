@@ -434,7 +434,7 @@
             }, deleteZoneToFestival(id){
 
                 getZoneById(id).then(res =>{
-
+                    // Delete only if there are no games
                     if(res.data.gamesId.length == 0){
                     
                     deleteZone(id).then(res =>{
