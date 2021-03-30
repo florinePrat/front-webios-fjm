@@ -36,7 +36,7 @@ const routes = [
     {
         path: '/facturation',
         name: 'Facturation',
-        component: () => import('../views/facturation.vue'),
+        component: () => import('../views/Facturation.vue'),
         meta: {
             title: 'FJM | Facturation',
         },
@@ -67,7 +67,12 @@ router.beforeEach((to,from,next)=>{
     }else if(admin){
         return next();
     }else{
-        return next();
+        if(to.name === 'Facturation'){
+            return next({path : '/'});
+        }else{
+            return next();
+        }
+
     }
 });
 

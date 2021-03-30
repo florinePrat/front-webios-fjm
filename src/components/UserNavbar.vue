@@ -16,7 +16,7 @@
                 <vs-navbar-item v-if="user" :active="active == 'exhibitor'" id="exhibitor" to="/exhibitor" >
                     Exhibitors
                 </vs-navbar-item>
-                <vs-navbar-item v-if="user" :active="active == 'facturation'" id="facturation" to="/facturation" >
+                <vs-navbar-item v-if="admin" :active="active == 'facturation'" id="facturation" to="/facturation" >
                     Facturation
                 </vs-navbar-item>
 
@@ -99,7 +99,7 @@
         }),
         beforeMount() {
             if(getCookie('admin')){
-                this.admin = getCookie('admin')
+                this.admin = true
             }
             if(getCookie('token')){
                 this.user = true
