@@ -38,11 +38,11 @@
                                         <span class="span">
                                             {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exhibitors' : festival.exhibitors.length + ' exhibitor' : '0 exhibitor'}}
                                   </span></b-tag>
-                                    <b-tag type="is-primary is-light"><i class='bx bx-male'/>
+                                    <b-tag type="is-primary is-light"><i class='bx bx-border-inner'/>
                                         <span class="span">
                                             {{festival && festival.space ? 'space OK' : 'no space'}}
                                     </span></b-tag>
-                                    <b-tag type="is-primary is-light"><i class='bx bx-male'/>
+                                    <b-tag type="is-primary is-light"><i class='bx bx-category'/>
                                         <span class="span">
                                             {{festival && festival.zoneId ? festival.zoneId.length > 1 ? festival.zoneId.length + ' zones' : festival.zoneId.length + ' zones' : '0 zones'}}
                                     </span></b-tag>

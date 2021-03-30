@@ -34,7 +34,7 @@
 
                     <template #thead>
                         <vs-tr class="grid">
-                            <vs-button gradient @click="active=!active">
+                            <vs-button gradient v-if="admin" @click="active=!active">
                                 <i class='bx bx-plus'/>
                             </vs-button>
                         </vs-tr>
@@ -42,10 +42,10 @@
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'name')">
                                 Name
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'email')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'email')" v-if="admin">
                                 Email MC
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'tel')">
+                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'tel')" v-if="admin">
                                 Tel MC
                             </vs-th>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'statusTracking')">
@@ -57,7 +57,7 @@
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
                                 Publisher Only
                             </vs-th>
-                            <vs-th v-if="!active3">
+                            <vs-th v-if="!active3 & admin">
                                 Add to current
                             </vs-th>
                         </vs-tr>
@@ -72,10 +72,10 @@
                             <vs-td>
                                 {{ exhibitor.name }}
                             </vs-td>
-                            <vs-td>
+                            <vs-td v-if="admin">
                                 {{ exhibitor.mainContact ? exhibitor.mainContact.email  : 'no email'}}
                             </vs-td>
-                            <vs-td>
+                            <vs-td v-if="admin">
                                 {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'no tel mobile'}}
                             </vs-td>
                             <vs-td>
@@ -88,35 +88,38 @@
                             <vs-td>
                                 {{ exhibitor.publisherOnly ? 'yes' : 'no' }}
                             </vs-td>
-                            <vs-td v-if="!active3" >
+                            <vs-td v-if="!active3 & admin" >
                                 <div class="center">
                                     <vs-button @click="addToCurrentFestival(exhibitor._id)">Add </vs-button>
                                 </div>
                             </vs-td>
 
                             <template #expand>
-                                Main contact :
-                                <div class="box con-content">
-                                    <vs-row>
-                                        <vs-col w="2">
-                                            <vs-avatar>
-                                                <i class='bx bx-plus' @click="activecontact = !activecontact"/>
-                                            </vs-avatar>
-                                        </vs-col>
-                                        <vs-col w="3">
-                                            <i class='bx bx-phone-call mr-1'/>Tel fixe :
-                                            {{ exhibitor.mainContact ? exhibitor.mainContact.telFixe : 'no data yet' }}
-                                        </vs-col>
-                                        <vs-col w="4">
-                                            <i class='bx bx-map-pin mr-1'/>Addresse :
-                                            {{ exhibitor.mainContact ? exhibitor.mainContact.address : 'no data yet'}}
-                                        </vs-col>
-                                        <vs-col w="3">
-                                            <i class='bx bx-briefcase-alt-2 mr-1'/>Work :
-                                            {{ exhibitor.mainContact ? exhibitor.mainContact.work : 'no data yet' }}
-                                        </vs-col>
-                                    </vs-row>
+                                <div v-if="admin">
+                                    Main contact :
+                                    <div class="box con-content">
+                                        <vs-row>
+                                            <vs-col w="2">
+                                                <vs-avatar>
+                                                    <i class='bx bx-plus' @click="activecontact = !activecontact"/>
+                                                </vs-avatar>
+                                            </vs-col>
+                                            <vs-col w="3">
+                                                <i class='bx bx-phone-call mr-1'/>Tel fixe :
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.telFixe : 'no data yet' }}
+                                            </vs-col>
+                                            <vs-col w="4">
+                                                <i class='bx bx-map-pin mr-1'/>Addresse :
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.address : 'no data yet'}}
+                                            </vs-col>
+                                            <vs-col w="3">
+                                                <i class='bx bx-briefcase-alt-2 mr-1'/>Work :
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.work : 'no data yet' }}
+                                            </vs-col>
+                                        </vs-row>
+                                    </div>
                                 </div>
+
                                 Booking :
                                 <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
                                 exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
@@ -213,7 +216,7 @@
                                             View games
                                         </vs-button>
                                     </vs-col>
-                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6" v-if="admin">
                                         <vs-button gradient block  @click="openBookingGamePopup()">
                                             <i class='bx bx-plus'/>
                                             Add games
@@ -886,6 +889,7 @@
             if (getCookie('admin')) {
                 this.admin = true
             }
+            console.log(this.admin);
             getCurrentFestival().then(res => {
                 console.log(res.data);
                 this.festival = res.data;
