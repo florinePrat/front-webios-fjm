@@ -115,6 +115,7 @@
                                 {{ game.gameId && game.gameId.duration}}''
                             </vs-td>
 
+                            <!-- Click on a game -->
                             <template #expand>
                                 <div class="con-content">
                                     <div>
@@ -163,9 +164,10 @@
                     </template>
                 </vs-table>
             </div>
+        <br/>
+        <br/>
+        <br/>
         </div>
-
-
     </div>
 
 </template>

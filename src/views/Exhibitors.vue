@@ -593,6 +593,7 @@
 
 
             <!--BOOKING GAME POPUP-->
+            <!-- TODO: vérifier qu'un selected[0].booking[0] existe !!! BUG -->
             <vs-dialog blur v-model="activeBookingGame">
                 <template #header>
                     <h4 class="not-margin">
@@ -983,7 +984,7 @@
                         console.log(res.data);
                         this.activeBookingGame = false;
                     this.activeBookingGamePart2 = false;
-                    this.notificationSucces('reservation crée avec succes');
+                    this.notificationSucces('réservation créée avec succès');
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors.reverse()
@@ -998,7 +999,7 @@
                 if(this.festival.space){
                     this.activeBooking=!this.activeBooking;
                 }else{
-                    this.notificationErreur('Ajoutez d abord une space au festival');
+                    this.notificationErreur("Ajoutez d'abord un space au festival");
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },
@@ -1006,7 +1007,7 @@
                 if(this.festival.zoneId){
                     this.activeBookingGame=!this.activeBookingGame
                 }else{
-                    this.notificationErreur('Ajoutez d abord une zone au festival');
+                    this.notificationErreur("Ajoutez d'abord une zone au festival");
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },

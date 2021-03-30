@@ -17,7 +17,7 @@
         <br/>
         <div class="ml-6 pl-6">
             Spaces :
-            <vs-button v-if="!spaceEditMode && space !== null" shadow primary @click="editModeSpace()"><i class="fas fa-paint-brush"></i> </vs-button>
+            <vs-button v-if="!spaceEditMode && space" shadow primary @click="editModeSpace()"><i class="fas fa-paint-brush"></i> </vs-button>
             <vs-button v-if="spaceEditMode" shadow primary @click="editModeSpace(); updateSpaceToFestival()"><i class="fas fa-check"></i> </vs-button>
             <br/>
             <br/>
