@@ -31,13 +31,21 @@
                                 <b-taglist>
                                     <b-tag type="is-primary is-light"><i class='bx bx-game'/>
                                         <span class="span">
-                                    {{festival && festival.gameBookedList ? festival.gameBookedList.length > 1 ? festival.gameBookedList.length + ' jeux' : festival.gameBookedList.length + ' jeu' : '0 jeu'}}
+                                            {{festival && festival.gameBookedList ? festival.gameBookedList.length > 1 ? festival.gameBookedList.length + ' jeux' : festival.gameBookedList.length + ' jeu' : '0 jeu'}}
                                   </span></b-tag>
                                     <br>
                                     <b-tag type="is-primary is-light"><i class='bx bx-male'/>
                                         <span class="span">
-                                    {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exhibitors' : festival.exhibitors.length + ' exhibitor' : '0 exhibitor'}}
+                                            {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exhibitors' : festival.exhibitors.length + ' exhibitor' : '0 exhibitor'}}
                                   </span></b-tag>
+                                    <b-tag type="is-primary is-light"><i class='bx bx-male'/>
+                                        <span class="span">
+                                            {{festival && festival.space ? 'space OK' : 'no space'}}
+                                    </span></b-tag>
+                                    <b-tag type="is-primary is-light"><i class='bx bx-male'/>
+                                        <span class="span">
+                                            {{festival && festival.zoneId ? festival.zoneId.length > 1 ? festival.zoneId.length + ' zones' : festival.zoneId.length + ' zones' : '0 zones'}}
+                                    </span></b-tag>
                                 </b-taglist>
                             </template>
                             <template #img>
