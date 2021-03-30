@@ -22,7 +22,7 @@
                             <b-taglist>
                                 Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
                                 <vs-row>
-                                    <vs-button flat><i class='bx bx-game'/>
+                                    <vs-button flat><i class='bx bx-search-alt-2'/>
                                         <span class="span">
                                         Zone : {{game.zone.name}}
                                     </span>
@@ -101,6 +101,13 @@
                                     <vs-button flat><i class='bx bx-male'/>
                                         <span class="span">
                                         Age min : {{game.gameId && game.gameId.ageMin}} ans
+                                    </span>
+                                    </vs-button>
+
+                                    <br/>
+                                    <vs-button flat><i class='bx bxs-time'/>
+                                        <span class="span">
+                                        {{game.gameId && game.gameId.duration}}''
                                     </span>
                                     </vs-button>
 
