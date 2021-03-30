@@ -94,6 +94,12 @@
                                 </div>
                             </vs-td>
 
+                            <vs-td v-if="admin" >
+                                <div class="center">
+                                    <vs-button @click="updateExhibitor(exhibitor._id, exhibitor.name, exhibitor.suiviId.statusTraking, exhibitor.suiviId.present, exhibitor.publisherOnly, exhibitor.suiviId._id)"><i class='bx bx-pencil'/> </vs-button>
+                                </div>
+                            </vs-td>
+
                             <template #expand>
                                 <div v-if="admin">
                                     Main contact :
@@ -125,7 +131,7 @@
                                 exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
                                 exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
                                 exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan)">
-                                    <vs-table>
+                                    <vs-table style="text-align: center;">
                                         <template #thead>
                                             <vs-tr>
                                                 <vs-th>
@@ -409,6 +415,71 @@
                     <div class="footer-dialog">
                         <vs-button block @click="addExhibitor()">
                             Create
+                        </vs-button>
+
+                    </div>
+                </template>
+            </vs-dialog>
+
+
+            <!--UPDATE EXHIBITOR POPUP-->
+            <vs-dialog blur v-model="activeUpdateExhibitor">
+                <template #header>
+                    <h4 class="not-margin">
+                        Update <b>exhibitor </b> <i>{{updateNameExhibitor}}</i>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn icon-after v-model="updateNameExhibitor" label-placeholder="name">
+                                <template #icon>
+                                    <i class='bx bx-dice-1'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <b-field >
+                                <b-select
+                                        placeholder="Select zone"
+                                        icon="user"
+                                        icon-pack="fas"
+                                        v-model="updateStatus"
+                                >
+                                    <option value="pas de réponse">pas de réponse</option>
+                                    <option value="en discussion">en discussion</option>
+                                    <option value="présent">présent</option>
+                                    <option value="liste de jeux demandée">liste de jeux demandée</option>
+                                    <option value="liste de jeux reçue">liste de jeux reçue</option>
+                                    <option value="absent">absent</option>
+                                </b-select>
+                            </b-field>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatePresent">Present ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatePublisherOnly">Publisher only ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <vs-button block @click="sendUpdateExhibitor()">
+                            Update
                         </vs-button>
 
                     </div>
@@ -803,6 +874,8 @@
     import {addExistingExhibitor} from "../utils/admin/Exhibitor/addExistingExhibitorToCurrentFestival";
     import {addBookingGame} from "../utils/admin/bookingGame/addBookingGame";
     import {updateBooking} from "../utils/admin/booking/updateBooking";
+    import {updateSuivi} from "../utils/admin/suivi/updateSuivi";
+    import {updateExhibitor} from "../utils/admin/Exhibitor/updateExhibitor";
 
     export default {
         name: 'Exhibitor',
@@ -879,7 +952,14 @@
             upDateinvoiceSended : '',
             upDatepaymentOk : '',
             upDateputOnPlan : '',
-            upDatedBookingId : ''
+            upDatedBookingId : '',
+            activeUpdateExhibitor : false,
+            updateIdExhibitor : '',
+            updateIdSuivi : '',
+            updateNameExhibitor : '',
+            updateStatus : '',
+            updatePresent : false,
+            updatePublisherOnly : false,
         }),
 
         beforeMount() {
@@ -1042,11 +1122,72 @@
                 this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
                     console.log(res.data);
                     this.activeUpdateBooking = false;
-                    window.location.reload()
+                    getAllExhibitors().then(res =>{
+                        console.log(res.data);
+                        this.Allexhibitors = res.data.reverse()
+                    }).catch(e =>{
+                        console.log(e);
+                    });
+                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        console.log(res.data.exhibitors);
+                        this.exhibitors = res.data.exhibitors.reverse()
+                    }).catch(e =>{
+                        console.log(e);
+                    })
                 }).catch(e=>{
                     this.notificationErreur(e.response.data.error)
                 })
             },
+
+            updateExhibitor(exhibitorId, name, status, present, publisherOnly, suiviId){
+                if(this.admin){
+                    this.updateIdExhibitor = exhibitorId;
+                    this.updateIdSuivi = suiviId;
+                    this.updateNameExhibitor = name;
+                    this.updateStatus = status;
+                    this.updatePresent = present;
+                    this.updatePublisherOnly = publisherOnly;
+
+                    this.activeUpdateExhibitor =!this.activeUpdateExhibitor;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
+
+            },
+
+            sendUpdateExhibitor(){
+                updateSuivi(this.updateIdSuivi, this.updatePresent, this.updateStatus).then(res=>{
+                    console.log(res.data);
+                    updateExhibitor(this.updateIdExhibitor, this.updateNameExhibitor,  this.updatePublisherOnly).then(res=>{
+                        console.log(res.data);
+                        this.activeUpdateExhibitor = false;
+                        getAllExhibitors().then(res =>{
+                            console.log(res.data);
+                            this.Allexhibitors = res.data.reverse()
+                        }).catch(e =>{
+                            console.log(e);
+                        });
+                        getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                            console.log(res.data.exhibitors);
+                            this.exhibitors = res.data.exhibitors.reverse()
+                        }).catch(e =>{
+                            console.log(e);
+                        })
+
+                        this.notificationSucces('Exhibitor mis à jour avec succès')
+                    }).catch(e=>{
+                        this.notificationErreur(e.response.data.error)
+                    })
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
+
+
+            },
+
+
+
+
             notificationErreur(title) {
                 this.$vs.notification({
                     progress: 'auto',
