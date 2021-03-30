@@ -238,8 +238,10 @@
             <br/>
             <br/>
             Zones : 
+            <!--
             <vs-button v-if="!zoneEditMode && zones.length>0" shadow primary @click="editModeZone()"><i class="fas fa-paint-brush"></i> </vs-button>
             <vs-button v-if="zoneEditMode" shadow primary @click="editModeZone()"><i class="fas fa-check"></i> </vs-button>
+            -->
             <br/>
             <br/>
             <div v-if="zones">
@@ -248,12 +250,14 @@
                             vs-align="center">
                 <vs-row>
                 <vs-input
-                        :disabled = "!zoneEditMode"
+                        
                         primary
                         v-model="zone.name"
                         state="primary"
                         label="Zone : " />
+                        <vs-button shadow primary @click="updateZoneToFestival(zone.name, zone._id)"><i class="fas fa-paint-brush"></i> </vs-button>
                         <vs-button shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
+                        
                 </vs-row>     
                         <br/>
                 </vs-col>
@@ -299,6 +303,7 @@
     import {addSpace} from "../utils/admin/space/addSpace";
     import {updateSpace} from "../utils/admin/space/updateSpace";
     import {addZone} from "../utils/admin/zone/addZone";
+    import {updateZone} from "../utils/admin/zone/updateZone";
     import {deleteZone} from "../utils/admin/zone/deleteZone";
     import {getZoneById} from "../utils/admin/zone/getZoneById";
     import {getAllBookingByFestival} from "../utils/admin/booking/getAllBookingByFestival";
@@ -431,6 +436,22 @@
                 }else{
                     this.notificationErreur('Vous ne pouvez pas créer une zone sans nom...')
                }
+            },updateZoneToFestival(name, id){
+                if (name !== ''){
+                    console.log(id)
+                    console.log(name)
+                    updateZone(id, name).then(res =>{
+                        console.log(res.data);
+
+                        this.notificationSucces('Zone modifiée avec succès')
+                    }).catch(e =>{
+                        console.log(e);
+                        this.notificationErreur(e.response.data.error)
+                    })
+                    }else{
+                    this.notificationErreur('Vous ne pouvez pas créer une zone sans nom...')
+               }
+               
             }, deleteZoneToFestival(id){
 
                 getZoneById(id).then(res =>{
@@ -491,9 +512,6 @@
                 this.spaceEditMode = true;
             }
         },
-
         }
-
-
     }
 </script>
