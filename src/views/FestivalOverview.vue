@@ -461,7 +461,7 @@
                     // Delete only if there are no games
                     if(res.data.gamesId.length == 0){
                     
-                    deleteZone(id).then(res =>{
+                    deleteZone(id, this.$route.params.festivalId).then(res =>{
 
                         getFestivalById(this.$route.params.festivalId).then(res =>{
                             this.zones = res.data.zoneId;
