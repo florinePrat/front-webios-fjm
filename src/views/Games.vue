@@ -5,6 +5,7 @@
         <br>
         <br>
         <br>
+        <vs-button shadow primary @click="$router.go(-1)"><i style="font-size:32px" class='fa fa-arrow-circle-left'/> </vs-button>
         <vs-row>
             <vs-col offset="2" w="8">
                 {{exhibitor.name}}
