@@ -676,7 +676,19 @@
                 </template>
 
                 <br/>
-                <div class="con-form">
+                <b-field >
+                    <b-select v-if="selected[0]"
+                            placeholder="Select existing game"
+                            icon="gamepad"
+                            icon-pack="fas"
+                            v-model="gameIdSelected"
+                    >
+                        <option v-for="game in selected[0].gameList"
+                                :key="game._id" :value="game._id">{{game.name}}</option>
+                    </b-select>
+                </b-field>
+
+                <div class="con-form" v-if="!gameIdSelected">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                         <vs-input shadow warn icon-after v-model="name" label-placeholder="name">
                             <template #icon>
@@ -837,22 +849,6 @@
                 </template>
             </vs-dialog>
 
-           <!--
-               'statusTraking'"
-
-                        pas de réponse
-
-                        en discussion
-
-                        présent
-
-                        liste de jeux demandée
-
-                        liste de jeux reçue
-
-                        absent
-             -->
-
 
         </div>
 
@@ -939,7 +935,7 @@
             dotation :false,
             putOnPlan :false,
             bringByExhibitor :false,
-            zoneId : '',
+            zoneId : null,
             comment : '',
             upDatenbTableSpace1 : '',
             upDatenbTableSpace2 : '',
@@ -960,6 +956,7 @@
             updateStatus : '',
             updatePresent : false,
             updatePublisherOnly : false,
+            gameIdSelected : null,
         }),
 
         beforeMount() {
@@ -1064,7 +1061,7 @@
                     this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor);
                 addBookingGame(this.name, this.ageMin, this.duration, this.category, this.notice, this.prototypeGame, this.nbPlayersMin,
                     this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
-                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor).then(res =>{
+                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor, this.gameIdSelected).then(res =>{
                         console.log(res.data);
                         this.activeBookingGame = false;
                     this.activeBookingGamePart2 = false;
@@ -1088,7 +1085,7 @@
                 }
             },
             openBookingGamePopup(){
-                if(this.festival.zoneId){
+                if(this.festival.zoneId.length>0){
                     this.activeBookingGame=!this.activeBookingGame
                 }else{
                     this.notificationErreur("Ajoutez d'abord une zone au festival");
