@@ -16,8 +16,8 @@
         <br/>
         <div class="ml-6 pl-6">
             Spaces :
-            <vs-button v-if="!spaceEditMode && space" shadow primary @click="editModeSpace()"><i class="fas fa-paint-brush"></i> </vs-button>
-            <vs-button v-if="spaceEditMode" shadow primary @click="editModeSpace(); updateSpaceToFestival()"><i class="fas fa-check"></i> </vs-button>
+            <vs-button v-if="!spaceEditMode && space && admin" shadow primary @click="editModeSpace()"><i class="fas fa-paint-brush"></i> </vs-button>
+            <vs-button v-if="spaceEditMode && admin" shadow primary @click="editModeSpace(); updateSpaceToFestival()"><i class="fas fa-check"></i> </vs-button>
             <br/>
             <br/>
             <div v-if="space">
@@ -249,13 +249,13 @@
                             vs-align="center">
                 <vs-row>
                 <vs-input
-                        
+                        :disabled = "!admin"
                         primary
                         v-model="zone.name"
                         state="primary"
                         label="Zone : " />
-                        <vs-button shadow primary @click="updateZoneToFestival(zone.name, zone._id)"><i class="fas fa-paint-brush"></i> </vs-button>
-                        <vs-button shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
+                        <vs-button v-if="admin" shadow primary @click="updateZoneToFestival(zone.name, zone._id)"><i class="fas fa-paint-brush"></i> </vs-button>
+                        <vs-button v-if="admin" shadow primary @click="deleteZoneToFestival(zone._id)"><i class="fas fa-times"></i> </vs-button>
                         
                 </vs-row>     
                         <br/>
@@ -266,7 +266,7 @@
             </div>
 
             
-            <vs-button @click="activeAddZone=!activeAddZone">
+            <vs-button v-if="admin" @click="activeAddZone=!activeAddZone">
                 Add Zone
             </vs-button>
             <br/>
@@ -316,6 +316,7 @@
         },
         data:() => ({
             user : false,
+            admin : false,
             festival : {},
             zones : [],
             space : {},
@@ -342,6 +343,9 @@
         beforeMount() {
             if(getCookie('token')){
                 this.user = true
+            }
+            if (getCookie('admin')) {
+                this.admin = true
             }
             getFestivalById(this.$route.params.festivalId).then(res =>{
                 console.log(res.data);
