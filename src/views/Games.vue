@@ -19,6 +19,8 @@
                         vs-align="center">
                     <vs-card>
                         <template #title>
+                            <vs-button class="fas fa-paint-brush" shadow primary  @click="activeGameEdit=!activeGameEdit;keepId = game._id;updateGameBooking(game._id, game.zone[0], game.qtExhib[0], game.qtSend[0], game.received[0], game.putOnPlan[0], game.tombola[0], game.dotation[0], game.isCallback[0], game.isCallbackDone[0], game.callbackPrice[0], game.comment[0], game.bringByExhibitor[0])">
+                                </vs-button>
                             <b-taglist>
                                 Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
                                 <vs-row>
@@ -198,13 +200,117 @@
                     </vs-input>
                 </vs-col>
             </div>-->
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-
         </div>
 
+
+        <!--UPDATE BOOKINGGAME POPUP-->
+            <vs-dialog blur v-model="activeGameEdit">
+                <template #header>
+                    <h4 class="not-margin">
+                        Update <b>Game</b>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn icon-after v-model="updatedZone" label-placeholder="Zone" >
+                                <template #icon>
+                                    <i class='bx bx-dice-1'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedQtExhib" label-placeholder="nb jeux apportés">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedQtSend" label-placeholder="nb jeux envoyés">
+                                <template #icon>
+                                    <i class='bx bx-dice-2'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedCallbackPrice" label-placeholder="Prix du retour">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedPutOnPlan">Placé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedReceived">Reçu ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedTombola">Tombola ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedDotation">Donnation ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedIsCallback">Retour ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedIsCallbackDone">Retour effectué ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <div class="flex">
+                        <vs-input shadow warn icon-after v-model="updatedComment" label-placeholder="Commentaire">
+                            <template #icon>
+                                <i class='bx bx-dice-3'/>
+                            </template>
+                        </vs-input>
+                    </div>
+                    <div class="flex">
+                        <vs-checkbox v-model="updatedBringByExhibitor">Apporté par l'exposant ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <!--
+                        <vs-button block @click="sendUpdateBooking(selected[0]._id)">
+                            Update
+                        </vs-button>
+                        -->
+                    </div>
+                </template>
+            </vs-dialog>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
     </div>
 </template>
 
@@ -228,7 +334,38 @@
             games: [],
             search: "",
             exhibitor: null,
-            bookingGame: []
+            bookingGame: [],
+            activeGameEdit : false,
+            // GameBooking attributes
+            zone: '',
+            qtExhib: null,
+            qtSend: null,
+            received: false,
+            putOnPlan: false,
+            tombola: false,
+            dotation: false,
+            isCallback: false,
+            isCallbackDone: false,
+            callbackPrice: null,
+            comment: '',
+            bringByExhibitor: false,
+            dateAdd: null, // inutile ?
+            // GameBooking attributes updated
+            updatedZone: '',
+            updatedQtExhib: null,
+            updatedQtSend: null,
+            updatedReceived: false,
+            updatedPutOnPlan: false,
+            updatedTombola: false,
+            updatedDotation: false,
+            updatedIsCallback: false,
+            updatedIsCallbackDone: false,
+            updatedCallbackPrice: null,
+            updatedComment: '',
+            updatedBringByExhibitor: false,
+            updatedGameBookingId: '',
+            updatedDateAdd: null, //inutile ?
+
         }),
 
         beforeMount() {
@@ -246,6 +383,45 @@
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
             });
+
+        },
+
+        methods : {
+            updateGameBooking(gameBookingId, zone,qtExhib,qtSend,received,putOnPlan,tombola,dotation,isCallback,isCallbackDone,callbackPrice,comment,bringByExhibitor){
+                console.log("IN updateGameBooking, here's the zone:", zone)
+                if(this.admin){
+                    this.updatedZone = zone;
+                    this.updatedQtExhib = qtExhib;
+                    this.updatedQtSend = qtSend;
+                    this.updatedReceived = received;
+                    this.updatedPutOnPlan = putOnPlan;
+                    this.updatedTombola = tombola;
+                    this.updatedDotation = dotation;
+                    this.updatedIsCallback = isCallback;
+                    this.updatedIsCallbackDone = isCallbackDone;
+                    this.updatedCallbackPrice = callbackPrice;
+                    this.updatedComment = comment;
+                    this.updatedBringByExhibitor = bringByExhibitor;
+                    this.updatedDateAdd = new Date();
+                    this.updatedGameBookingId = gameBookingId;
+
+                    this.activeGameEdit =!this.activeGameEdit;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
+
+            },
+/*
+            sendUpdateBooking(){
+                updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
+                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
+                    console.log(res.data);
+                    this.activeUpdateBooking = false;
+                    window.location.reload()
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
+            }, */
 
         }
 
