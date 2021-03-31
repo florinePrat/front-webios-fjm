@@ -972,7 +972,7 @@
                 this.festival = res.data;
                 getAllExhibitors().then(res =>{
                     console.log(res.data);
-                    this.Allexhibitors = res.data.reverse()
+                    this.Allexhibitors = res.data
                 }).catch(e =>{
                     console.log(e);
                 });
@@ -1041,7 +1041,7 @@
                 }else{
                     getAllExhibitors().then(res =>{
                         console.log(res.data);
-                        this.Allexhibitors = res.data.reverse()
+                        this.Allexhibitors = res.data
                     }).catch(e =>{
                         console.log(e);
                     });
@@ -1121,7 +1121,7 @@
                     this.activeUpdateBooking = false;
                     getAllExhibitors().then(res =>{
                         console.log(res.data);
-                        this.Allexhibitors = res.data.reverse()
+                        this.Allexhibitors = res.data
                     }).catch(e =>{
                         console.log(e);
                     });
@@ -1160,7 +1160,7 @@
                         this.activeUpdateExhibitor = false;
                         getAllExhibitors().then(res =>{
                             console.log(res.data);
-                            this.Allexhibitors = res.data.reverse()
+                            this.Allexhibitors = res.data
                         }).catch(e =>{
                             console.log(e);
                         });
