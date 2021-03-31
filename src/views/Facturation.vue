@@ -70,29 +70,27 @@
                     </template>
                     <template #tbody>
                         <vs-tr
-                                :key="i"
-                                v-for="(exhibitor, i) in $vs.getSearch(active3 ? exhibitors : Allexhibitors, search)"
-                                :data="exhibitor"
-                                :is-selected="!!selected.includes(exhibitor)"
+                                v-for="booking in $vs.getSearch(bookings, search)"
+                                :key="booking._id"
                         >
                             <vs-td>
-                                {{ exhibitor.name }}
-                            </vs-td>
-                            <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : 'no email'}}
-                            </vs-td>
-                            <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'no tel mobile'}}
+                                {{ booking.exhibitorId.name }}
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.suiviId.statusTraking }}
+                                <i class='bx bx-book-reader'/>
+                                {{booking.paymentOK }}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-x-circle' v-if="!exhibitor.suiviId.present" />
-                                <i class='bx bx-check-double' v-else />
+                                <i class='bx bx-book-reader'/>
+                                {{booking.nbTableSpace1 }}
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.publisherOnly ? 'yes' : 'no' }}
+                                <i class='bx bx-cube-alt'/>
+                                {{booking.nbTableSpace2}}
+                            </vs-td>
+                            <vs-td>
+                                <i class='bx bx-time'/>
+                                {{booking.nbTableSpace3}}''
                             </vs-td>
                         </vs-tr>
                     </template>
