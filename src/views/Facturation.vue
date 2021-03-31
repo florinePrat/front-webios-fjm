@@ -77,20 +77,16 @@
                                 {{ booking.exhibitorId.name }}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-book-reader'/>
                                 {{booking.paymentOK }}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-book-reader'/>
                                 {{booking.nbTableSpace1 }}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-cube-alt'/>
                                 {{booking.nbTableSpace2}}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-time'/>
-                                {{booking.nbTableSpace3}}''
+                                {{booking.nbTableSpace3}}
                             </vs-td>
                         </vs-tr>
                     </template>
