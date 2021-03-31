@@ -981,18 +981,24 @@
             getCurrentFestival().then(res => {
                 console.log(res.data);
                 this.festival = res.data;
-                getAllExhibitors().then(res =>{
-                    console.log(res.data);
-                    this.Allexhibitors = res.data
-                }).catch(e =>{
-                    console.log(e);
-                });
-                getExhibitorsByfestivaId(this.festival._id).then(res =>{
-                    console.log(res.data);
-                    this.exhibitors = res.data.exhibitors
-                }).catch(e =>{
-                    console.log(e);
-                })
+                if(!this.festival){
+                    this.notificationErreur("il faut d'abord créer un festival pour accéder à cette page")
+                    this.$router.push('/festival')
+                }else{
+                    getAllExhibitors().then(res =>{
+                        console.log(res.data);
+                        this.Allexhibitors = res.data
+                    }).catch(e =>{
+                        console.log(e);
+                    });
+                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        console.log(res.data);
+                        this.exhibitors = res.data.exhibitors
+                    }).catch(e =>{
+                        console.log(e);
+                    })
+                }
+
 
             }).catch(e =>{
                     console.log(e);
