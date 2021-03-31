@@ -977,8 +977,8 @@
                     console.log(e);
                 });
                 getExhibitorsByfestivaId(this.festival._id).then(res =>{
-                    console.log(res.data.exhibitors);
-                    this.exhibitors = res.data.exhibitors.reverse()
+                    console.log(res.data);
+                    this.exhibitors = res.data.exhibitors
                 }).catch(e =>{
                     console.log(e);
                 })
@@ -1034,7 +1034,7 @@
                 if(!this.active3){
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
-                        this.exhibitors = res.data.exhibitors.reverse()
+                        this.exhibitors = res.data.exhibitors
                     }).catch(e =>{
                         console.log(e);
                     })
@@ -1068,7 +1068,7 @@
                     this.notificationSucces('réservation créée avec succès');
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
-                        this.exhibitors = res.data.exhibitors.reverse()
+                        this.exhibitors = res.data.exhibitors
                     }).catch(e =>{
                         console.log(e);
                     })
@@ -1127,7 +1127,7 @@
                     });
                     getExhibitorsByfestivaId(this.festival._id).then(res =>{
                         console.log(res.data.exhibitors);
-                        this.exhibitors = res.data.exhibitors.reverse()
+                        this.exhibitors = res.data.exhibitors
                     }).catch(e =>{
                         console.log(e);
                     })
@@ -1166,10 +1166,10 @@
                         });
                         getExhibitorsByfestivaId(this.festival._id).then(res =>{
                             console.log(res.data.exhibitors);
-                            this.exhibitors = res.data.exhibitors.reverse()
+                            this.exhibitors = res.data.exhibitors
                         }).catch(e =>{
                             console.log(e);
-                        })
+                        });
 
                         this.notificationSucces('Exhibitor mis à jour avec succès')
                     }).catch(e=>{
