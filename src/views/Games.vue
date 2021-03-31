@@ -16,8 +16,8 @@
         <div class="ml-6">
             <vs-row>
                 <vs-col w="4" v-for="game in bookingGame" :key="game._id" vs-type="flex" vs-justify="center"
-                        vs-align="center">
-                    <vs-card>
+                        vs-align="center" >
+                    <vs-card v-if="game.festivalId === currentFestival._id">
                         <template #title>
                             <b-taglist>
                                 Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
@@ -146,6 +146,9 @@
                                 <i class='bx bx-cube-alt'/>
                                 {{game.gameId.name}}
                             </vs-button>
+                            <vs-button v-if="admin"  shadow primary  @click="updateGameBooking(game._id, game.zone._id, game.qtExhib, game.qtSend, game.received, game.putOnPlan, game.tombola, game.dotation, game.isCallback, game.isCallbackDone, game.callbackPrice, game.comment, game.bringByExhibitor)">
+                                <i class='bx bx-pencil'/>
+                            </vs-button>
                         </template>
                     </vs-card>
                     <br/>
@@ -198,13 +201,128 @@
                     </vs-input>
                 </vs-col>
             </div>-->
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-
         </div>
 
+
+        <!--UPDATE BOOKINGGAME POPUP-->
+            <vs-dialog blur v-model="activeGameEdit">
+                <template #header>
+                    <h4 class="not-margin">
+                        Update <b>Game</b>
+                    </h4>
+                </template>
+
+                <br/>
+                <div class="con-form">
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+
+                            <b-field>
+                                <b-select
+                                        placeholder="Select zone"
+                                        icon="user"
+                                        icon-pack="fas"
+                                        v-model="updatedZone"
+                                >
+                                    <option v-for="zone in currentFestival.zoneId"
+                                            :key="zone._id" :value="zone._id">{{zone.name}}</option>
+                                </b-select>
+                            </b-field>
+
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedQtExhib" label-placeholder="nb jeux apportés">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedQtSend" label-placeholder="nb jeux envoyés">
+                                <template #icon>
+                                    <i class='bx bx-dice-2'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="updatedCallbackPrice" label-placeholder="Prix du retour">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedPutOnPlan">Placé ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedReceived">Reçu ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedTombola">Tombola ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedDotation">Donnation ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedIsCallback">Retour ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <div class="flex">
+                                <vs-checkbox v-model="updatedIsCallbackDone">Retour effectué ?</vs-checkbox>
+                            </div>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <br/>
+                    <div class="flex">
+                        <vs-input shadow warn icon-after v-model="updatedComment" label-placeholder="Commentaire">
+                            <template #icon>
+                                <i class='bx bx-dice-3'/>
+                            </template>
+                        </vs-input>
+                    </div>
+                    <br/>
+                    <div class="flex">
+                        <vs-checkbox v-model="updatedBringByExhibitor">Apporté par l'exposant ?</vs-checkbox>
+                    </div>
+                </div>
+
+                <template #footer>
+                    <div class="footer-dialog">
+                        <!--
+                        <vs-button block @click="sendUpdateBooking(selected[0]._id)">
+                            Update
+                        </vs-button>
+                        -->
+                    </div>
+                </template>
+            </vs-dialog>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
     </div>
 </template>
 
@@ -224,16 +342,51 @@
         },
         data: () => ({
             user: false,
+            admin: false,
             currentFestival: null,
             games: [],
             search: "",
             exhibitor: null,
-            bookingGame: []
+            bookingGame: [],
+            activeGameEdit : false,
+            // GameBooking attributes
+            zone: '',
+            qtExhib: null,
+            qtSend: null,
+            received: false,
+            putOnPlan: false,
+            tombola: false,
+            dotation: false,
+            isCallback: false,
+            isCallbackDone: false,
+            callbackPrice: null,
+            comment: '',
+            bringByExhibitor: false,
+            dateAdd: null, // inutile ?
+            // GameBooking attributes updated
+            updatedZone: '',
+            updatedQtExhib: null,
+            updatedQtSend: null,
+            updatedReceived: false,
+            updatedPutOnPlan: false,
+            updatedTombola: false,
+            updatedDotation: false,
+            updatedIsCallback: false,
+            updatedIsCallbackDone: false,
+            updatedCallbackPrice: null,
+            updatedComment: '',
+            updatedBringByExhibitor: false,
+            updatedGameBookingId: '',
+            updatedDateAdd: null, //inutile ?
+
         }),
 
         beforeMount() {
             if (getCookie('token')) {
                 this.user = true
+            }
+            if (getCookie('admin')) {
+                this.admin = true
             }
             getExhibitorsById(this.$route.params.exhibitorId).then(res => {
                 this.exhibitor = res.data;
@@ -246,6 +399,45 @@
                 console.log(e);
                 this.notificationErreur(e.response.data.error)
             });
+
+        },
+
+        methods : {
+            updateGameBooking(gameBookingId, zone,qtExhib,qtSend,received,putOnPlan,tombola,dotation,isCallback,isCallbackDone,callbackPrice,comment,bringByExhibitor){
+                console.log("IN updateGameBooking, here's the zone:", gameBookingId, zone,qtExhib,qtSend,received,putOnPlan,tombola,dotation,isCallback,isCallbackDone,callbackPrice,comment,bringByExhibitor)
+                if(this.admin){
+                    this.updatedZone = zone;
+                    this.updatedQtExhib = qtExhib;
+                    this.updatedQtSend = qtSend;
+                    this.updatedReceived = received;
+                    this.updatedPutOnPlan = putOnPlan;
+                    this.updatedTombola = tombola;
+                    this.updatedDotation = dotation;
+                    this.updatedIsCallback = isCallback;
+                    this.updatedIsCallbackDone = isCallbackDone;
+                    this.updatedCallbackPrice = callbackPrice;
+                    this.updatedComment = comment;
+                    this.updatedBringByExhibitor = bringByExhibitor;
+                    this.updatedDateAdd = new Date();
+                    this.updatedGameBookingId = gameBookingId;
+
+                    this.activeGameEdit =!this.activeGameEdit;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
+
+            },
+/*
+            sendUpdateBooking(){
+                updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
+                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
+                    console.log(res.data);
+                    this.activeUpdateBooking = false;
+                    window.location.reload()
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
+            }, */
 
         }
 
