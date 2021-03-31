@@ -49,7 +49,7 @@
                     <template #thead>
                         <vs-tr>
                             <vs-th>
-                                Name
+                                Nom éditeur
                             </vs-th>
                             <vs-th>
                                 Paiement effectué
@@ -61,16 +61,7 @@
                                 Compte rendu envoyé
                             </vs-th>
                             <vs-th>
-                                Nbre de tables Medium
-                            </vs-th>
-                            <vs-th>
-                                Nbre de tables Standard
-                            </vs-th>
-                            <vs-th>
-                                Nbre de tables Premium
-                            </vs-th>
-                            <vs-th>
-                                Prix réservation
+                                Total réservation
                             </vs-th>
                         </vs-tr>
                     </template>
@@ -80,7 +71,7 @@
                                 :key="booking._id"
                         >
                             <vs-td>
-                                {{ booking.exhibitorId.name }}
+                                {{booking.exhibitorId.name }}
                             </vs-td>
                             <vs-td>
                                 {{booking.paymentOk }}
@@ -91,17 +82,18 @@
                             <vs-td>
                                 {{booking.crSended }}
                             </vs-td>
-                            <vs-td>
-                                {{booking.nbTableSpace1 }}
-                            </vs-td>
-                            <vs-td>
-                                {{booking.nbTableSpace2}}
-                            </vs-td>
-                            <vs-td>
-                                {{booking.nbTableSpace3}}
-                            </vs-td>
-                            <vs-td>
+                            <vs-td v-if="booking.totalPrice != 0">
                                 {{booking.totalPrice}}
+                            </vs-td>
+                            <vs-td v-else> <!-- Prix calculé -->
+                                {{(booking.festivalId.space.unitPriceOfTable1)*(booking.nbTableSpace1)+
+                                (booking.festivalId.space.unitPriceOfTable2)*(booking.nbTableSpace2)+
+                                (booking.festivalId.space.unitPriceOfTable3)*(booking.nbTableSpace3)+
+                                (booking.festivalId.space.m2Price1)*(booking.nbM2Space1)+
+                                (booking.festivalId.space.m2Price2)*(booking.nbM2Space2)+
+                                (booking.festivalId.space.m2Price3)*(booking.nbM2Space3)
+                                
+                                }} €
                             </vs-td>
                         
 
@@ -109,21 +101,42 @@
                             <template #expand>
                                 <div class="con-content">
                                     <div>
-                                        <b-taglist>
-                                            <vs-button><i class='bx bx-game'/>
-                                                <span class="span">
-                                                   RIEN
-                                                </span>
-                                            </vs-button>
-                                            <br>
-                                            <vs-button><i class='bx bx-group'/>
-                                                <span class="span">
-                                                   RIEN
-                                                </span>
-                                            </vs-button>
-                                            <br>
+            <div class="center content-inputs">
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <b-tag>Premium </b-tag>
+                        <br/>
+                        Nombre de tables réservés : <b-tag> {{booking.nbTableSpace1}} </b-tag>
+                        <br/>
+                        Nombre de m2 réservés : <b-tag> {{booking.nbM2Space1}} </b-tag>
+                        <br/>
+                        Prix total : <b-tag> {{(booking.festivalId.space.unitPriceOfTable1)*(booking.nbTableSpace1)+
+                         (booking.festivalId.space.m2Price1)*(booking.nbM2Space1)}} € </b-tag>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <b-tag>Medium </b-tag>
+                        <br/>
+                        Nombre de tables réservés : <b-tag> {{booking.nbTableSpace2}} </b-tag>
+                        <br/>
+                        Nombre de m2 réservés : <b-tag> {{booking.nbM2Space2}} </b-tag>
+                        <br/>
+                        Prix total : <b-tag> {{(booking.festivalId.space.unitPriceOfTable2)*(booking.nbTableSpace2)+
+                         (booking.festivalId.space.m2Price2)*(booking.nbM2Space2)}} € </b-tag>
 
-                                        </b-taglist>
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
+                        <b-tag>Standard </b-tag>
+                        <br/>
+                        Nombre de tables réservés : <b-tag> {{booking.nbTableSpace3}} </b-tag>
+                        <br/>
+                        Nombre de m2 réservés : <b-tag> {{booking.nbM2Space3}} </b-tag>
+                        <br/>
+                        Prix total : <b-tag> {{(booking.festivalId.space.unitPriceOfTable3)*(booking.nbTableSpace3)+
+                         (booking.festivalId.space.m2Price3)*(booking.nbM2Space3)}} € </b-tag>
+
+                    </vs-col>
+                </vs-row>
+            </div>
                                         <br/>
                                     </div>
                                 </div>
