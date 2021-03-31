@@ -35,8 +35,6 @@
                         vs-align="center" >
                     <vs-card v-if="game.festivalId === currentFestival._id">
                         <template #title>
-                            <vs-button class="fas fa-paint-brush" shadow primary  @click="activeGameEdit=!activeGameEdit;keepId = game._id;updateGameBooking(game._id, game.zone[0], game.qtExhib[0], game.qtSend[0], game.received[0], game.putOnPlan[0], game.tombola[0], game.dotation[0], game.isCallback[0], game.isCallbackDone[0], game.callbackPrice[0], game.comment[0], game.bringByExhibitor[0])">
-                                </vs-button>
                             <b-taglist>
                                 Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
                                 <vs-row>
