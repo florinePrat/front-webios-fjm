@@ -68,6 +68,35 @@
                             </vs-th>
                         </vs-tr>
                     </template>
+                    <template #tbody>
+                        <vs-tr
+                                :key="i"
+                                v-for="(exhibitor, i) in $vs.getSearch(active3 ? exhibitors : Allexhibitors, search)"
+                                :data="exhibitor"
+                                :is-selected="!!selected.includes(exhibitor)"
+                        >
+                            <vs-td>
+                                {{ exhibitor.name }}
+                            </vs-td>
+                            <vs-td v-if="admin">
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : 'no email'}}
+                            </vs-td>
+                            <vs-td v-if="admin">
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'no tel mobile'}}
+                            </vs-td>
+                            <vs-td>
+                                {{ exhibitor.suiviId.statusTraking }}
+                            </vs-td>
+                            <vs-td>
+                                <i class='bx bx-x-circle' v-if="!exhibitor.suiviId.present" />
+                                <i class='bx bx-check-double' v-else />
+                            </vs-td>
+                            <vs-td>
+                                {{ exhibitor.publisherOnly ? 'yes' : 'no' }}
+                            </vs-td>
+                        </vs-tr>
+                    </template>
+
                 </vs-table>
             </div>
         </div>
@@ -95,7 +124,8 @@
         data: () => ({
             user: false,
             currentFestival: {},
-            search: ""
+            search: "",
+            bookings: []
         }),
 
         beforeMount() {
@@ -108,7 +138,7 @@
 
                 getAllBookingByFestival(this.currentFestival._id).then(res =>{
                     console.log(res.data);
-
+                    this.bookings = res.data
                 }).catch(e =>{
                     console.log(e);
                 });
