@@ -82,8 +82,8 @@
                             <vs-td>
                                 {{booking.crSended }}
                             </vs-td>
-                            <vs-td v-if="booking.totalPrice != 0">
-                                {{booking.totalPrice}}
+                            <vs-td v-if="booking.negociedPrice != 0">
+                                {{booking.negociedPrice}}
                             </vs-td>
                             <vs-td v-else> <!-- Prix calculé -->
                                 {{(booking.festivalId.space.unitPriceOfTable1)*(booking.nbTableSpace1)+
