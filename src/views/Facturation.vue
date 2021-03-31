@@ -52,19 +52,25 @@
                                 Name
                             </vs-th>
                             <vs-th>
-                                Statut
+                                Paiement effectué
                             </vs-th>
                             <vs-th>
-                                Nombre de tables Medium
+                                Facture envoyé
                             </vs-th>
                             <vs-th>
-                                Nombre de tables Standard
+                                Compte rendu envoyé
                             </vs-th>
                             <vs-th>
-                                Nombre de tables Premium
+                                Nbre de tables Medium
                             </vs-th>
                             <vs-th>
-                                Prix payés
+                                Nbre de tables Standard
+                            </vs-th>
+                            <vs-th>
+                                Nbre de tables Premium
+                            </vs-th>
+                            <vs-th>
+                                Prix réservation
                             </vs-th>
                         </vs-tr>
                     </template>
@@ -77,7 +83,13 @@
                                 {{ booking.exhibitorId.name }}
                             </vs-td>
                             <vs-td>
-                                {{booking.paymentOK }}
+                                {{booking.paymentOk }}
+                            </vs-td>
+                            <vs-td>
+                                {{booking.invoiceSended }}
+                            </vs-td>
+                            <vs-td>
+                                {{booking.crSended }}
                             </vs-td>
                             <vs-td>
                                 {{booking.nbTableSpace1 }}
@@ -88,9 +100,37 @@
                             <vs-td>
                                 {{booking.nbTableSpace3}}
                             </vs-td>
+                            <vs-td>
+                                {{booking.totalPrice}}
+                            </vs-td>
+                        
+
+                            <!-- Click on a booking -->
+                            <template #expand>
+                                <div class="con-content">
+                                    <div>
+                                        <b-taglist>
+                                            <vs-button><i class='bx bx-game'/>
+                                                <span class="span">
+                                                   RIEN
+                                                </span>
+                                            </vs-button>
+                                            <br>
+                                            <vs-button><i class='bx bx-group'/>
+                                                <span class="span">
+                                                   RIEN
+                                                </span>
+                                            </vs-button>
+                                            <br>
+
+                                        </b-taglist>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </template>
+
                         </vs-tr>
                     </template>
-
                 </vs-table>
             </div>
         </div>
