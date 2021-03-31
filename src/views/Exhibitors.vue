@@ -443,7 +443,7 @@
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <b-field >
                                 <b-select
-                                        placeholder="Select zone"
+                                        placeholder="Select status tracking"
                                         icon="user"
                                         icon-pack="fas"
                                         v-model="updateStatus"

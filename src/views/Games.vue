@@ -16,11 +16,9 @@
         <div class="ml-6">
             <vs-row>
                 <vs-col w="4" v-for="game in bookingGame" :key="game._id" vs-type="flex" vs-justify="center"
-                        vs-align="center">
-                    <vs-card>
+                        vs-align="center" >
+                    <vs-card v-if="game.festivalId === currentFestival._id">
                         <template #title>
-                            <vs-button class="fas fa-paint-brush" shadow primary  @click="activeGameEdit=!activeGameEdit;keepId = game._id;updateGameBooking(game._id, game.zone[0], game.qtExhib[0], game.qtSend[0], game.received[0], game.putOnPlan[0], game.tombola[0], game.dotation[0], game.isCallback[0], game.isCallbackDone[0], game.callbackPrice[0], game.comment[0], game.bringByExhibitor[0])">
-                                </vs-button>
                             <b-taglist>
                                 Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
                                 <vs-row>
@@ -148,6 +146,9 @@
                                 <i class='bx bx-cube-alt'/>
                                 {{game.gameId.name}}
                             </vs-button>
+                            <vs-button v-if="admin"  shadow primary  @click="updateGameBooking(game._id, game.zone._id, game.qtExhib, game.qtSend, game.received, game.putOnPlan, game.tombola, game.dotation, game.isCallback, game.isCallbackDone, game.callbackPrice, game.comment, game.bringByExhibitor)">
+                                <i class='bx bx-pencil'/>
+                            </vs-button>
                         </template>
                     </vs-card>
                     <br/>
@@ -215,11 +216,19 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn icon-after v-model="updatedZone" label-placeholder="Zone" >
-                                <template #icon>
-                                    <i class='bx bx-dice-1'/>
-                                </template>
-                            </vs-input>
+
+                            <b-field>
+                                <b-select
+                                        placeholder="Select zone"
+                                        icon="user"
+                                        icon-pack="fas"
+                                        v-model="updatedZone"
+                                >
+                                    <option v-for="zone in currentFestival.zoneId"
+                                            :key="zone._id" :value="zone._id">{{zone.name}}</option>
+                                </b-select>
+                            </b-field>
+
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <vs-input shadow warn type="number" icon-after v-model="updatedQtExhib" label-placeholder="nb jeux apportés">
@@ -285,6 +294,8 @@
                             </div>
                         </vs-col>
                     </vs-row>
+                    <br/>
+                    <br/>
                     <div class="flex">
                         <vs-input shadow warn icon-after v-model="updatedComment" label-placeholder="Commentaire">
                             <template #icon>
@@ -292,6 +303,7 @@
                             </template>
                         </vs-input>
                     </div>
+                    <br/>
                     <div class="flex">
                         <vs-checkbox v-model="updatedBringByExhibitor">Apporté par l'exposant ?</vs-checkbox>
                     </div>
@@ -330,6 +342,7 @@
         },
         data: () => ({
             user: false,
+            admin: false,
             currentFestival: null,
             games: [],
             search: "",
@@ -372,6 +385,9 @@
             if (getCookie('token')) {
                 this.user = true
             }
+            if (getCookie('admin')) {
+                this.admin = true
+            }
             getExhibitorsById(this.$route.params.exhibitorId).then(res => {
                 this.exhibitor = res.data;
                 this.bookingGame = res.data.gameBookedList;
@@ -388,7 +404,7 @@
 
         methods : {
             updateGameBooking(gameBookingId, zone,qtExhib,qtSend,received,putOnPlan,tombola,dotation,isCallback,isCallbackDone,callbackPrice,comment,bringByExhibitor){
-                console.log("IN updateGameBooking, here's the zone:", zone)
+                console.log("IN updateGameBooking, here's the zone:", gameBookingId, zone,qtExhib,qtSend,received,putOnPlan,tombola,dotation,isCallback,isCallbackDone,callbackPrice,comment,bringByExhibitor)
                 if(this.admin){
                     this.updatedZone = zone;
                     this.updatedQtExhib = qtExhib;
