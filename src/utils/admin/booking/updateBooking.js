@@ -2,14 +2,14 @@ import axios from "axios";
 import {getCookie} from "../../cookie/cookie";
 
 
-export function updateBooking(bookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan) {
+export function updateBooking(bookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan, negociedPrice) {
     let burl = process.env.VUE_APP_API;
     console.log(burl);
     return axios({
         method: 'put',
         url: burl + '/api/booking/update/',
         data : {
-            bookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan
+            bookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan, negociedPrice
         },
         headers : {
             'Content-Type': 'application/json',

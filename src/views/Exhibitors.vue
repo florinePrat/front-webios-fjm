@@ -130,7 +130,7 @@
                                 <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
                                 exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
                                 exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
-                                exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan)">
+                                exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan, exhibitor.booking[0].negociedPrice)">
                                     <vs-table style="text-align: center;">
                                         <template #thead>
                                             <vs-tr>
@@ -626,6 +626,16 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                            <vs-input shadow warn type="number" icon-after v-model="upDateNegociedPrice" label-placeholder="Prix négocié">
+                                <template #icon>
+                                    <i class='bx bx-grid-alt'/>
+                                </template>
+                            </vs-input>
+                        </vs-col>
+                    </vs-row>
+                    <br/>
+                    <vs-row>
+                        <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <div class="flex">
                                 <vs-checkbox v-model="upDatecrSended">CR envoyé ?</vs-checkbox>
                             </div>
@@ -949,6 +959,7 @@
             upDatepaymentOk : '',
             upDateputOnPlan : '',
             upDatedBookingId : '',
+            upDateNegociedPrice : '',
             activeUpdateExhibitor : false,
             updateIdExhibitor : '',
             updateIdSuivi : '',
@@ -1092,7 +1103,7 @@
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },
-            updateBooking(updatedBookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan){
+            updateBooking(updatedBookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan, negociedPrice){
                 if(this.admin){
                     this.upDatenbTableSpace1 = nbTableSpace1;
                     this.upDatenbTableSpace2 = nbTableSpace2;
@@ -1106,6 +1117,7 @@
                     this.upDatepaymentOk = paymentOk;
                     this.upDateputOnPlan = putOnPlan;
                     this.upDatedBookingId = updatedBookingId;
+                    this.upDateNegociedPrice = negociedPrice;
 
                     this.activeUpdateBooking =!this.activeUpdateBooking;
                 }else{
@@ -1116,7 +1128,7 @@
 
             sendUpdateBooking(){
                 updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
-                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan).then(res=>{
+                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan, this.upDateNegociedPrice).then(res=>{
                     console.log(res.data);
                     this.activeUpdateBooking = false;
                     getAllExhibitors().then(res =>{
