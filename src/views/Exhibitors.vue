@@ -1017,7 +1017,7 @@
             },
             addBooking(exhibitorId){
                 if(this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3){
-                    addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
+                    addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, 0, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
                         console.log(res.data);
                         getExhibitorsByfestivaId(this.festival._id).then(res =>{
                             console.log(res.data.exhibitors);
