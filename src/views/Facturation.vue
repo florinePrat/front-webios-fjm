@@ -19,28 +19,31 @@
                     <vs-col w="4" vs-type="flex" vs-justify="center" vs-align="center">
                         <vs-card>
                             <template #img>
-                                <p> Total des facturations actuels 5€ </p>
-                                
+                                 Total facturé <br/>
+                                  {{totalFacture}} €
                             </template>
+
                         </vs-card>
                         </vs-col>
                         <vs-col w="4" vs-type="flex" vs-justify="center" vs-align="center">
                             <vs-card>
                             <template #img>
-                                <p> Total prévus 10€ </p>
+                                <p> Total prévus <br/> {{totalPrevu}} € </p>
                             </template>
                         </vs-card>
                     </vs-col>
                     <vs-col w="4" vs-type="flex" vs-justify="center" vs-align="center">
                             <vs-card>
                             <template #img>
-                                <p> Différence -5€ </p>
+                                <p> Différence <br/> {{totalFacture - totalPrevu}}€ </p>
                             </template>
                         </vs-card>
                     </vs-col>
+                    
                 </vs-row>
-
+<br/>
             <div class="center mr-6">
+                
                 <vs-table>
                     <template #header>
                         <vs-input v-model="search" border placeholder="Search"/>
@@ -172,7 +175,9 @@
             user: false,
             currentFestival: {},
             search: "",
-            bookings: []
+            bookings: [],
+            totalFacture: '',
+            totalPrevu: ''
         }),
 
         beforeMount() {
@@ -186,6 +191,33 @@
                 getAllBookingByFestival(this.currentFestival._id).then(res =>{
                     console.log(res.data);
                     this.bookings = res.data
+
+                    // Calcul total facturé et total prévu
+                    this.totalFacture = 0
+                    this.totalPrevu = 0
+
+                    for(let i = 0; i < this.bookings.length ; i++){
+                        let valeur = 0
+                        
+                        if(this.bookings[i].negociedPrice >= 0){
+                            valeur = this.bookings[i].negociedPrice
+                            
+                        } else {
+                            valeur += (this.bookings[i].festivalId.space.unitPriceOfTable1)*(this.bookings[i].nbTableSpace1)+
+                                (this.bookings[i].festivalId.space.unitPriceOfTable2)*(this.bookings[i].nbTableSpace2)+
+                                (this.bookings[i].festivalId.space.unitPriceOfTable3)*(this.bookings[i].nbTableSpace3)+
+                                (this.bookings[i].festivalId.space.m2Price1)*(this.bookings[i].nbM2Space1)+
+                                (this.bookings[i].festivalId.space.m2Price2)*(this.bookings[i].nbM2Space2)+
+                                (this.bookings[i].festivalId.space.m2Price3)*(this.bookings[i].nbM2Space3)
+                        }
+                        
+                        this.totalPrevu += valeur
+
+                        if(this.bookings[i].paymentOk){
+                            this.totalFacture += valeur
+                        }
+                    }
+
                 }).catch(e =>{
                     console.log(e);
                 });
