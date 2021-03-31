@@ -283,7 +283,7 @@
                                 <i class='bx bx-cube-alt'/>
                                 {{game.name}}
                             </vs-button>
-                            <vs-button shadow primary  @click="updateGame(game._id, game.zone._id, game.qtExhib, game.qtSend, game.received, game.putOnPlan, game.tombola, game.dotation, game.isCallback, game.isCallbackDone, game.callbackPrice, game.comment, game.bringByExhibitor)">
+                            <vs-button shadow primary  @click="updateGame(game._id, game.name, game.nbPlayersMin, game.nbPlayersMax, game.ageMin, game.duration, game.notice, game.prototypeGame, game.description)">
                                 <i class='bx bx-pencil'/>
                             </vs-button>
                         </template>
@@ -462,30 +462,16 @@
         <vs-dialog blur v-model="activeUpdateGame">
             <template #header>
                 <h4 class="not-margin">
-                    Update <b>Game</b>
+                    Update <b>Game</b> {{updatedName}}
                 </h4>
             </template>
 
             <br/>
             <div class="con-form">
+
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-
-                        <b-field>
-                            <b-select
-                                    placeholder="Select zone"
-                                    icon="user"
-                                    icon-pack="fas"
-                                    v-model="updatedZone"
-                            >
-                                <option v-for="zone in currentFestival.zoneId"
-                                        :key="zone._id" :value="zone._id">{{zone.name}}</option>
-                            </b-select>
-                        </b-field>
-
-                    </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <vs-input shadow warn type="number" icon-after v-model="updatedQtExhib" label-placeholder="nb jeux apportés">
+                        <vs-input shadow warn icon-after v-model="updatedName" label-placeholder="Nom">
                             <template #icon>
                                 <i class='bx bx-grid-alt'/>
                             </template>
@@ -495,14 +481,33 @@
                 <br/>
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <vs-input shadow warn type="number" icon-after v-model="updatedQtSend" label-placeholder="nb jeux envoyés">
+
+                        <vs-input shadow warn type="number" icon-after v-model="updatedNbPlayersMin" label-placeholder="nb joueurs min">
+                            <template #icon>
+                                <i class='bx bx-grid-alt'/>
+                            </template>
+                        </vs-input>
+
+                    </vs-col>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        <vs-input shadow warn type="number" icon-after v-model="updatedNbPlayersMax" label-placeholder="nb joueurs max">
+                            <template #icon>
+                                <i class='bx bx-grid-alt'/>
+                            </template>
+                        </vs-input>
+                    </vs-col>
+                </vs-row>
+                <br/>
+                <vs-row>
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
+                        <vs-input shadow warn type="number" icon-after v-model="updatedAgeMin" label-placeholder="Age min">
                             <template #icon>
                                 <i class='bx bx-dice-2'/>
                             </template>
                         </vs-input>
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <vs-input shadow warn type="number" icon-after v-model="updatedCallbackPrice" label-placeholder="Prix du retour">
+                        <vs-input shadow warn type="number" icon-after v-model="updatedDuration" label-placeholder="Temps">
                             <template #icon>
                                 <i class='bx bx-grid-alt'/>
                             </template>
@@ -512,60 +517,44 @@
                 <br/>
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <div class="flex">
-                            <vs-checkbox v-model="updatedPutOnPlan">Placé ?</vs-checkbox>
-                        </div>
+                        <vs-input shadow warn icon-after v-model="updatedNotice" label-placeholder="Lien notice">
+                            <template #icon>
+                                <i class='bx bx-grid-alt'/>
+                            </template>
+                        </vs-input>
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <div class="flex">
-                            <vs-checkbox v-model="updatedReceived">Reçu ?</vs-checkbox>
-                        </div>
+                        <vs-input shadow warn icon-after v-model="updatedDuration" label-placeholder="Temps">
+                        <template #icon>
+                            <i class='bx bx-grid-alt'/>
+                        </template>
+                    </vs-input>
                     </vs-col>
                 </vs-row>
                 <br/>
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                         <div class="flex">
-                            <vs-checkbox v-model="updatedTombola">Tombola ?</vs-checkbox>
-                        </div>
-                    </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <div class="flex">
-                            <vs-checkbox v-model="updatedDotation">Donnation ?</vs-checkbox>
+                            <vs-checkbox v-model="updatedPrototypeGame">Prototype ?</vs-checkbox>
                         </div>
                     </vs-col>
                 </vs-row>
                 <br/>
-                <vs-row>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <div class="flex">
-                            <vs-checkbox v-model="updatedIsCallback">Retour ?</vs-checkbox>
-                        </div>
-                    </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <div class="flex">
-                            <vs-checkbox v-model="updatedIsCallbackDone">Retour effectué ?</vs-checkbox>
-                        </div>
-                    </vs-col>
-                </vs-row>
                 <br/>
                 <br/>
                 <div class="flex">
-                    <vs-input shadow warn icon-after v-model="updatedComment" label-placeholder="Commentaire">
+                    <vs-input shadow warn icon-after v-model="updatedDescription" label-placeholder="description">
                         <template #icon>
                             <i class='bx bx-dice-3'/>
                         </template>
                     </vs-input>
                 </div>
                 <br/>
-                <div class="flex">
-                    <vs-checkbox v-model="updatedBringByExhibitor">Apporté par l'exposant ?</vs-checkbox>
-                </div>
             </div>
 
             <template #footer>
                 <div class="footer-dialog">
-                    <vs-button block @click="sendUpdateBooking()">
+                    <vs-button block @click="sendUpdateGame()">
                         Update
                     </vs-button>
                 </div>
@@ -585,6 +574,7 @@
     import {getCurrentFestival} from "../utils/visitor/getCurrentFestival";
     import {getExhibitorsById} from "../utils/admin/Exhibitor/getExhibitorsById";
     import {updateBookingGame} from "../utils/admin/bookingGame/updateBookingGame";
+    import {updateGame} from "../utils/user/game/updateGame";
 
     export default {
         name: "Games",
@@ -635,7 +625,9 @@
 
 
             // Game attributes updated
-            updatedName: '',
+            activeUpdateGame : false,
+            updatedGameId: '',
+            updatedName: null,
             updatedNbPlayersMin: null,
             updatedNbPlayersMax: null,
             updatedAgeMin: null,
@@ -699,6 +691,37 @@
                 this.updatedTombola, this.updatedDotation, this.updatedIsCallback, this.updatedIsCallbackDone, this.updatedCallbackPrice, this.updatedComment, this.updatedBringByExhibitor, this.updatedDateAdd).then(res=>{
                     console.log(res.data);
                     this.activeGameEdit = false;
+                    window.location.reload()
+                }).catch(e=>{
+                    this.notificationErreur(e.response.data.error)
+                })
+            },
+
+            updateGame(gameId, name, nbPlayersMin, nbPlayersMax, ageMin, duration, notice, prototypeGame, description){
+                console.log(gameId, name, nbPlayersMin, nbPlayersMax, ageMin, duration, notice, prototypeGame, description);
+                if(this.user){
+                    this.updatedName = name;
+                    this.updatedNbPlayersMin = nbPlayersMin;
+                    this.updatedNbPlayersMax = nbPlayersMax;
+                    this.updatedAgeMin = ageMin;
+                    this.updatedDuration = duration;
+                    this.updatedNotice = notice;
+                    this.updatedPrototypeGame = prototypeGame;
+                    this.updatedDescription = description;
+                    this.updatedGameId = gameId;
+
+                    this.activeUpdateGame =!this.activeUpdateGame;
+                }else{
+                    this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
+                }
+
+            },
+
+            sendUpdateGame(){
+                updateGame(this.updatedGameId, this.updatedName, this.updatedNbPlayersMin, this.updatedNbPlayersMax, this.updatedAgeMin, this.updatedDuration,
+                    this.updatedNotice, this.updatedPrototypeGame, this.updatedDescription).then(res=>{
+                    console.log(res.data);
+                    this.activeUpdateGame = false;
                     window.location.reload()
                 }).catch(e=>{
                     this.notificationErreur(e.response.data.error)
