@@ -42,16 +42,16 @@
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'name')">
                                 Name
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'email')" v-if="admin">
+                            <vs-th v-if="admin">
                                 Email MC
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'tel')" v-if="admin">
+                            <vs-th v-if="admin">
                                 Tel MC
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'statusTracking')">
+                            <vs-th>
                                 Status
                             </vs-th>
-                            <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'present')">
+                            <vs-th>
                                 Present
                             </vs-th>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
