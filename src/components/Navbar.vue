@@ -15,14 +15,14 @@
                         gradient
                         @click="login=!login"
                 >
-                    <i class="bx bxs-log-in-circle"/> Login
+                    <i class="bx bxs-log-in-circle"/> Se connecter
                 </vs-button>
 
                 <div class="center">
                     <vs-dialog blur v-model="login">
                         <template #header>
                             <h4 class="not-margin">
-                                Welcome to <b>FJM</b>
+                                Bienvenue au <b>Festival du Jeu de Montpellier</b>
                             </h4>
                         </template>
 
@@ -35,7 +35,7 @@
                                         </template>
                                     </vs-input>
                                     <br>
-                                    <vs-input type="password" v-model="password" placeholder="Password">
+                                    <vs-input type="password" v-model="password" placeholder="Mot de passe">
                                         <template #icon>
                                             <i class='bx bxs-lock'/>
                                         </template>
@@ -50,7 +50,7 @@
                         <template #footer>
                             <div class="footer-dialog">
                                 <vs-button block gradient @click="log()">
-                                    Sign In
+                                    Connexion
                                 </vs-button>
                             </div>
                         </template>

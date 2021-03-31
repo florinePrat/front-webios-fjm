@@ -10,7 +10,7 @@
 
             <vs-row>
                 <vs-col w="8">
-                    <h1>Exhibitors</h1>
+                    <h1>Éditeurs</h1>
                 </vs-col>
             </vs-row>
             <br/>
@@ -18,10 +18,10 @@
             <div class="center con-switch">
             <vs-switch v-model="active3" @click="changeGetExhibitor()">
                 <template #off>
-                    Exhibitors for all festivals
+                    Éditeurs de tous les festivals
                 </template>
                 <template #on>
-                    Exhibitors for current festival
+                    Éditeurs du festival courant
                 </template>
             </vs-switch>
             </div>
@@ -40,25 +40,25 @@
                         </vs-tr>
                         <vs-tr>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'name')">
-                                Name
+                                Nom
                             </vs-th>
                             <vs-th v-if="admin">
-                                Email MC
+                                Email CP
                             </vs-th>
                             <vs-th v-if="admin">
-                                Tel MC
+                                Tel CP
                             </vs-th>
                             <vs-th>
-                                Status
+                                Statut
                             </vs-th>
                             <vs-th>
-                                Present
+                                Présent
                             </vs-th>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
-                                Publisher Only
+                                Éditeur uniquement
                             </vs-th>
                             <vs-th v-if="!active3 & admin">
-                                Add to current
+                                Importer
                             </vs-th>
                         </vs-tr>
                     </template>
@@ -73,10 +73,10 @@
                                 {{ exhibitor.name }}
                             </vs-td>
                             <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : 'no email'}}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : "pas d'email"}}
                             </vs-td>
                             <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'no tel mobile'}}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'pas de tel mobile'}}
                             </vs-td>
                             <vs-td>
                                 {{ exhibitor.suiviId.statusTraking }}
@@ -86,11 +86,11 @@
                                 <i class='bx bx-check-double' v-else />
                             </vs-td>
                             <vs-td>
-                                {{ exhibitor.publisherOnly ? 'yes' : 'no' }}
+                                {{ exhibitor.publisherOnly ? 'oui' : 'non' }}
                             </vs-td>
                             <vs-td v-if="!active3 & admin" >
                                 <div class="center">
-                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">Add </vs-button>
+                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">ajouter </vs-button>
                                 </div>
                             </vs-td>
 
@@ -102,7 +102,7 @@
 
                             <template #expand>
                                 <div v-if="admin">
-                                    Main contact :
+                                    Contact principal :
                                     <div class="box con-content">
                                         <vs-row>
                                             <vs-col w="2">
@@ -112,21 +112,21 @@
                                             </vs-col>
                                             <vs-col w="3">
                                                 <i class='bx bx-phone-call mr-1'/>Tel fixe :
-                                                {{ exhibitor.mainContact ? exhibitor.mainContact.telFixe : 'no data yet' }}
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.telFixe : 'inconnu' }}
                                             </vs-col>
                                             <vs-col w="4">
                                                 <i class='bx bx-map-pin mr-1'/>Addresse :
-                                                {{ exhibitor.mainContact ? exhibitor.mainContact.address : 'no data yet'}}
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.address : 'inconnu'}}
                                             </vs-col>
                                             <vs-col w="3">
                                                 <i class='bx bx-briefcase-alt-2 mr-1'/>Work :
-                                                {{ exhibitor.mainContact ? exhibitor.mainContact.work : 'no data yet' }}
+                                                {{ exhibitor.mainContact ? exhibitor.mainContact.work : 'inconnu' }}
                                             </vs-col>
                                         </vs-row>
                                     </div>
                                 </div>
 
-                                Booking :
+                                Réservation :
                                 <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
                                 exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
                                 exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
@@ -135,37 +135,37 @@
                                         <template #thead>
                                             <vs-tr>
                                                 <vs-th>
-                                                    nbTableSpace1
+                                                    nbTablePremium
                                                 </vs-th>
                                                 <vs-th>
-                                                    nbTableSpace2
+                                                    nbTableMedium
                                                 </vs-th>
                                                 <vs-th>
-                                                    nbTableSpace3
+                                                    nbTableStandard
                                                 </vs-th>
                                                 <vs-th>
-                                                   nbM2Space1
+                                                   nbM2Premium
                                                 </vs-th>
                                                 <vs-th>
-                                                    nbM2Space2
+                                                    nbM2Medium
                                                 </vs-th>
                                                 <vs-th>
-                                                    nbM2Space3
+                                                    nbM2Standard
                                                 </vs-th>
                                                 <vs-th>
-                                                    animator needed
+                                                    besoin animateurs
                                                 </vs-th>
                                                 <vs-th>
-                                                    cr sended
+                                                    cr envoyé
                                                 </vs-th>
                                                 <vs-th>
-                                                    invoce sended
+                                                    facture envoyée
                                                 </vs-th>
                                                 <vs-th>
-                                                    payment Ok
+                                                    paiement Ok
                                                 </vs-th>
                                                 <vs-th>
-                                                    put on plan
+                                                    placé
                                                 </vs-th>
                                             </vs-tr>
                                         </template>
@@ -211,21 +211,21 @@
                                 </div>
                                 <div v-else>
                                     <vs-button gradient block v-if="active3" @click="openBookingPopup()">
-                                        Add booking
+                                        Ajouter une réservation
                                     </vs-button>
                                 </div>
-                                Game :
+                                Jeux :
                                 <vs-row>
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                                         <vs-button block v-if="exhibitor.gameBookedList.length> 0" @click="$router.push('/games/' + exhibitor._id)">
                                             <i class='bx bx-show-alt'/>
-                                            View games
+                                            Voir les jeux
                                         </vs-button>
                                     </vs-col>
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6" v-if="admin">
                                         <vs-button gradient block  @click="openBookingGamePopup()">
                                             <i class='bx bx-plus'/>
-                                            Add games
+                                            Ajouter un jeu
                                         </vs-button>
                                     </vs-col>
 
@@ -238,7 +238,7 @@
                                 <vs-dialog blur v-model="activecontact">
                                     <template #header>
                                         <h4 class="not-margin">
-                                            View all <b>contacts</b>
+                                            Tous les <b>contacts</b>
                                         </h4>
                                         <br/>
                                     </template>
@@ -249,10 +249,10 @@
                                             <template #thead>
                                                 <vs-tr>
                                                     <vs-th>
-                                                        First Name
+                                                        Prénom
                                                     </vs-th>
                                                     <vs-th>
-                                                        Last Name
+                                                        Nom
                                                     </vs-th>
                                                     <vs-th>
                                                         Email
@@ -267,7 +267,7 @@
                                                         Addresse
                                                     </vs-th>
                                                     <vs-th>
-                                                        Work
+                                                        Travail
                                                     </vs-th>
                                                 </vs-tr>
                                             </template>
@@ -304,7 +304,7 @@
                                     <template #footer>
                                         <div class="footer-dialog" v-if="admin">
                                             <vs-button gradient block @click="activeCreateContact = !activeCreateContact">
-                                                Create new
+                                                Créer
                                             </vs-button>
 
                                         </div>
@@ -314,19 +314,19 @@
                                 <vs-dialog overflow-hidden v-model="activeCreateContact">
                                     <template #header>
                                         <h4 class="not-margin">
-                                            Add <b>Contact</b>
+                                            Ajouter un <b>Contact</b>
                                         </h4>
                                     </template>
 
 
                                     <div class="con-form ml-6 pl-6">
-                                        <vs-input v-model="firstName" placeholder="First Name">
+                                        <vs-input v-model="firstName" placeholder="Prénom">
                                             <template #icon>
                                                 <i class='bx bx-game'/>
                                             </template>
                                         </vs-input>
                                         <br/>
-                                        <vs-input v-model="lastName" placeholder="Last Name">
+                                        <vs-input v-model="lastName" placeholder="Nom">
                                             <template #icon>
                                                 <i class='bx bx-ghost'/>
                                             </template>
@@ -338,7 +338,7 @@
                                             </template>
                                         </vs-input>
                                         <br/>
-                                        <vs-input v-model="address" placeholder="Address">
+                                        <vs-input v-model="address" placeholder="Addresse">
                                             <template #icon>
                                                 <i class='bx bx-map-pin'/>
                                             </template>
@@ -356,14 +356,14 @@
                                             </template>
                                         </vs-input>
                                         <br/>
-                                        <vs-input v-model="work" placeholder="Work">
+                                        <vs-input v-model="work" placeholder="Travail">
                                             <template #icon>
                                                 <i class='bx bx-wallet-alt'/>
                                             </template>
                                         </vs-input>
                                         <br/>
                                         <div class="flex" v-if="selected[0] && selected[0].mainContact">
-                                            <vs-checkbox v-model="isMainContact">Main contact ?</vs-checkbox>
+                                            <vs-checkbox v-model="isMainContact">Contact principal ?</vs-checkbox>
                                         </div>
                                     </div>
 
@@ -371,7 +371,7 @@
                                     <template #footer>
                                         <div class="footer-dialog">
                                             <vs-button block @click="addContact(selected[0]._id, selected[0].mainContact)">
-                                                Create
+                                                Créer
                                             </vs-button>
 
                                         </div>
@@ -395,7 +395,7 @@
             <vs-dialog blur v-model="active">
                 <template #header>
                     <h4 class="not-margin">
-                        Add <b>Exhibitor</b>
+                        Ajouter un <b>exposant</b>
                     </h4>
                 </template>
 
@@ -407,14 +407,14 @@
                         </template>
                     </vs-input>
                     <div class="flex">
-                        <vs-checkbox v-model="publisherOnly">Publisher only ?</vs-checkbox>
+                        <vs-checkbox v-model="publisherOnly">Éditeur uniquement ?</vs-checkbox>
                     </div>
                 </div>
 
                 <template #footer>
                     <div class="footer-dialog">
                         <vs-button block @click="addExhibitor()">
-                            Create
+                            Créer
                         </vs-button>
 
                     </div>
@@ -426,7 +426,7 @@
             <vs-dialog blur v-model="activeUpdateExhibitor">
                 <template #header>
                     <h4 class="not-margin">
-                        Update <b>exhibitor </b> <i>{{updateNameExhibitor}}</i>
+                        Éditer l'<b>exposant </b> <i>{{updateNameExhibitor}}</i>
                     </h4>
                 </template>
 
@@ -434,7 +434,7 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn icon-after v-model="updateNameExhibitor" label-placeholder="name">
+                            <vs-input shadow warn icon-after v-model="updateNameExhibitor" label-placeholder="Nom">
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
@@ -464,12 +464,12 @@
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <div class="flex">
-                                <vs-checkbox v-model="updatePresent">Present ?</vs-checkbox>
+                                <vs-checkbox v-model="updatePresent">Présence confirmée ?</vs-checkbox>
                             </div>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <div class="flex">
-                                <vs-checkbox v-model="updatePublisherOnly">Publisher only ?</vs-checkbox>
+                                <vs-checkbox v-model="updatePublisherOnly">Éditeur uniquement ?</vs-checkbox>
                             </div>
                         </vs-col>
                     </vs-row>
@@ -479,7 +479,7 @@
                 <template #footer>
                     <div class="footer-dialog">
                         <vs-button block @click="sendUpdateExhibitor()">
-                            Update
+                            Éditer
                         </vs-button>
 
                     </div>
@@ -491,7 +491,7 @@
             <vs-dialog blur v-model="activeBooking">
                 <template #header>
                     <h4 class="not-margin">
-                        Add <b>Booking </b> to <i>{{selected[0].name}}</i>
+                        Ajouter une <b>réservation </b> à <i>{{selected[0].name}}</i>
                     </h4>
                 </template>
 
@@ -499,14 +499,14 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables for Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables Premium">
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 for Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 Premium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -516,14 +516,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables Medium">
                                 <template #icon>
                                     <i class='bx bx-dice-2'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 Medium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -533,14 +533,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -549,14 +549,14 @@
                     </vs-row>
                     <br/>
                     <div class="flex">
-                        <vs-checkbox v-model="animatorNeeded">Need animator ?</vs-checkbox>
+                        <vs-checkbox v-model="animatorNeeded">Besoin d'animateurs ?</vs-checkbox>
                     </div>
                 </div>
 
                 <template #footer>
                     <div class="footer-dialog">
                         <vs-button block @click="addBooking(selected[0]._id)">
-                            Add
+                            Ajouter
                         </vs-button>
 
                     </div>
@@ -567,7 +567,7 @@
             <vs-dialog blur v-model="activeUpdateBooking">
                 <template #header>
                     <h4 class="not-margin">
-                        Update <b>Booking </b>
+                        Éditer la <b>réservation </b>
                     </h4>
                 </template>
 
@@ -575,14 +575,14 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1" label-placeholder="nb tables for Premium" >
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1" label-placeholder="nb tables Premium" >
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1" label-placeholder="nb m2 for Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1" label-placeholder="nb m2 Premium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -592,14 +592,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2" label-placeholder="nb tables for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2" label-placeholder="nb tables Medium">
                                 <template #icon>
                                     <i class='bx bx-dice-2'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2" label-placeholder="nb m2 for Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2" label-placeholder="nb m2 Medium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -609,14 +609,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3" label-placeholder="nb tables for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3" label-placeholder="nb tables Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3" label-placeholder="nb m2 for Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3" label-placeholder="nb m2 Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -642,7 +642,7 @@
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <div class="flex">
-                                <vs-checkbox v-model="upDateinvoiceSended">Facture envoyé ?</vs-checkbox>
+                                <vs-checkbox v-model="upDateinvoiceSended">Facture envoyée ?</vs-checkbox>
                             </div>
                         </vs-col>
                     </vs-row>
@@ -650,7 +650,7 @@
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                             <div class="flex">
-                                <vs-checkbox v-model="upDatepaymentOk">Payment ok ?</vs-checkbox>
+                                <vs-checkbox v-model="upDatepaymentOk">Paiement ok ?</vs-checkbox>
                             </div>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
@@ -661,14 +661,14 @@
                     </vs-row>
                     <br/>
                     <div class="flex">
-                        <vs-checkbox v-model="upDateanimatorNeeded">Need animator ?</vs-checkbox>
+                        <vs-checkbox v-model="upDateanimatorNeeded">Besoin d'animateurs ?</vs-checkbox>
                     </div>
                 </div>
 
                 <template #footer>
                     <div class="footer-dialog">
                         <vs-button block @click="sendUpdateBooking(selected[0]._id)">
-                            Update
+                            Éditer
                         </vs-button>
 
                     </div>
@@ -681,14 +681,14 @@
             <vs-dialog blur v-model="activeBookingGame">
                 <template #header>
                     <h4 class="not-margin">
-                        Add <b>Game </b> to <i>{{selected[0].name}}</i>
+                        Ajouter un <b>jeu </b> à <i>{{selected[0].name}}</i>
                     </h4>
                 </template>
 
                 <br/>
                 <b-field >
                     <b-select v-if="selected[0]"
-                            placeholder="Select existing game"
+                            placeholder="Utiliser un jeu existant"
                             icon="gamepad"
                             icon-pack="fas"
                             v-model="gameIdSelected"
@@ -700,7 +700,7 @@
 
                 <div class="con-form" v-if="!gameIdSelected">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <vs-input shadow warn icon-after v-model="name" label-placeholder="name">
+                        <vs-input shadow warn icon-after v-model="name" label-placeholder="nom">
                             <template #icon>
                                 <i class='bx bx-rename'/>
                             </template>
@@ -716,7 +716,7 @@
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn icon-after v-model="notice" label-placeholder="link of notice">
+                            <vs-input shadow warn icon-after v-model="notice" label-placeholder="lien de la notice">
                                 <template #icon>
                                     <i class='bx bx-link-alt'/>
                                 </template>
@@ -726,14 +726,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="duration" label-placeholder="duration">
+                            <vs-input shadow warn type="number" icon-after v-model="duration" label-placeholder="durée">
                                 <template #icon>
                                     <i class='bx bx-time'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMin" label-placeholder="nb player min">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMin" label-placeholder="nb joueurs min">
                                 <template #icon>
                                     <i class='bx bx-user-minus'/>
                                 </template>
@@ -743,14 +743,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMax" label-placeholder="nb player max">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMax" label-placeholder="nb joueurs max">
                                 <template #icon>
                                     <i class='bx bxs-user-plus'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn icon-after v-model="category" label-placeholder="category">
+                            <vs-input shadow warn icon-after v-model="category" label-placeholder="catégorie">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -774,7 +774,7 @@
                 <template #footer>
                     <div class="footer-dialog">
                         <vs-button block @click="activeBookingGamePart2=!activeBookingGamePart2">
-                            Next
+                            Page suivante
                         </vs-button>
 
                     </div>
@@ -785,7 +785,7 @@
             <vs-dialog blur v-model="activeBookingGamePart2">
                 <template #header>
                     <h4 class="not-margin">
-                        Add <b>Booking </b> to <i>{{name}}</i>
+                        Ajouter un <b>jeu </b> à <i>{{selected[0].name}}</i>
                     </h4>
                 </template>
 
@@ -794,7 +794,7 @@
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
                         <b-field >
                             <b-select
-                                    placeholder="Select zone"
+                                    placeholder="Choisir zone"
                                     icon="user"
                                     icon-pack="fas"
                                     v-model="zoneId"
@@ -807,14 +807,14 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="qtExhib" label-placeholder="Quantité exposé">
+                            <vs-input shadow warn type="number" icon-after v-model="qtExhib" label-placeholder="Quantité exposée">
                                 <template #icon>
                                     <i class='bx bxs-baby-carriage'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="qtSend" label-placeholder="Quantité envoyé">
+                            <vs-input shadow warn type="number" icon-after v-model="qtSend" label-placeholder="Quantité envoyée">
                                 <template #icon>
                                     <i class='bx bx-link-alt'/>
                                 </template>

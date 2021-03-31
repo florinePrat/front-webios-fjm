@@ -4,7 +4,7 @@
         <vs-navbar text-white color='primary' center-collapsed v-model="active">
             <template #left>
                 <img src="../../public/logoFJM.png" width="60" alt="" class="pr-3">
-                FJM
+                Festival du Jeu de Montpellier
             </template>
             <template #right>
                 <vs-navbar-item :active="active == 'home'" to="/" id="home">
@@ -14,7 +14,7 @@
                     Festivals
                 </vs-navbar-item>
                 <vs-navbar-item v-if="user" :active="active == 'exhibitor'" id="exhibitor" to="/exhibitor" >
-                    Exhibitors
+                    Éditeurs
                 </vs-navbar-item>
                 <vs-navbar-item v-if="admin" :active="active == 'facturation'" id="facturation" to="/facturation" >
                     Facturation
@@ -24,7 +24,7 @@
                         color="rgb(23, 201, 100)"
                         @click="signup=!signup"
                 >
-                    <i class="bx bxs-log-in-circle"/> Add collaborator
+                    <i class="bx bxs-log-in-circle"/> Ajouter un compte
                 </vs-button>
 
                 <vs-button
@@ -32,13 +32,13 @@
                         gradient
                         @click="logout()"
                 >
-                    <i class="bx bxs-log-in-circle"/> Logout
+                    <i class="bx bxs-log-in-circle"/> Se déconnecter
                 </vs-button>
                 <div class="center">
                     <vs-dialog blur v-model="signup">
                         <template #header>
                             <h4 class="not-margin">
-                                Welcome to <b>FJM</b>
+                                Bienvenue au <b>Festival du Jeu de Montpellier</b>
                             </h4>
                         </template>
 
@@ -60,7 +60,7 @@
 
                                     <br>
                                     <div class="flex">
-                                        <vs-checkbox v-model="adminCreation">Admin account ?</vs-checkbox>
+                                        <vs-checkbox v-model="adminCreation">Compte Admin ?</vs-checkbox>
                                     </div>
                                 </vs-col>
                             </vs-row>
@@ -71,7 +71,7 @@
                         <template #footer>
                             <div class="footer-dialog">
                                 <vs-button block gradient @click="log()">
-                                    Create account
+                                    Créer le compte
                                 </vs-button>
                             </div>
                         </template>

@@ -36,7 +36,7 @@
                     <vs-card v-if="game.festivalId === currentFestival._id">
                         <template #title>
                             <b-taglist>
-                                Booking : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
+                                Réservation du : {{new Date(game.dateAdd).toLocaleString('fr-FR')}}
                                 <vs-row>
                                     <vs-button flat><i class='bx bx-search-alt-2'/>
                                         <span class="span">
@@ -46,12 +46,12 @@
                                     <br/>
                                     <vs-button flat><i class='bx bx-game'/>
                                         <span class="span">
-                                        {{game && game.qtExhib > 1 ? game.qtExhib + ' jeux exposés' : game.qtExhib + ' jeu exposé' }}
+                                        {{game && game.qtExhib > 1 ? game.qtExhib + ' jeux exposés' : 'pas de jeu exposé' }}
                                     </span>
                                     </vs-button>
                                     <vs-button flat><i class='bx bx-game'/>
                                         <span class="span">
-                                        {{game && game.qtSend > 1 ? game.qtSend + ' jeux apportés' : game.qtSend + ' jeu apporté' }}
+                                        {{game && game.qtSend > 1 ? game.qtSend + ' jeux apportés' : 'pas de jeu apporté' }}
                                     </span>
                                     </vs-button>
                                     <br/>
@@ -81,7 +81,7 @@
                                         </span>
                                     </vs-button>
                                     <br/>
-                                    <vs-button flat>A retourner :
+                                    <vs-button flat>À retourner :
                                         <span class="span">
                                             <i class='bx bx-x-circle' v-if="!game.isCallback" />
                                             <i class='bx bx-check-double' v-else />
@@ -93,7 +93,7 @@
                                             <i class='bx bx-check-double' v-else />
                                         </span>
                                     </vs-button>
-                                    <vs-button flat v-if="game.isCallback">Prix de retour :
+                                    <vs-button flat v-if="game.isCallback">Prix du retour :
                                         <span class="span">
                                             {{game.callbackPrice}}  euros
                                         </span>
@@ -151,7 +151,7 @@
                         <template #text>
                             <vs-button flat>
                                 <span class="span">
-                                    {{game.gameId.description}}
+                                    Description : {{game.gameId.description}}
                                 </span>
                             </vs-button>
 

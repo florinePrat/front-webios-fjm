@@ -36,11 +36,11 @@
                                     <br>
                                     <b-tag type="is-primary is-light"><i class='bx bx-male'/>
                                         <span class="span">
-                                            {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exhibitors' : festival.exhibitors.length + ' exhibitor' : '0 exhibitor'}}
+                                            {{festival && festival.exhibitors ? festival.exhibitors.length > 1 ? festival.exhibitors.length + ' exposants' : festival.exhibitors.length + ' exposant' : '0 exposant'}}
                                   </span></b-tag>
                                     <b-tag type="is-primary is-light"><i class='bx bx-border-inner'/>
                                         <span class="span">
-                                            {{festival && festival.space ? 'space OK' : 'no space'}}
+                                            {{festival && festival.space ? 'espaces OK' : "pas d'espace"}}
                                     </span></b-tag>
                                     <b-tag type="is-primary is-light"><i class='bx bx-category'/>
                                         <span class="span">
@@ -52,7 +52,7 @@
                                 <img src="../assets/headerCard3.png" alt="">
                             </template>
                             <template #text>
-                                In this festival
+                                dans ce festival
                             </template>
                             <template #interactions>
                                     <vs-button shadow primary @click="$router.push('/festival/'+festival._id)"><i style="font-size:16px" class='bx bx-show-alt'/>
@@ -66,11 +66,11 @@
                                 </vs-button>
                                     <vs-button class="btn-chat" shadow primary v-if="!festival.current && admin">
                                     <div @click="updateCurrentFestival(festival._id)">
-                                    {{"set current"}}
+                                    {{"festival en cours ?"}}
                                     </div>
                                 </vs-button>
                                 <vs-button class="btn-chat" primary v-if="festival.current">
-                                    current
+                                    festival courant
                                 </vs-button>
                             </template>
                         </vs-card>
@@ -85,7 +85,7 @@
                 <vs-dialog blur v-model="active">
                     <template #header>
                         <h4 class="not-margin">
-                            Create a <b>Festival</b>
+                            Créer un <b>Festival</b>
                         </h4>
                         <br/>
                     </template>
@@ -93,7 +93,7 @@
                     <div class="con-form">
                         <br/>
                         <vs-input
-                                label-placeholder="New festival's name"
+                                label-placeholder="Nom du festival"
                                 v-model="name"
                         >
                             <template #icon>
@@ -106,7 +106,7 @@
                     <template #footer>
                         <div class="footer-dialog">
                             <vs-button gradient block @click="addFestival">
-                                Create
+                                Créer
                             </vs-button>
 
                         </div>
@@ -119,7 +119,7 @@
                 <vs-dialog blur v-model="activeChangeName" v-if="admin">
                     <template #header>
                         <h4 class="not-margin">
-                            Change <b>name</b>
+                            Changer le <b>nom</b>
                         </h4>
                         <br/>
                     </template>
@@ -140,7 +140,7 @@
                     <template #footer>
                         <div class="footer-dialog">
                             <vs-button gradient block @click="updateFestival()">
-                                Change
+                                Changer
                             </vs-button>
 
                         </div>

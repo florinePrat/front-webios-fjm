@@ -16,7 +16,7 @@
 
         <br />
         <div class="ml-6 pl-6">
-            Spaces :
+            Espaces :
             <vs-button v-if="!spaceEditMode && space && admin" shadow primary @click="editModeSpace()"><i
                     class="fas fa-paint-brush"></i> </vs-button>
             <vs-button v-if="spaceEditMode && admin" shadow primary @click="editModeSpace(); updateSpaceToFestival()"><i
@@ -24,7 +24,7 @@
             <br />
             <br />
             <div v-if="space">
-                <vs-input :disabled="!spaceEditMode" primary v-model="space.name" state="primary" label="name" />
+                <vs-input :disabled="!spaceEditMode" primary v-model="space.name" state="primary" label="Nom" />
                 <br />
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
@@ -35,13 +35,13 @@
                             label="Nombre de tables réservées" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.numberOfTable1"
-                            state="primary" label="Number of table disponibles" />
+                            state="primary" label="Nombre de tables disponibles" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.unitPriceOfTable1"
-                            state="primary" label="Unit price of table" />
+                            state="primary" label="Prix d'une table" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.m2Price1"
-                            state="primary" label="Price of m2" />
+                            state="primary" label="Prix d'un m2" />
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Medium
@@ -51,13 +51,13 @@
                             label="Nombre de tables réservées" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.numberOfTable2"
-                            state="primary" label="Number of table disponibles" />
+                            state="primary" label="Nombre de tables disponibles" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.unitPriceOfTable2"
-                            state="primary" label="Unit price of table" />
+                            state="primary" label="Prix d'une table" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.m2Price2"
-                            state="primary" label="Price of m2" />
+                            state="primary" label="Prix d'un m2" />
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Standard
@@ -67,61 +67,61 @@
                             label="Nombre de tables réservées" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.numberOfTable3"
-                            state="primary" label="Number of table disponibles" />
+                            state="primary" label="Nombre de tables disponibles" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.unitPriceOfTable3"
-                            state="primary" label="Unit price of table" />
+                            state="primary" label="Prix d'une table" />
                         <br />
                         <vs-input :disabled="!spaceEditMode" primary type="number" v-model="space.m2Price3"
-                            state="primary" label="Price of m2" />
+                            state="primary" label="Prix d'un m2" />
                     </vs-col>
                 </vs-row>
             </div>
 
             <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space">
-                Add Space
+                Ajouter les espaces
             </vs-button>
 
             <div class="center content-inputs" v-if="activeAddSpace">
                 <br />
-                <vs-input primary v-model="name" state="primary" placeholder="Name of space" />
+                <vs-input primary v-model="name" state="primary" placeholder="Nom" />
                 <br />
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Premium
                         <vs-input primary type="number" v-model="numberOfTable1" state="primary"
-                            placeholder="Number of table" />
+                            placeholder="Nombre de tables" />
                         <br />
                         <vs-input primary type="number" v-model="unitPriceOfTable1" state="primary"
-                            placeholder="Unit price of table" />
+                            placeholder="Prix d'une table" />
                         <br />
-                        <vs-input primary type="number" v-model="m2Price1" state="primary" placeholder="Price of m2" />
+                        <vs-input primary type="number" v-model="m2Price1" state="primary" placeholder="Prix d'un m2" />
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Medium
                         <vs-input primary type="number" v-model="numberOfTable2" state="primary"
-                            placeholder="Number of table" />
+                            placeholder="Nombre de tables" />
                         <br />
                         <vs-input primary type="number" v-model="unitPriceOfTable2" state="primary"
-                            placeholder="Unit price of table" />
+                            placeholder="Prix d'une table" />
                         <br />
-                        <vs-input primary type="number" v-model="m2Price2" state="primary" placeholder="Price of m2" />
+                        <vs-input primary type="number" v-model="m2Price2" state="primary" placeholder="Prix d'un m2" />
                     </vs-col>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="4">
                         Standard
                         <vs-input primary type="number" v-model="numberOfTable3" state="primary"
-                            placeholder="Number of table" />
+                            placeholder="Nombre de tables" />
                         <br />
                         <vs-input primary type="number" v-model="unitPriceOfTable3" state="primary"
-                            placeholder="Unit price of table" />
+                            placeholder="Prix d'une table" />
                         <br />
-                        <vs-input primary type="number" v-model="m2Price3" state="primary" placeholder="Price of m2" />
+                        <vs-input primary type="number" v-model="m2Price3" state="primary" placeholder="Prix d'un m2" />
                     </vs-col>
                 </vs-row>
 
                 <br />
                 <vs-button @click="addSpaceToFestival()">
-                    Add
+                    Ajouter
                 </vs-button>
             </div>
 
@@ -159,17 +159,19 @@
 
 
             <vs-button v-if="admin" @click="activeAddZone=!activeAddZone">
-                Add Zone
+                Ajouter une zone
             </vs-button>
             <br />
             <div class="center content-inputs" v-if="activeAddZone">
                 <vs-row>
-                    <vs-input primary v-model="nameZone" state="primary" placeholder="Name of zone" />
+                    <vs-input primary v-model="nameZone" state="primary" placeholder="Nom de la zone" />
 
                     <vs-button @click="addZoneToFestival()">
-                        Add
+                        Ajouter
                     </vs-button>
                 </vs-row>
+                <br/>
+                <br/>
             </div>
 
 

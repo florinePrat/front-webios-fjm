@@ -19,21 +19,21 @@
             <div class="center mr-6">
                 <vs-table>
                     <template #header>
-                        <vs-input v-model="search" border placeholder="Search"/>
+                        <vs-input v-model="search" border placeholder="Rechercher"/>
                     </template>
                     <template #thead>
                         <vs-tr>
                             <vs-th>
-                                Name
+                                Nom
                             </vs-th>
                             <vs-th>
-                                Exhibitor
+                                Éditeur
                             </vs-th>
                             <vs-th>
-                                Category
+                                Catégorie
                             </vs-th>
                             <vs-th>
-                                Duration
+                                Durée
                             </vs-th>
                             <vs-th>
                                 Zone
