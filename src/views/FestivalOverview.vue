@@ -78,7 +78,7 @@
                 </vs-row>
             </div>
 
-            <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space">
+            <vs-button @click="activeAddSpace=!activeAddSpace" v-if="!space & admin">
                 Ajouter les espaces
             </vs-button>
 

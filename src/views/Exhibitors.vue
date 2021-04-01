@@ -217,7 +217,7 @@
 
                                 </div>
                                 <div v-else>
-                                    <vs-button gradient block v-if="active3" @click="openBookingPopup()">
+                                    <vs-button gradient block v-if="active3 & admin" @click="openBookingPopup()">
                                         Ajouter une réservation
                                     </vs-button>
                                 </div>
@@ -1014,8 +1014,13 @@
                 console.log(res.data);
                 this.festival = res.data;
                 if (!this.festival) {
-                    this.notificationErreur("il faut d'abord créer un festival pour accéder à cette page")
-                    this.$router.push('/festival')
+                    if(this.admin){
+                        this.notificationErreur("il faut d'abord créer un festival pour accéder à cette page");
+                        this.$router.push('/festival')
+                    }else{
+                        this.notificationErreur("il faut d'abord créer un festival pour accéder à cette page")
+                    }
+
                 } else {
                     getAllExhibitors().then(res => {
                         console.log(res.data);
