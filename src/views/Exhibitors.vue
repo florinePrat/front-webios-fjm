@@ -49,13 +49,16 @@
                                 Tel CP
                             </vs-th>
                             <vs-th>
-                                Statut
+                                Statut de présence
                             </vs-th>
                             <vs-th>
                                 Présent
                             </vs-th>
                             <vs-th sort @click="exhibitors = $vs.sortData($event ,exhibitors, 'publisherOnly')">
                                 Éditeur uniquement
+                            </vs-th>
+                            <vs-th v-if="admin">
+                                Éditer
                             </vs-th>
                             <vs-th v-if="!active3 & admin">
                                 Importer
@@ -88,15 +91,16 @@
                             <vs-td>
                                 {{ exhibitor.publisherOnly ? 'oui' : 'non' }}
                             </vs-td>
-                            <vs-td v-if="!active3 & admin" >
-                                <div class="center">
-                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">ajouter </vs-button>
-                                </div>
-                            </vs-td>
 
                             <vs-td v-if="admin" >
                                 <div class="center">
                                     <vs-button @click="updateExhibitor(exhibitor._id, exhibitor.name, exhibitor.suiviId.statusTraking, exhibitor.suiviId.present, exhibitor.publisherOnly, exhibitor.suiviId._id)"><i class='bx bx-pencil'/> </vs-button>
+                                </div>
+                            </vs-td>
+                            
+                            <vs-td v-if="!active3 & admin & !(exhibitors.map(({_id}) => _id).includes(exhibitor._id))"> <!--If exhibitor._id not in exhibitors._id -->
+                                <div class="center">
+                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">ajouter </vs-button>
                                 </div>
                             </vs-td>
 
@@ -681,7 +685,6 @@
 
 
             <!--BOOKING GAME POPUP-->
-            <!-- TODO: vérifier qu'un selected[0].booking[0] existe !!! BUG -->
             <vs-dialog blur v-model="activeBookingGame">
                 <template #header>
                     <h4 class="not-margin">
