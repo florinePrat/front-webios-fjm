@@ -16,20 +16,20 @@
             <br/>
 
             <div class="center con-switch">
-            <vs-switch v-model="active3" @click="changeGetExhibitor()">
-                <template #off>
-                    Éditeurs de tous les festivals
-                </template>
-                <template #on>
-                    Éditeurs du festival courant
-                </template>
-            </vs-switch>
+                <vs-switch v-model="active3" @click="changeGetExhibitor()">
+                    <template #off>
+                        Éditeurs de tous les festivals
+                    </template>
+                    <template #on>
+                        Éditeurs du festival courant
+                    </template>
+                </vs-switch>
             </div>
 
             <div class="center">
-                <vs-table  v-model="selected">
+                <vs-table v-model="selected">
                     <template #header>
-                        <vs-input v-model="search" border placeholder="Search" />
+                        <vs-input v-model="search" border placeholder="Search"/>
                     </template>
 
                     <template #thead>
@@ -76,31 +76,34 @@
                                 {{ exhibitor.name }}
                             </vs-td>
                             <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.email  : "pas d'email"}}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.email : "pas d'email"}}
                             </vs-td>
                             <vs-td v-if="admin">
-                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile  : 'pas de tel mobile'}}
+                                {{ exhibitor.mainContact ? exhibitor.mainContact.telMobile : 'pas de tel mobile'}}
                             </vs-td>
                             <vs-td>
                                 {{ exhibitor.suiviId.statusTraking }}
                             </vs-td>
                             <vs-td>
-                                <i class='bx bx-x-circle' v-if="!exhibitor.suiviId.present" />
-                                <i class='bx bx-check-double' v-else />
+                                <i class='bx bx-x-circle' v-if="!exhibitor.suiviId.present"/>
+                                <i class='bx bx-check-double' v-else/>
                             </vs-td>
                             <vs-td>
                                 {{ exhibitor.publisherOnly ? 'oui' : 'non' }}
                             </vs-td>
 
-                            <vs-td v-if="admin" >
+                            <vs-td v-if="admin">
                                 <div class="center">
-                                    <vs-button @click="updateExhibitor(exhibitor._id, exhibitor.name, exhibitor.suiviId.statusTraking, exhibitor.suiviId.present, exhibitor.publisherOnly, exhibitor.suiviId._id)"><i class='bx bx-pencil'/> </vs-button>
+                                    <vs-button
+                                            @click="updateExhibitor(exhibitor._id, exhibitor.name, exhibitor.suiviId.statusTraking, exhibitor.suiviId.present, exhibitor.publisherOnly, exhibitor.suiviId._id)">
+                                        <i class='bx bx-pencil'/></vs-button>
                                 </div>
                             </vs-td>
-                            
-                            <vs-td v-if="!active3 & admin & !(exhibitors.map(({_id}) => _id).includes(exhibitor._id))"> <!--If exhibitor._id not in exhibitors._id -->
+
+                            <vs-td v-if="!active3 & admin & !(exhibitors.map(({_id}) => _id).includes(exhibitor._id))">
+                                <!--If exhibitor._id not in exhibitors._id -->
                                 <div class="center">
-                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">ajouter </vs-button>
+                                    <vs-button @click="addToCurrentFestival(exhibitor._id)">ajouter</vs-button>
                                 </div>
                             </vs-td>
 
@@ -131,7 +134,7 @@
                                 </div>
 
                                 Réservation :
-                                <div class="box con-content" v-if="exhibitor.booking.length > 0"  @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
+                                <div class="box con-content" v-if="exhibitor.booking.length > 0" @click="updateBooking(exhibitor.booking[0]._id, exhibitor.booking[0].nbTableSpace1,
                                 exhibitor.booking[0].nbTableSpace2, exhibitor.booking[0].nbTableSpace3, exhibitor.booking[0].nbM2Space1,exhibitor.booking[0].nbM2Space2,
                                 exhibitor.booking[0].nbM2Space3,exhibitor.booking[0].animatorNeeded,exhibitor.booking[0].crSended,exhibitor.booking[0].invoiceSended,
                                 exhibitor.booking[0].paymentOk,exhibitor.booking[0].putOnPlan, exhibitor.booking[0].negociedPrice)">
@@ -148,7 +151,7 @@
                                                     nbTableStandard
                                                 </vs-th>
                                                 <vs-th>
-                                                   nbM2Premium
+                                                    nbM2Premium
                                                 </vs-th>
                                                 <vs-th>
                                                     nbM2Medium
@@ -221,21 +224,23 @@
                                 Jeux :
                                 <vs-row>
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                                        <vs-button block v-if="exhibitor.gameBookedList.length> 0" @click="$router.push('/games/' + exhibitor._id)">
+                                        <vs-button block v-if="exhibitor.gameBookedList.length> 0"
+                                                   @click="$router.push('/games/' + exhibitor._id)">
                                             <i class='bx bx-show-alt'/>
                                             Voir les jeux
                                         </vs-button>
                                     </vs-col>
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6" v-if="admin">
-                                        <vs-button gradient block  @click="openBookingGamePopup()" v-if="exhibitor.booking.length > 0">
+                                        <vs-button gradient block @click="openBookingGamePopup()"
+                                                   v-if="exhibitor.booking.length > 0">
                                             <i class='bx bx-plus'/>
                                             Ajouter un jeu
                                         </vs-button>
                                         <vs-button block flat v-else>
                                             Ajoutez une réservation pour ajouter un jeu
                                         </vs-button>
-                                    <br/>
-                                    <br/>
+                                        <br/>
+                                        <br/>
                                     </vs-col>
                                 </vs-row>
 
@@ -311,7 +316,8 @@
 
                                     <template #footer>
                                         <div class="footer-dialog" v-if="admin">
-                                            <vs-button gradient block @click="activeCreateContact = !activeCreateContact">
+                                            <vs-button gradient block
+                                                       @click="activeCreateContact = !activeCreateContact">
                                                 Créer
                                             </vs-button>
 
@@ -378,7 +384,8 @@
 
                                     <template #footer>
                                         <div class="footer-dialog">
-                                            <vs-button block @click="addContact(selected[0]._id, selected[0].mainContact)">
+                                            <vs-button block
+                                                       @click="addContact(selected[0]._id, selected[0].mainContact)">
                                                 Créer
                                             </vs-button>
 
@@ -394,7 +401,6 @@
 
                 </vs-table>
             </div>
-
 
 
             <br/>
@@ -449,7 +455,7 @@
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <b-field >
+                            <b-field>
                                 <b-select
                                         placeholder="Select status tracking"
                                         icon="user"
@@ -507,14 +513,16 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1" label-placeholder="nb tables Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace1"
+                                      label-placeholder="nb tables Premium">
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1" label-placeholder="nb m2 Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space1"
+                                      label-placeholder="nb m2 Premium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -524,14 +532,16 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2" label-placeholder="nb tables Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace2"
+                                      label-placeholder="nb tables Medium">
                                 <template #icon>
                                     <i class='bx bx-dice-2'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2" label-placeholder="nb m2 Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space2"
+                                      label-placeholder="nb m2 Medium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -541,14 +551,16 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3" label-placeholder="nb tables Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="nbTableSpace3"
+                                      label-placeholder="nb tables Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3" label-placeholder="nb m2 Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="nbM2Space3"
+                                      label-placeholder="nb m2 Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -583,14 +595,16 @@
                 <div class="con-form">
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1" label-placeholder="nb tables Premium" >
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace1"
+                                      label-placeholder="nb tables Premium">
                                 <template #icon>
                                     <i class='bx bx-dice-1'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1" label-placeholder="nb m2 Premium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space1"
+                                      label-placeholder="nb m2 Premium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -600,14 +614,16 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2" label-placeholder="nb tables Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace2"
+                                      label-placeholder="nb tables Medium">
                                 <template #icon>
                                     <i class='bx bx-dice-2'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2" label-placeholder="nb m2 Medium">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space2"
+                                      label-placeholder="nb m2 Medium">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -617,14 +633,16 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3" label-placeholder="nb tables Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbTableSpace3"
+                                      label-placeholder="nb tables Standard">
                                 <template #icon>
                                     <i class='bx bx-dice-3'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3" label-placeholder="nb m2 Standard">
+                            <vs-input shadow warn type="number" icon-after v-model="upDatenbM2Space3"
+                                      label-placeholder="nb m2 Standard">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -634,7 +652,8 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="upDateNegociedPrice" label-placeholder="Prix négocié">
+                            <vs-input shadow warn type="number" icon-after v-model="upDateNegociedPrice"
+                                      label-placeholder="Prix négocié">
                                 <template #icon>
                                     <i class='bx bx-grid-alt'/>
                                 </template>
@@ -693,15 +712,16 @@
                 </template>
 
                 <br/>
-                <b-field >
+                <b-field>
                     <b-select v-if="selected[0]"
-                            placeholder="Utiliser un jeu existant"
-                            icon="gamepad"
-                            icon-pack="fas"
-                            v-model="gameIdSelected"
+                              placeholder="Utiliser un jeu existant"
+                              icon="gamepad"
+                              icon-pack="fas"
+                              v-model="gameIdSelected"
                     >
                         <option v-for="game in selected[0].gameList"
-                                :key="game._id" :value="game._id">{{game.name}}</option>
+                                :key="game._id" :value="game._id">{{game.name}}
+                        </option>
                     </b-select>
                 </b-field>
 
@@ -740,7 +760,8 @@
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMin" label-placeholder="nb joueurs min">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMin"
+                                      label-placeholder="nb joueurs min">
                                 <template #icon>
                                     <i class='bx bx-user-minus'/>
                                 </template>
@@ -750,7 +771,8 @@
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMax" label-placeholder="nb joueurs max">
+                            <vs-input shadow warn type="number" icon-after v-model="nbPlayersMax"
+                                      label-placeholder="nb joueurs max">
                                 <template #icon>
                                     <i class='bx bxs-user-plus'/>
                                 </template>
@@ -799,7 +821,7 @@
                 <br/>
                 <div class="con-form">
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                        <b-field >
+                        <b-field>
                             <b-select
                                     placeholder="Choisir zone"
                                     icon="user"
@@ -807,21 +829,24 @@
                                     v-model="zoneId"
                             >
                                 <option v-for="zone in festival.zoneId"
-                                        :key="zone._id" :value="zone._id">{{zone.name}}</option>
+                                        :key="zone._id" :value="zone._id">{{zone.name}}
+                                </option>
                             </b-select>
                         </b-field>
                     </vs-col>
                     <br/>
                     <vs-row>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="qtExhib" label-placeholder="Quantité exposée">
+                            <vs-input shadow warn type="number" icon-after v-model="qtExhib"
+                                      label-placeholder="Quantité exposée">
                                 <template #icon>
                                     <i class='bx bxs-baby-carriage'/>
                                 </template>
                             </vs-input>
                         </vs-col>
                         <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6">
-                            <vs-input shadow warn type="number" icon-after v-model="qtSend" label-placeholder="Quantité envoyée">
+                            <vs-input shadow warn type="number" icon-after v-model="qtSend"
+                                      label-placeholder="Quantité envoyée">
                                 <template #icon>
                                     <i class='bx bx-link-alt'/>
                                 </template>
@@ -897,7 +922,7 @@
             Navbar
         },
         data: () => ({
-            activeCreateContact : false,
+            activeCreateContact: false,
             editActive: false,
             edit: null,
             editProp: {},
@@ -907,74 +932,74 @@
             selected: [],
             user: false,
             admin: false,
-            classPresent : "",
+            classPresent: "",
             active: false,
-            exhibitorName : "",
-            publisherOnly : false,
+            exhibitorName: "",
+            publisherOnly: false,
             activecontact: false,
             activeBooking: false,
             activeBookingGame: false,
             activeBookingGamePart2: false,
             activeUpdateBooking: false,
-            festival : null,
+            festival: null,
             exhibitors: [],
             Allexhibitors: [],
             search: '',
-            firstName : '',
-            lastName : '',
-            email : '',
-            address : '',
-            telMobile : '',
-            telFixe : '',
-            work : '',
-            isMainContact : false,
-            nbTableSpace1 : null,
-            nbTableSpace2 : null,
-            nbTableSpace3 : null,
-            nbM2Space1 : null,
-            nbM2Space2 : null,
-            nbM2Space3 : null,
-            animatorNeeded : false,
-            active3 : true,
-            name : '',
-            ageMin : '',
-            notice : '',
-            duration : '',
-            nbPlayersMin : '',
-            nbPlayersMax : '',
-            category : '',
-            description : '',
-            prototypeGame : false,
-            zoneBooking : '',
-            qtExhib : '',
-            qtSend : '',
-            tombola :false,
-            dotation :false,
-            putOnPlan :false,
-            bringByExhibitor :false,
-            zoneId : null,
-            comment : '',
-            upDatenbTableSpace1 : '',
-            upDatenbTableSpace2 : '',
-            upDatenbTableSpace3 : '',
-            upDatenbM2Space1 : '',
-            upDatenbM2Space2 : '',
-            upDatenbM2Space3 : '',
-            upDateanimatorNeeded : '',
-            upDatecrSended : '',
-            upDateinvoiceSended : '',
-            upDatepaymentOk : '',
-            upDateputOnPlan : '',
-            upDatedBookingId : '',
-            upDateNegociedPrice : '',
-            activeUpdateExhibitor : false,
-            updateIdExhibitor : '',
-            updateIdSuivi : '',
-            updateNameExhibitor : '',
-            updateStatus : '',
-            updatePresent : false,
-            updatePublisherOnly : false,
-            gameIdSelected : null,
+            firstName: '',
+            lastName: '',
+            email: '',
+            address: '',
+            telMobile: '',
+            telFixe: '',
+            work: '',
+            isMainContact: false,
+            nbTableSpace1: null,
+            nbTableSpace2: null,
+            nbTableSpace3: null,
+            nbM2Space1: null,
+            nbM2Space2: null,
+            nbM2Space3: null,
+            animatorNeeded: false,
+            active3: true,
+            name: '',
+            ageMin: '',
+            notice: '',
+            duration: '',
+            nbPlayersMin: '',
+            nbPlayersMax: '',
+            category: '',
+            description: '',
+            prototypeGame: false,
+            zoneBooking: '',
+            qtExhib: '',
+            qtSend: '',
+            tombola: false,
+            dotation: false,
+            putOnPlan: false,
+            bringByExhibitor: false,
+            zoneId: null,
+            comment: '',
+            upDatenbTableSpace1: '',
+            upDatenbTableSpace2: '',
+            upDatenbTableSpace3: '',
+            upDatenbM2Space1: '',
+            upDatenbM2Space2: '',
+            upDatenbM2Space3: '',
+            upDateanimatorNeeded: '',
+            upDatecrSended: '',
+            upDateinvoiceSended: '',
+            upDatepaymentOk: '',
+            upDateputOnPlan: '',
+            upDatedBookingId: '',
+            upDateNegociedPrice: '',
+            activeUpdateExhibitor: false,
+            updateIdExhibitor: '',
+            updateIdSuivi: '',
+            updateNameExhibitor: '',
+            updateStatus: '',
+            updatePresent: false,
+            updatePublisherOnly: false,
+            gameIdSelected: null,
         }),
 
         beforeMount() {
@@ -988,74 +1013,74 @@
             getCurrentFestival().then(res => {
                 console.log(res.data);
                 this.festival = res.data;
-                if(!this.festival){
+                if (!this.festival) {
                     this.notificationErreur("il faut d'abord créer un festival pour accéder à cette page")
                     this.$router.push('/festival')
-                }else{
-                    getAllExhibitors().then(res =>{
+                } else {
+                    getAllExhibitors().then(res => {
                         console.log(res.data);
                         this.Allexhibitors = res.data
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                     });
-                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                    getExhibitorsByfestivaId(this.festival._id).then(res => {
                         console.log(res.data);
                         this.exhibitors = res.data.exhibitors
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                     })
                 }
 
 
-            }).catch(e =>{
-                    console.log(e);
-                });
+            }).catch(e => {
+                console.log(e);
+            });
 
         },
 
 
         methods: {
             addExhibitor() {
-                if(this.exhibitorName){
+                if (this.exhibitorName) {
                     addExhibitor(this.exhibitorName, this.publisherOnly, this.festival._id).then(res => {
                         console.log(res.data);
                         this.exhibitors.push(res.data);
                         this.active = false
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e)
                         this.notificationErreur(e.response.data.error)
                     })
                 }
             },
-            addContact(publisherId, mainContact){
+            addContact(publisherId, mainContact) {
                 console.log(publisherId, mainContact);
-                if(!mainContact || this.isMainContact){
-                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, true).then(res =>{
-                    console.log(res.data)
-                }).catch(e =>{
-                    console.log(e)
+                if (!mainContact || this.isMainContact) {
+                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, true).then(res => {
+                        console.log(res.data)
+                    }).catch(e => {
+                        console.log(e)
                         this.notificationErreur(e.response.data.error)
                     })
-                }else{
-                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, false).then(res =>{
-                    console.log(res.data)
-                }).catch(e =>{
+                } else {
+                    addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, false).then(res => {
+                        console.log(res.data)
+                    }).catch(e => {
                         console.log(e)
                         this.notificationErreur(e.response.data.error)
                     })
                 }
                 this.activeCreateContact = false;
                 this.activecontact = false;
-                window.location.reload()
+                //window.location.reload()
             },
-            addBooking(exhibitorId){
-                if(this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3){
-                    addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res =>{
+            addBooking(exhibitorId) {
+                if (this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3) {
+                    addBooking(this.nbTableSpace1, this.nbTableSpace2, this.nbTableSpace3, this.nbM2Space1, this.nbM2Space2, this.nbM2Space3, this.animatorNeeded, this.festival._id, exhibitorId).then(res => {
                         console.log(res.data);
-                        getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        getExhibitorsByfestivaId(this.festival._id).then(res => {
                             console.log(res.data.exhibitors);
                             this.exhibitors = res.data.exhibitors
-                        }).catch(e =>{
+                        }).catch(e => {
                             console.log(e);
                             this.notificationErreur(e.response.data.error)
                         })
@@ -1067,72 +1092,72 @@
                 }
             },
             changeGetExhibitor() {
-                if(!this.active3){
-                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                if (!this.active3) {
+                    getExhibitorsByfestivaId(this.festival._id).then(res => {
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e)
                         this.notificationErreur(e.response.data.error)
                     })
-                }else{
-                    getAllExhibitors().then(res =>{
+                } else {
+                    getAllExhibitors().then(res => {
                         console.log(res.data);
                         this.Allexhibitors = res.data
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
                     });
                 }
             },
-            addToCurrentFestival(exhibitorId){
-                addExistingExhibitor(this.festival._id, exhibitorId).then(res=>{
+            addToCurrentFestival(exhibitorId) {
+                addExistingExhibitor(this.festival._id, exhibitorId).then(res => {
                     console.log(res.data);
                     this.notificationSucces('Bien ajouté au festival courant')
-                }).catch(e=>{
+                }).catch(e => {
                     this.notificationErreur(e.response.data.error)
                 })
             },
-            sendBookingGame(exhibitorId, bookingId){
+            sendBookingGame(exhibitorId, bookingId) {
                 console.log(this.name, this.ageMin, this.duration, this.category, this.notice, this.prototypeGame, this.nbPlayersMin,
                     this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
                     this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor);
                 addBookingGame(this.name, this.ageMin, this.duration, this.category, this.notice, this.prototypeGame, this.nbPlayersMin,
                     this.nbPlayersMax, this.description, exhibitorId, this.festival._id, bookingId, this.zoneId, this.qtExhib,
-                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor, this.gameIdSelected).then(res =>{
-                        console.log(res.data);
-                        this.activeBookingGame = false;
+                    this.qtSend, this.tombola, this.dotation, this.comment, this.putOnPlan, this.bringByExhibitor, this.gameIdSelected).then(res => {
+                    console.log(res.data);
+                    this.activeBookingGame = false;
                     this.activeBookingGamePart2 = false;
                     this.notificationSucces('réservation créée avec succès');
-                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                    getExhibitorsByfestivaId(this.festival._id).then(res => {
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                         this.notificationErreur(e.response.data.error)
                     })
-                }).catch(e=>{
+                }).catch(e => {
                     this.notificationErreur('error : ', e.response.data.error)
                 })
             },
-            openBookingPopup(){
-                if(this.festival.space){
-                    this.activeBooking=!this.activeBooking;
-                }else{
+            openBookingPopup() {
+                if (this.festival.space) {
+                    this.activeBooking = !this.activeBooking;
+                } else {
                     this.notificationErreur("Ajoutez d'abord un space au festival");
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },
-            openBookingGamePopup(){
-                if(this.festival.zoneId.length>0){
-                    this.activeBookingGame=!this.activeBookingGame
-                }else{
+            openBookingGamePopup() {
+                if (this.festival.zoneId.length > 0) {
+                    this.activeBookingGame = !this.activeBookingGame
+                } else {
                     this.notificationErreur("Ajoutez d'abord une zone au festival");
                     this.$router.push('/festival/' + this.festival._id)
                 }
             },
-            updateBooking(updatedBookingId, nbTableSpace1,nbTableSpace2,nbTableSpace3,nbM2Space1,nbM2Space2,nbM2Space3,animatorNeeded,crSended,invoiceSended,paymentOk,putOnPlan, negociedPrice){
-                if(this.admin){
+            updateBooking(updatedBookingId, nbTableSpace1, nbTableSpace2, nbTableSpace3, nbM2Space1, nbM2Space2, nbM2Space3, animatorNeeded, crSended, invoiceSended, paymentOk, putOnPlan, negociedPrice) {
+                if (this.admin) {
                     this.upDatenbTableSpace1 = nbTableSpace1;
                     this.upDatenbTableSpace2 = nbTableSpace2;
                     this.upDatenbTableSpace3 = nbTableSpace3;
@@ -1147,37 +1172,37 @@
                     this.upDatedBookingId = updatedBookingId;
                     this.upDateNegociedPrice = negociedPrice;
 
-                    this.activeUpdateBooking =!this.activeUpdateBooking;
-                }else{
+                    this.activeUpdateBooking = !this.activeUpdateBooking;
+                } else {
                     this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
                 }
 
             },
 
-            sendUpdateBooking(){
+            sendUpdateBooking() {
                 updateBooking(this.upDatedBookingId, this.upDatenbTableSpace1, this.upDatenbTableSpace2, this.upDatenbTableSpace3, this.upDatenbM2Space1, this.upDatenbM2Space2,
-                this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan, this.upDateNegociedPrice).then(res=>{
+                    this.upDatenbM2Space3, this.upDateanimatorNeeded, this.upDatecrSended, this.upDateinvoiceSended, this.upDatepaymentOk, this.upDateputOnPlan, this.upDateNegociedPrice).then(res => {
                     console.log(res.data);
                     this.activeUpdateBooking = false;
-                    getAllExhibitors().then(res =>{
+                    getAllExhibitors().then(res => {
                         console.log(res.data);
                         this.Allexhibitors = res.data
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                     });
-                    getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                    getExhibitorsByfestivaId(this.festival._id).then(res => {
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors
-                    }).catch(e =>{
+                    }).catch(e => {
                         console.log(e);
                     })
-                }).catch(e=>{
+                }).catch(e => {
                     this.notificationErreur(e.response.data.error)
                 })
             },
 
-            updateExhibitor(exhibitorId, name, status, present, publisherOnly, suiviId){
-                if(this.admin){
+            updateExhibitor(exhibitorId, name, status, present, publisherOnly, suiviId) {
+                if (this.admin) {
                     this.updateIdExhibitor = exhibitorId;
                     this.updateIdSuivi = suiviId;
                     this.updateNameExhibitor = name;
@@ -1185,37 +1210,37 @@
                     this.updatePresent = present;
                     this.updatePublisherOnly = publisherOnly;
 
-                    this.activeUpdateExhibitor =!this.activeUpdateExhibitor;
-                }else{
+                    this.activeUpdateExhibitor = !this.activeUpdateExhibitor;
+                } else {
                     this.notificationErreur("Désolé vous n'avez pas les droits de modifications")
                 }
 
             },
 
-            sendUpdateExhibitor(){
-                updateSuivi(this.updateIdSuivi, this.updatePresent, this.updateStatus).then(res=>{
+            sendUpdateExhibitor() {
+                updateSuivi(this.updateIdSuivi, this.updatePresent, this.updateStatus).then(res => {
                     console.log(res.data);
-                    updateExhibitor(this.updateIdExhibitor, this.updateNameExhibitor,  this.updatePublisherOnly).then(res=>{
+                    updateExhibitor(this.updateIdExhibitor, this.updateNameExhibitor, this.updatePublisherOnly).then(res => {
                         console.log(res.data);
                         this.activeUpdateExhibitor = false;
-                        getAllExhibitors().then(res =>{
+                        getAllExhibitors().then(res => {
                             console.log(res.data);
                             this.Allexhibitors = res.data
-                        }).catch(e =>{
+                        }).catch(e => {
                             console.log(e);
                         });
-                        getExhibitorsByfestivaId(this.festival._id).then(res =>{
+                        getExhibitorsByfestivaId(this.festival._id).then(res => {
                             console.log(res.data.exhibitors);
                             this.exhibitors = res.data.exhibitors
-                        }).catch(e =>{
+                        }).catch(e => {
                             console.log(e);
                         });
 
                         this.notificationSucces('Exhibitor mis à jour avec succès')
-                    }).catch(e=>{
+                    }).catch(e => {
                         this.notificationErreur(e.response.data.error)
                     })
-                }).catch(e=>{
+                }).catch(e => {
                     this.notificationErreur(e.response.data.error)
                 })
 
@@ -1223,23 +1248,21 @@
             },
 
 
-
-
             notificationErreur(title) {
                 this.$vs.notification({
                     progress: 'auto',
-                    icon : `<i class='bx bxs-user-x'/>`,
-                    color : 'danger',
-                    position : 'top-center',
+                    icon: `<i class='bx bxs-user-x'/>`,
+                    color: 'danger',
+                    position: 'top-center',
                     title: title,
                 })
             },
             notificationSucces(title) {
                 this.$vs.notification({
                     progress: 'auto',
-                    icon : `<i class='bx bx-badge-check' />`,
-                    color : 'primary',
-                    position : 'top-center',
+                    icon: `<i class='bx bx-badge-check' />`,
+                    color: 'primary',
+                    position: 'top-center',
                     title: title,
                 })
             },
