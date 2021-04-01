@@ -1021,6 +1021,9 @@
                         console.log(res.data);
                         this.exhibitors.push(res.data);
                         this.active = false
+                    }).catch(e =>{
+                        console.log(e)
+                        this.notificationErreur(e.response.data.error)
                     })
                 }
             },
@@ -1029,11 +1032,17 @@
                 if(!mainContact || this.isMainContact){
                     addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, true).then(res =>{
                     console.log(res.data)
-                })
+                }).catch(e =>{
+                    console.log(e)
+                        this.notificationErreur(e.response.data.error)
+                    })
                 }else{
                     addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, false).then(res =>{
                     console.log(res.data)
-                })
+                }).catch(e =>{
+                        console.log(e)
+                        this.notificationErreur(e.response.data.error)
+                    })
                 }
                 this.activeCreateContact = false;
                 this.activecontact = false;
@@ -1048,6 +1057,7 @@
                             this.exhibitors = res.data.exhibitors
                         }).catch(e =>{
                             console.log(e);
+                            this.notificationErreur(e.response.data.error)
                         })
                     });
                     this.activeBooking = false
@@ -1062,7 +1072,8 @@
                         console.log(res.data.exhibitors);
                         this.exhibitors = res.data.exhibitors
                     }).catch(e =>{
-                        console.log(e);
+                        console.log(e)
+                        this.notificationErreur(e.response.data.error)
                     })
                 }else{
                     getAllExhibitors().then(res =>{
@@ -1070,6 +1081,7 @@
                         this.Allexhibitors = res.data
                     }).catch(e =>{
                         console.log(e);
+                        this.notificationErreur(e.response.data.error)
                     });
                 }
             },
@@ -1097,6 +1109,7 @@
                         this.exhibitors = res.data.exhibitors
                     }).catch(e =>{
                         console.log(e);
+                        this.notificationErreur(e.response.data.error)
                     })
                 }).catch(e=>{
                     this.notificationErreur('error : ', e.response.data.error)
