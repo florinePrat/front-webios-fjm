@@ -89,8 +89,7 @@
                                             </vs-button>
 
                                             <br>
-                                            <vs-button :href="game.gameId.notice" target="_blank"><i
-                                                    class='bx bx-link-alt'/>
+                                            <vs-button @click="openUrl(game.gameId.notice)"> <i class='bx bx-link-alt'/>
                                                 <span class="span">
                                                     {{game.gameId && game.gameId.notice}}
                                                 </span>
@@ -174,6 +173,12 @@
                 this.notificationErreur(e.response.data.error)
             });
 
+        },
+
+        methods:{
+            openUrl(url) {
+                window.open(url, "_blank");
+            }
         }
 
 
