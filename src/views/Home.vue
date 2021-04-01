@@ -177,7 +177,9 @@
 
         methods:{
             openUrl(url) {
-                window.open(url, "_blank");
+                if (url.length > 3) {
+                    window.open(url, "_blank");
+                }
             }
         }
 

@@ -127,11 +127,10 @@
                                     </vs-button>
 
                                     <br/>
-                                    <vs-button flat :href="game.gameId.notice" target="_blank"><i
-                                            class='bx bx-link-alt'/>
+                                    <vs-button flat @click="openUrl(game.gameId.notice)"> <i class='bx bx-link-alt'/>
                                         <span class="span">
-                                        {{game.gameId && game.gameId.notice}}
-                                    </span>
+                                            {{game.gameId && game.gameId.notice}}
+                                        </span>
                                     </vs-button>
 
                                     <br/>
@@ -219,7 +218,7 @@
         </div>
 
 
-
+        <!--GAMES FROM ALL FESTIVALS-->
         <div class="ml-6" v-if="!active3">
             <vs-row>
                 <vs-col w="4" v-for="game in games" :key="game._id" vs-type="flex" vs-justify="center"
@@ -249,11 +248,11 @@
                                     </vs-button>
 
                                     <br/>
-                                    <vs-button flat :href="game.notice" target="_blank"><i
+                                    <vs-button flat @click="openUrl(game.notice)"><i
                                             class='bx bx-link-alt'/>
                                         <span class="span">
-                                        {{game && game.notice}}
-                                    </span>
+                                            {{game && game.notice}}
+                                        </span>
                                     </vs-button>
 
                                     <br/>
@@ -726,6 +725,12 @@
                 }).catch(e=>{
                     this.notificationErreur(e.response.data.error)
                 })
+            },
+
+            openUrl(url) {
+                if ((url.length > 3)) {
+                    window.open(url, "_blank");
+                }
             },
 
         }
