@@ -223,12 +223,16 @@
                                         </vs-button>
                                     </vs-col>
                                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" w="6" v-if="admin">
-                                        <vs-button gradient block  @click="openBookingGamePopup()">
+                                        <vs-button gradient block  @click="openBookingGamePopup()" v-if="exhibitor.booking.length > 0">
                                             <i class='bx bx-plus'/>
                                             Ajouter un jeu
                                         </vs-button>
+                                        <vs-button block flat v-else>
+                                            Ajoutez une réservation pour ajouter un jeu
+                                        </vs-button>
+                                    <br/>
+                                    <br/>
                                     </vs-col>
-
                                 </vs-row>
 
                             </template>
@@ -1044,8 +1048,10 @@
                         })
                     });
                     this.activeBooking = false
+                    this.$router.go()
+                } else {
+                    this.notificationErreur("Votre réservation est vide")
                 }
-                this.$router.go() // à enlever 
             },
             changeGetExhibitor() {
                 if(!this.active3){
