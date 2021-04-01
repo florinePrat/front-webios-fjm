@@ -1056,22 +1056,23 @@
                 console.log(publisherId, mainContact);
                 if (!mainContact || this.isMainContact) {
                     addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, true).then(res => {
-                        console.log(res.data)
+                        console.log(res.data);
+                        window.location.reload()
                     }).catch(e => {
-                        console.log(e)
+                        console.log(e);
                         this.notificationErreur(e.response.data.error)
                     })
                 } else {
                     addContact(this.firstName, this.lastName, this.email, this.address, this.telMobile, this.telFixe, this.work, publisherId, false).then(res => {
-                        console.log(res.data)
+                        console.log(res.data);
+                        window.location.reload()
                     }).catch(e => {
-                        console.log(e)
+                        console.log(e);
                         this.notificationErreur(e.response.data.error)
                     })
                 }
                 this.activeCreateContact = false;
                 this.activecontact = false;
-                //window.location.reload()
             },
             addBooking(exhibitorId) {
                 if (this.nbTableSpace1 || this.nbTableSpace2 || this.nbTableSpace3 || this.nbM2Space1 || this.nbM2Space2 || this.nbM2Space3) {
@@ -1079,14 +1080,14 @@
                         console.log(res.data);
                         getExhibitorsByfestivaId(this.festival._id).then(res => {
                             console.log(res.data.exhibitors);
-                            this.exhibitors = res.data.exhibitors
+                            this.exhibitors = res.data.exhibitors;
+                            window.location.reload();
                         }).catch(e => {
                             console.log(e);
                             this.notificationErreur(e.response.data.error)
                         })
                     });
-                    this.activeBooking = false
-                    this.$router.go()
+                    this.activeBooking = false;
                 } else {
                     this.notificationErreur("Votre réservation est vide")
                 }
